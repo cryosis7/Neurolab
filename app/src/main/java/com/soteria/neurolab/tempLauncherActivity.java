@@ -2,9 +2,9 @@ package com.soteria.neurolab;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 public class tempLauncherActivity extends AppCompatActivity {
 
@@ -15,6 +15,8 @@ public class tempLauncherActivity extends AppCompatActivity {
     }
 
     public void launchReactionGame(View view) {
-        Toast.makeText(getApplicationContext(), "Launching Game", Toast.LENGTH_SHORT).show();
+        Intent launchGame = new Intent(view.getContext(), ReactionGameActivity.class);
+        launchGame.putExtra("patientID", "YE37");
+        startActivity(launchGame);
     }
 }
