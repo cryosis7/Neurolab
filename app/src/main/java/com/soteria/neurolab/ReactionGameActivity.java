@@ -14,8 +14,8 @@ import java.util.Random;
 // B===3
 public class ReactionGameActivity extends AppCompatActivity {
 
-    // private String patientID;
-    // Test comment, please delete 3======D~~~~~~~~
+    private String patientID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
