@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class ReactionGameActivity extends AppCompatActivity {
 
-    private String patientID;
+    // private String patientID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
