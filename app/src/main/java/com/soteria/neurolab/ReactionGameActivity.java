@@ -15,7 +15,7 @@ import java.util.Random;
 public class ReactionGameActivity extends AppCompatActivity {
 
     // private String patientID;
-
+    // Test comment, please delete 3======D~~~~~~~~
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
