@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Text Button theme (Text only button, no background) -->
+    <style name="TextButton" parent="android:Widget.Holo.ActionButton.TextButton">
+
+    </style>
+
 </resources>
