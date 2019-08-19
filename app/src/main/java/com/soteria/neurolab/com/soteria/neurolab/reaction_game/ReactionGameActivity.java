@@ -2,6 +2,7 @@ package com.soteria.neurolab.com.soteria.neurolab.reaction_game;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,8 +25,6 @@ public class ReactionGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reaction_game);
 
-//        Circle circle = new Circle(getApplicationContext());
-
         Intent intent = getIntent();
         if (intent.hasExtra("PATIENT_ID"))
             patientID = intent.getStringExtra("PATIENT_ID");
@@ -34,26 +33,24 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * onClick handler for a button to start the game.
-     * @param view The button view that was clicked.
+     * @param view The button that was clicked.
      */
     public void startGame(View view) {
         ((ViewGroup)view.getParent()).removeView(view);
         new GameInstance().execute(this);
     }
 
-    private static class GameInstance extends AsyncTask<ReactionGameActivity, Integer, Integer> {
-//        private WeakReference<Circle> circleReference;
+    private class GameInstance extends AsyncTask<ReactionGameActivity, Integer, Integer> {
+
         private WeakReference<ReactionGameActivity> gameReference;
-        private boolean circleVisible = false;
 
         @Override
         protected Integer doInBackground(ReactionGameActivity... params) {
             gameReference = new WeakReference<>(params[0]);
-//            circleReference = new WeakReference<>(new Circle(params[0]));
 
             Random random = new Random();
             for (int round = 0; round < 5; round++) {
-                int delay = random.nextInt(1000) + 0000;
+                int delay = random.nextInt(1000) + 2000;
                 try {
                     Thread.sleep(delay);
                     publishProgress( round + 1, delay);
@@ -69,23 +66,16 @@ public class ReactionGameActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
             ReactionGameActivity activity = gameReference.get();
-//            Circle circle = circleReference.get();
 
             if (activity == null || activity.isFinishing())
                 return;
-//            else if (circle == null) {
-//                throw new NullPointerException("Tried to " + (circleVisible ? "hide" : "display")
-//                        + " circle but the reference is null");
-//            }
             else {
-                if (circleVisible) {
-//                    circle.setVisibility(View.INVISIBLE);
-                    activity.findViewById(R.id.circle).setVisibility(View.INVISIBLE);
+                if (findViewById(R.id.circle_button).getVisibility() == View.VISIBLE) {
+                    findViewById(R.id.circle_button).setVisibility(View.INVISIBLE);
                 }
                 else {
-                    activity.findViewById(R.id.circle).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.circle_button).setVisibility(View.VISIBLE);
                 }
-                circleVisible = !circleVisible;
             }
             Toast.makeText(activity, values[0]  + " - " + values[1] + "ms", Toast.LENGTH_SHORT).show();
         }
