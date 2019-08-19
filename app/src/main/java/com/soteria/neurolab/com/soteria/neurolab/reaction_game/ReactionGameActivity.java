@@ -24,7 +24,7 @@ public class ReactionGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reaction_game);
 
-        Circle circle = new Circle(getApplicationContext());
+//        Circle circle = new Circle(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent.hasExtra("PATIENT_ID"))
@@ -37,27 +37,21 @@ public class ReactionGameActivity extends AppCompatActivity {
      * @param view The button view that was clicked.
      */
     public void startGame(View view) {
-        new GameInstance(this).execute();
-        ((ViewGroup) view.getParent()).removeView(view);
+        ((ViewGroup)view.getParent()).removeView(view);
+        new GameInstance().execute(this);
     }
 
-    private static class GameInstance extends AsyncTask<Void, Integer, Integer> {
+    private static class GameInstance extends AsyncTask<ReactionGameActivity, Integer, Integer> {
 //        private WeakReference<Circle> circleReference;
         private WeakReference<ReactionGameActivity> gameReference;
         private boolean circleVisible = false;
 
-        /**
-         * The instance of the game. Running on AsyncTask to avoid delays on the UI thread.
-         * @param context A reference to the current context.
-         */
-        GameInstance(ReactionGameActivity context) {
-            gameReference = new WeakReference<>(context);
-        }
-
         @Override
-        protected Integer doInBackground(Void... params) {
-            Random random = new Random();
+        protected Integer doInBackground(ReactionGameActivity... params) {
+            gameReference = new WeakReference<>(params[0]);
+//            circleReference = new WeakReference<>(new Circle(params[0]));
 
+            Random random = new Random();
             for (int round = 0; round < 5; round++) {
                 int delay = random.nextInt(1000) + 0000;
                 try {
@@ -75,15 +69,21 @@ public class ReactionGameActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
             ReactionGameActivity activity = gameReference.get();
+//            Circle circle = circleReference.get();
 
             if (activity == null || activity.isFinishing())
                 return;
+//            else if (circle == null) {
+//                throw new NullPointerException("Tried to " + (circleVisible ? "hide" : "display")
+//                        + " circle but the reference is null");
+//            }
             else {
                 if (circleVisible) {
-
+//                    circle.setVisibility(View.INVISIBLE);
+                    activity.findViewById(R.id.circle).setVisibility(View.INVISIBLE);
                 }
                 else {
-
+                    activity.findViewById(R.id.circle).setVisibility(View.INVISIBLE);
                 }
                 circleVisible = !circleVisible;
             }
