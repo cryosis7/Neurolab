@@ -15,10 +15,10 @@ import java.util.Random;
 
 public class ReactionGameActivity extends AppCompatActivity {
     private String patientID;
-    private long startTime = -1;
+    private static long startTime = -1;
     private int round = 0;
     private int[] results = new int[5];
-    protected volatile boolean  isCancelled = false;
+    protected volatile static boolean isCancelled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,15 @@ public class ReactionGameActivity extends AppCompatActivity {
 
         int result = (int) (endTime - startTime);
         results[round] = result;
-        round++;
+        if (result < 250) {
+            stopTimerFoul();
+            return;
+        }
 
         ((TextView)findViewById(R.id.information_txt)).setText(
-                String.format(Locale.getDefault(),"Round %d\nReaction Time: %dms", round, result));
+                String.format(Locale.getDefault(),"Round %d\nReaction Time: %dms", round + 1, result));
 
+        round++;
         if (round < 5) {
             startTime = -1;
             findViewById(R.id.start_button).setVisibility(View.VISIBLE);
@@ -111,7 +115,7 @@ public class ReactionGameActivity extends AppCompatActivity {
      * An inner class that pauses for a random delay on a separate thread then updates the
      * UI after the delay.
      */
-    private class RandomDelay extends AsyncTask<ReactionGameActivity, Integer, Void> {
+    private static class RandomDelay extends AsyncTask<ReactionGameActivity, Integer, Void> {
         private WeakReference<ReactionGameActivity> gameReference;
 
         @Override
@@ -140,7 +144,7 @@ public class ReactionGameActivity extends AppCompatActivity {
 
             // Due to weak reference, there is a chance the activity does not exist anymore or is closing down.
             if (activity != null && !activity.isFinishing())
-                findViewById(R.id.circle_button).setVisibility(View.VISIBLE);
+                activity.findViewById(R.id.circle_button).setVisibility(View.VISIBLE);
         }
     }
 }
