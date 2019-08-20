@@ -7,15 +7,15 @@
     tools:context=".com.soteria.neurolab.reaction_game.ReactionGameActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/startGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:onClick="startGame"
-        android:text="Start Game"
+        android:onClick="runRound"
+        android:text="@string/start_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/circle"
-        android:text="Circle Button"
+        android:onClick="stopTimer"
+        android:text="@string/reactionGame_tap"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

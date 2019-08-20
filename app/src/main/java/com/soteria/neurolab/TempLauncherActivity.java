@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.soteria.neurolab.com.soteria.neurolab.reaction_game.ReactionGameActivity;
 
-public class tempLauncherActivity extends AppCompatActivity {
+public class TempLauncherActivity extends AppCompatActivity {
 
     private static final String PATIENT_ID = "YE37";
 

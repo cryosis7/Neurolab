@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Neurolab</string>
+
+    <!--Game Related strings-->
+    <string name="start_game">Start Game</string>
+    <string name="next_round">Next Round</string>
+
+    <string name="reactionGame_tap">TAP</string>
 </resources>

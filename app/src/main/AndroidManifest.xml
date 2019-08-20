@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".com.soteria.neurolab.reaction_game.ReactionGameActivity"></activity>
-        <activity android:name=".tempLauncherActivity">
+        <activity android:name=".TempLauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
