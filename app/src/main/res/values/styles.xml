@@ -6,6 +6,40 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorError">@color/colorWarning</item>
     </style>
+
+    <!-- Blue Text Button theme (Text only button, no background) -->
+    <style name="TextButtonBlue" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:borderlessButtonStyle"/>
+        <item name="android:textColor">@drawable/button_blue_text_colour</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Red Text Button theme (Text only button, no background) -->
+    <style name="TextButtonRed" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:borderlessButtonStyle"/>
+        <item name="android:textColor">@drawable/button_red_text_colour</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Text Sub-heading -->
+    <style name="TextSubHead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <!-- Text Body -->
+    <style name="TextBody" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
 
 </resources>
