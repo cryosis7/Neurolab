@@ -6,4 +6,6 @@
     <string name="next_round">Next Round</string>
 
     <string name="reactionGame_tap">TAP</string>
+    <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
+    <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
 </resources>

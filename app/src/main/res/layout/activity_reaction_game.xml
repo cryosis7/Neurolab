@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:onClick="screenTapped"
     tools:context=".com.soteria.neurolab.reaction_game.ReactionGameActivity">
 
     <Button
-        android:id="@+id/activity_reaction_game_start_btn"
+        android:id="@+id/start_button"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:textSize="32sp"
         android:background="@color/colorPrimary"
         android:onClick="runRound"
         android:text="@string/start_game"
+        android:textColor="@color/colorTextLight"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,11 +37,29 @@
         android:background="@drawable/circle"
         android:onClick="stopTimer"
         android:text="@string/reactionGame_tap"
+        android:textColor="@color/colorTextLight"
         android:textSize="128sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/information_txt"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="32sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorTextPrimary"
+        tools:text="@string/reactionGame_information"
+        app:layout_constraintBottom_toTopOf="@+id/circle_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
