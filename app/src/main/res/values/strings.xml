@@ -5,7 +5,9 @@
     <string name="start_game">Start Game</string>
     <string name="next_round">Next Round</string>
 
+    <!--Reaction Game Strings-->
     <string name="reactionGame_tap">TAP</string>
     <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
+    <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 </resources>

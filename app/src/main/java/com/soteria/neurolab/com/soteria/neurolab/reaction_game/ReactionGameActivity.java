@@ -14,6 +14,7 @@ import com.soteria.neurolab.R;
 import com.soteria.neurolab.TempLauncherActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.Random;
 
 public class ReactionGameActivity extends AppCompatActivity {
@@ -21,7 +22,7 @@ public class ReactionGameActivity extends AppCompatActivity {
     private long startTime = -1;
     private int round = 0;
     private int[] results = new int[5];
-    protected volatile  boolean  isCancelled = false;
+    protected volatile boolean  isCancelled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,6 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * onClick handler for a button to run a round of the game.
-     *
      * @param view The start button that is tapped to run the game.
      */
     public void runRound(View view) {
@@ -50,35 +50,41 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * onClick handler to stop the timer and measure reaction time.
-     *
      * @param view The circle button that is tapped.
      */
     public void stopTimer(View view) {
         long endTime = System.currentTimeMillis();
         view.setVisibility(View.INVISIBLE);
         if (startTime == -1)
-            throw new IllegalStateException("Attempted to measure elapsed time but start time has not been set.");
+            throw new IllegalStateException(getString(R.string.reactionGame_exception_timer_not_started));
 
         int result = (int) (endTime - startTime);
-        Toast.makeText(view.getContext(), result + "ms", Toast.LENGTH_SHORT).show();
         results[round] = result;
         round++;
+
+        ((TextView)findViewById(R.id.information_txt)).setText(
+                String.format(Locale.getDefault(),"Round %d\nReaction Time: %dms", round, result));
 
         if (round < 5) {
             startTime = -1;
             findViewById(R.id.start_button).setVisibility(View.VISIBLE);
-        } else {
-            int avgResult = 0;
-            for (int x : results)
-                avgResult += x;
-            avgResult /= results.length;
+        } else
+            endGame();
+    }
 
-            Intent launchGame = new Intent(this, TempLauncherActivity.class);
-            launchGame.putExtra("PATIENT_ID", patientID);
-            launchGame.putExtra("GAME_SCORE", avgResult);
-            startActivity(launchGame);
-            finish();
-        }
+    private void endGame() {
+        int avgResult = 0;
+        for (int x : results)
+            avgResult += x;
+        avgResult /= results.length;
+
+        //TODO: Save to database
+
+        Intent launchGame = new Intent(this, TempLauncherActivity.class);
+        launchGame.putExtra("PATIENT_ID", patientID);
+        launchGame.putExtra("GAME_SCORE", avgResult);
+        startActivity(launchGame);
+        finish();
     }
 
     /**
@@ -101,15 +107,15 @@ public class ReactionGameActivity extends AppCompatActivity {
         View circleButton = findViewById(R.id.circle_button);
         if (circleButton.getVisibility() == View.VISIBLE)
             stopTimer(circleButton);
-        else if (findViewById(R.id.start_button).getVisibility() == View.INVISIBLE)
+        else if (findViewById(R.id.circle_button).getVisibility() == View.INVISIBLE)
             stopTimerFoul();
     }
 
     /**
-     * After a random delay, displays the button.
+     * An inner class that pauses for a random delay on a separate thread then updates the
+     * UI after the delay.
      */
     private class RandomDelay extends AsyncTask<ReactionGameActivity, Integer, Void> {
-
         private WeakReference<ReactionGameActivity> gameReference;
 
         @Override
