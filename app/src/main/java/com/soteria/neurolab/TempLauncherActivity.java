@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.soteria.neurolab.com.soteria.neurolab.reaction_game.ReactionGameActivity;
-
 public class TempLauncherActivity extends AppCompatActivity {
 
     private String patientID;

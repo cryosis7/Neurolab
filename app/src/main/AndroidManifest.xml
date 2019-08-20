@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".com.soteria.neurolab.reaction_game.ReactionGameActivity"></activity>
+        <activity android:name=".ReactionGameActivity"></activity>
         <activity android:name=".TempLauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

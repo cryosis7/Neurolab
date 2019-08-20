@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
     android:onClick="screenTapped"
-    tools:context=".com.soteria.neurolab.reaction_game.ReactionGameActivity">
+    tools:context=".ReactionGameActivity">
 
     <Button
         android:id="@+id/start_button"
