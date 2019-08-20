@@ -19,6 +19,7 @@ public class ReactionGameActivity extends AppCompatActivity {
     private String patientID;
     private long startTime = -1;
     private int round = 0;
+    private int[] results = new int[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,6 @@ public class ReactionGameActivity extends AppCompatActivity {
         new RandomDelay().execute(this);
         if (((Button) view).getText().equals(getResources().getString(R.string.start_game)))
             ((Button) view).setText(R.string.next_round);
-        round++;
     }
 
     /**
@@ -51,18 +51,28 @@ public class ReactionGameActivity extends AppCompatActivity {
      * @param view The circle button that is tapped.
      */
     public void stopTimer(View view) {
+        long endTime = System.currentTimeMillis();
         if (startTime == -1)
             throw new IllegalStateException("Attempted to measure elapsed time but start time has not been set.");
-        long endTime = System.currentTimeMillis();
-        Toast.makeText(view.getContext(), endTime - startTime + "ms", Toast.LENGTH_SHORT).show();
+
+        int result = (int) (endTime - startTime);
+        Toast.makeText(view.getContext(), result + "ms", Toast.LENGTH_SHORT).show();
+        results[round] = result;
+        round++;
 
         if (round < 5) {
             view.setVisibility(View.INVISIBLE);
             startTime = -1;
-            findViewById(R.id.startGame).setVisibility(View.VISIBLE);
+            findViewById(R.id.activity_reaction_game_start_btn).setVisibility(View.VISIBLE);
         } else {
+            int avgResult = 0;
+            for (int x : results)
+                avgResult += x;
+            avgResult /= results.length;
+
             Intent launchGame = new Intent(this, TempLauncherActivity.class);
-            launchGame.putExtra("GAME_SCORE", 8008135);
+            launchGame.putExtra("PATIENT_ID", patientID);
+            launchGame.putExtra("GAME_SCORE", avgResult);
             startActivity(launchGame);
             finish();
         }
