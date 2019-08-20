@@ -6,11 +6,32 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorError">@color/colorRed</item>
     </style>
 
-    <!-- Text Button theme (Text only button, no background) -->
-    <style name="TextButton" parent="android:Widget.Holo.ActionButton.TextButton">
-
+    <!-- Blue Text Button theme (Text only button, no background) -->
+    <style name="TextButtonBlue" parent="android:Widget.Holo.ActionButton.TextButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
+
+    <!-- Red Text Button theme (Text only button, no background) -->
+    <style name="TextButtonRed" parent="android:Widget.Holo.ActionButton.TextButton">
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- Text Sub-heading -->
+    <style name="TextSubHead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <!-- Text Body -->
+    <style name="TextBody" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
 
 </resources>
