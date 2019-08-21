@@ -48,7 +48,7 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * onClick handler to stop the timer and measure reaction time.
-     *
+     * If it's the last round, it will end the game - endGame()
      * @param view The circle button that is tapped.
      */
     public void stopTimer(View view) {
@@ -75,6 +75,10 @@ public class ReactionGameActivity extends AppCompatActivity {
             endGame();
     }
 
+    /**
+     * Averages the results will eventually save to the database and launches the next activity.
+     * bundles two extras into the intent.
+     */
     private void endGame() {
         int avgResult = 0;
         for (int x : results)
@@ -124,7 +128,7 @@ public class ReactionGameActivity extends AppCompatActivity {
      * An inner class that pauses for a random delay on a separate thread then updates the
      * UI after the delay.
      */
-    private static class ReactionTimer extends AsyncTask<ReactionGameActivity, Integer, Void> {
+    private static class ReactionTimer extends AsyncTask<ReactionGameActivity, Void, Void> {
         private WeakReference<ReactionGameActivity> gameReference;
 
         @Override
@@ -145,7 +149,7 @@ public class ReactionGameActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... progress) {
+        protected void onProgressUpdate(Void... progress) {
             super.onProgressUpdate();
             ReactionGameActivity activity = gameReference.get();
 
