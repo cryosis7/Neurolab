@@ -6,8 +6,7 @@ public class Game {
     private String gameName;
     private String gameDesc;
 
-    public Game(int gameID, String gameName, String gameDesc) {
-        this.gameID = gameID;
+    public Game(String gameName, String gameDesc) {
         this.gameName = gameName;
         this.gameDesc = gameDesc;
     }
@@ -18,9 +17,7 @@ public class Game {
         return gameID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
+    public void setGameID(int gameID) { this.gameID = gameID; }
 
     public String getGameName() {
         return gameName;

@@ -4,8 +4,7 @@ public class Patient {
     private int patientID;
     private String patientReference;
 
-    public Patient(int patientID, String patientReference) {
-        this.patientID = patientID;
+    public Patient(String patientReference) {
         this.patientReference = patientReference;
     }
 

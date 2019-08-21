@@ -192,7 +192,7 @@ public class DatabaseAccess {
             GameAssignment assignment = new GameAssignment();
             assignment.setGameID(cursor.getInt(0));
             assignment.setPatientID(cursor.getInt(1));
-            assignment.setGameAttempts(cursor.getInt(3));
+            assignment.setGameAttempts(cursor.getInt(2));
             gameAssignments.add(assignment);
             cursor.moveToNext();
         }

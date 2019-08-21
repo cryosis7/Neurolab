@@ -8,8 +8,7 @@ public class GameSession {
     private float metrics;
     private String date;
 
-    public GameSession(int sessionID, int patientID, int gameID, float metrics, String date) {
-        this.sessionID = sessionID;
+    public GameSession(int patientID, int gameID, float metrics, String date) {
         this.patientID = patientID;
         this.gameID = gameID;
         this.metrics = metrics;
