@@ -15,10 +15,10 @@ import java.util.Random;
 
 public class ReactionGameActivity extends AppCompatActivity {
     private String patientID;
+    private ReactionTimer reactionTimer;
     private static long startTime = -1;
     private int round = 0;
     private int[] results = new int[5];
-    protected volatile static boolean isCancelled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +34,21 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * onClick handler for a button to run a round of the game.
+     *
      * @param view The start button that is tapped to run the game.
      */
     public void runRound(View view) {
         view.setVisibility(View.INVISIBLE);
-        isCancelled = false;
-        new RandomDelay().execute(this);
+        reactionTimer = new ReactionTimer();
+        reactionTimer.execute(this);
+
         if (((Button) view).getText().equals(getResources().getString(R.string.start_game)))
             ((Button) view).setText(R.string.next_round);
     }
 
     /**
      * onClick handler to stop the timer and measure reaction time.
+     *
      * @param view The circle button that is tapped.
      */
     public void stopTimer(View view) {
@@ -61,8 +64,8 @@ public class ReactionGameActivity extends AppCompatActivity {
             return;
         }
 
-        ((TextView)findViewById(R.id.information_txt)).setText(
-                String.format(Locale.getDefault(),"Round %d\nReaction Time: %dms", round + 1, result));
+        ((TextView) findViewById(R.id.information_txt)).setText(
+                String.format(Locale.getDefault(), "Round %d\nReaction Time: %dms", round + 1, result));
 
         round++;
         if (round < 5) {
@@ -92,30 +95,36 @@ public class ReactionGameActivity extends AppCompatActivity {
      */
     public void stopTimerFoul() {
         startTime = -1;
-        ((TextView)findViewById(R.id.information_txt)).setText(R.string.reactionGame_tap_to_early);
+        ((TextView) findViewById(R.id.information_txt)).setText(R.string.reactionGame_tap_to_early);
         findViewById(R.id.circle_button).setVisibility(View.INVISIBLE);
         findViewById(R.id.start_button).setVisibility(View.VISIBLE);
-        isCancelled = true;
+        reactionTimer.cancel(true);
     }
 
     /**
-     * Used for detecting when the user taps too early or if they tap but don't tap the button
-     * accurately enough.
+     * Used for detecting when the user taps too early or if they do tap but don't tap exactly
+     * on the button.
+     * Handles three cases: Foul (Tap too early); inaccurate tap on start button and inaccurate tap
+     * on circle button.
+     *
      * @param view
      */
     public void screenTapped(View view) {
         View circleButton = findViewById(R.id.circle_button);
+        View startButton = findViewById(R.id.start_button);
         if (circleButton.getVisibility() == View.VISIBLE)
             stopTimer(circleButton);
-        else if (findViewById(R.id.circle_button).getVisibility() == View.INVISIBLE)
+        else if (startButton.getVisibility() == View.INVISIBLE)
             stopTimerFoul();
+        else if (startButton.getVisibility() == View.VISIBLE)
+            runRound(startButton);
     }
 
     /**
      * An inner class that pauses for a random delay on a separate thread then updates the
      * UI after the delay.
      */
-    private static class RandomDelay extends AsyncTask<ReactionGameActivity, Integer, Void> {
+    private static class ReactionTimer extends AsyncTask<ReactionGameActivity, Integer, Void> {
         private WeakReference<ReactionGameActivity> gameReference;
 
         @Override
@@ -126,10 +135,8 @@ public class ReactionGameActivity extends AppCompatActivity {
             int delay = random.nextInt(6000) + 1000;
             try {
                 Thread.sleep(delay);
-                if (!isCancelled) {
-                    startTime = System.currentTimeMillis();
-                    publishProgress();
-                }
+                startTime = System.currentTimeMillis();
+                publishProgress();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
