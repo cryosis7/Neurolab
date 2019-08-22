@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Neurolab</string>
+    <string name="title_activity_create_patient_page">Create Patient</string>
+    <string name="title_search_patient">Search Patient</string>
+    <string name="title_create_patient">Create Patient</string>
+    <string name="title_delete_patient">Delete Patient</string>
+
+    <string name="patient_id_title">Patient ID</string>
 </resources>
