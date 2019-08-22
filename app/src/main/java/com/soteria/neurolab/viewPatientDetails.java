@@ -1,18 +1,22 @@
 package com.soteria.neurolab;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class viewPatientDetails extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState/*, String patientIdentifier, Date lastDayPlayed */ ) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Patient Details");
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -20,8 +24,19 @@ public class viewPatientDetails extends AppCompatActivity {
         setContentView(R.layout.activity_view_patient_details);
 
 
-        //Button instructions for back button on Support Bar
-        //TODO incorporate functionality to go back in the app, remove toast once done.
+        //Information for changing the text information on load
+        //TODO pass through patient identifier and last game run information when completed
+
+        /*
+        final TextView patientID = findViewById(R.id.patientIDTitleTextView);
+        final TextView lastPlayed = findViewById(R.id.patientGamesLastRunTextView);
+
+        patientID.setText("Patient: " + patientIdentifier );
+
+        DateFormat convertDate = new SimpleDateFormat("dd-mm-yyyy hh:mm");
+        String inputDate = convertDate.format(lastDayPlayed);
+        lastPlayed.setText("Games last run: " + inputDate );
+         */
 
 
         //Button instructions for run games button
@@ -31,7 +46,7 @@ public class viewPatientDetails extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"This links to Patient Home",Toast.LENGTH_SHORT).show();
-               // startActivity(new Intent(this, //TODO add link here));
+               // startActivity(new Intent(this, TODO add link here));
             }
         });
 
@@ -82,6 +97,22 @@ public class viewPatientDetails extends AppCompatActivity {
                 //startActivity(new Intent(this, //TODO add link here));
             }
         });
+    }
 
+    public boolean onOptionsItemSelected(MenuItem menu)
+    {
+        try {
+             switch(menu.getItemId()) {
+                 case android.R.id.home:
+                     super.onBackPressed();
+                     return true;
+                 default:
+                     Toast.makeText(getApplicationContext(), "ERROR - Unknown call, terminating function call", Toast.LENGTH_SHORT).show();
+                     return false;
+             }
+        } catch(Exception e) {
+                Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
+                return false;
+        }
     }
 }

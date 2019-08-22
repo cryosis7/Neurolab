@@ -5,12 +5,12 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <Button
             android:id="@+id/runGamesButton"
@@ -84,17 +84,22 @@
             app:layout_constraintTop_toBottomOf="@+id/runGamesButton"
             app:layout_constraintVertical_bias="0.071" />
 
-        <ImageButton
-            android:id="@+id/homeButton"
-            android:layout_width="69dp"
-            android:layout_height="71dp"
-            android:layout_marginBottom="52dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/patientIDTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/view_patient_details_patient_id"
+            android:textColor="@color/colorBlack"
+            android:textSize="50sp"
+            app:layout_constraintBottom_toTopOf="@+id/runGamesButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deletePatientButton"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@android:drawable/ic_menu_compass" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.337" />
 
         <TextView
             android:id="@+id/patientGamesLastRunTextView"
@@ -114,23 +119,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/patientIDTitleTextView"
             app:layout_constraintVertical_bias="0.078" />
-
-        <TextView
-            android:id="@+id/patientIDTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/view_patient_details_patient_id"
-            android:textSize="50sp"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toTopOf="@+id/runGamesButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.337" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
