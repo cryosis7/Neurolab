@@ -6,6 +6,8 @@
     <string name="view_patient_details_run_games">RUN GAMES</string>
     <string name="view_patient_details_last_run">Games were last run on 05/08/19 at 3.58pm</string>
     <string name="view_patient_details_patient_id">Patient: SC17</string>
+    <string name="view_patient_details_disclaimer">Disclaimer</string>
+    <string name="view_patient_details_logout">Log Out</string>
     <string-array name="settings">
         <item>Disclaimer</item>
         <item>Log Out</item>
