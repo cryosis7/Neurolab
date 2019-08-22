@@ -5,5 +5,7 @@
     <string name="title_create_patient">Create Patient</string>
     <string name="title_delete_patient">Delete Patient</string>
 
+    <!-- Create patient fragment strings -->
     <string name="patient_id_title">Patient ID</string>
+    <string name="enter_unique_id">Enter a unique ID</string>
 </resources>

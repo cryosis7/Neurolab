@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SearchAddDeleteActivity"
-            android:label="@string/title_activity_create_patient_page">
-
+            android:name=".SearchCreateDeleteActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
