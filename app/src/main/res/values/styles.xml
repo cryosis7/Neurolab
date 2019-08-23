@@ -5,9 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorError">@color/colorWarning</item>
-        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
+        <item name="android:textColorSecondary">@color/colorTextSecondary</item>
     </style>
 
     <!-- Blue Text Button theme (Text only button, no background) -->
@@ -32,15 +33,28 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <!-- Text Sub-heading -->
+    <!-- TODO Text Sub-heading  -->
     <style name="TextSubHead" parent="TextAppearance.AppCompat.Subhead">
-        <item name="android:textColor">@color/colorTextPrimary</item>
+
     </style>
 
     <!-- Text Body -->
     <style name="TextBody" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- Single line Text input -->
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textSize">36sp</item>
+    </style>
 
 </resources>

@@ -1,11 +1,28 @@
 <resources>
     <string name="app_name">Neurolab</string>
-    <string name="title_activity_create_patient_page">Create Patient</string>
+
+    <!-- Page titles -->
     <string name="title_search_patient">Search Patient</string>
     <string name="title_create_patient">Create Patient</string>
     <string name="title_delete_patient">Delete Patient</string>
 
+    <!-- Game titles -->
+    <string name="title_motor_skills">Motor Skills</string>
+    <string name="title_reaction_time">Reaction Time</string>
+    <string name="title_visual_short_term_memory">Visual Short Term Memory</string>
+    <string name="title_selective_attention">Selective Attention</string>
+
     <!-- Create patient fragment strings -->
     <string name="patient_id_title">Patient ID</string>
     <string name="enter_unique_id">Enter a unique ID</string>
+    <string name="attempts_per_game_title">Attempts Per Game</string>
+    <string name="create_button">Create</string>
+
+    <string name="settings">
+        <item>Disclaimer</item>
+        <item>Logout</item>
+    </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

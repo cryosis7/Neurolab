@@ -8,30 +8,104 @@
     tools:context=".CreatePatientFragment">
 
     <TextView
-        android:id="@+id/textView"
-        style="@style/TextSubHead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="92dp"
+        android:id="@+id/textPatientID"
+        style="@style/TextBody"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="172dp"
         android:text="@string/patient_id_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.398"
+        app:layout_constraintHorizontal_bias="0.394"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="98dp"
+    <EditText
+        android:id="@+id/inputPatientID"
+        style="@style/EditText"
+        android:layout_marginStart="168dp"
+        android:layout_marginEnd="168dp"
+        android:hint="@string/enter_unique_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textPatientID"></EditText>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_unique_id" />
-    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/checkReactionTime"
+        style="@style/CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="68dp"
+        android:text="@string/title_reaction_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputPatientID" />
+
+    <CheckBox
+        android:id="@+id/checkMotorSkills"
+        style="@style/CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/title_motor_skills"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkReactionTime" />
+
+    <CheckBox
+        android:id="@+id/checkSelectiveAttention"
+        style="@style/CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/title_selective_attention"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkMotorSkills" />
+
+    <CheckBox
+        android:id="@+id/checkVisualShortTermMemory"
+        style="@style/CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/title_visual_short_term_memory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkSelectiveAttention" />
+
+    <TextView
+        android:id="@+id/textAttempts"
+        style="@style/TextBody"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="62dp"
+        android:text="@string/attempts_per_game_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkVisualShortTermMemory" />
+
+    <SeekBar
+        android:id="@+id/seekAttempts"
+        android:layout_width="420dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginEnd="168dp"
+        android:layout_marginTop="12dp"
+        android:max="5"
+        android:progress="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAttempts" />
+
+    <Button
+        android:id="@+id/buttonCreate"
+        style="@style/TextButtonBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="62dp"
+        android:text="@string/create_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekAttempts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
