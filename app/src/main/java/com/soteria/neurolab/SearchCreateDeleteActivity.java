@@ -66,7 +66,6 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         toolbar.setHomeButtonEnabled(true);
         toolbar.setDisplayHomeAsUpEnabled(true);
 
-
         fragmentManager.beginTransaction().add(R.id.fragment_layout, createPatientFragment, "2").hide(createPatientFragment).commit();
         fragmentManager.beginTransaction().add(R.id.fragment_layout, deletePatientFragment, "3").hide(deletePatientFragment).commit();
         fragmentManager.beginTransaction().add(R.id.fragment_layout, searchPatientFragment, "1").commit();

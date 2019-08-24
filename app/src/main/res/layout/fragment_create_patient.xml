@@ -87,10 +87,10 @@
         android:layout_width="420dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="168dp"
-        android:layout_marginEnd="168dp"
         android:layout_marginTop="12dp"
-        android:max="5"
-        android:progress="3"
+        android:layout_marginEnd="168dp"
+        android:max="4"
+        android:progress="2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textAttempts" />
 
@@ -100,12 +100,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="62dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/create_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekAttempts" />
+
+    <TextView
+        android:id="@+id/textAttemptsNumber"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/seekAttempts"
+        app:layout_constraintStart_toEndOf="@+id/seekAttempts"
+        app:layout_constraintTop_toTopOf="@+id/seekAttempts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

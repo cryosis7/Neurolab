@@ -6,9 +6,21 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -60,14 +72,73 @@ public class CreatePatientFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_patient, container, false);
+        final View view =  inflater.inflate(R.layout.fragment_create_patient, container, false);
+
+        //Initializing attempts seekbar and setting the on change listener
+        final TextView seekAttemptsCount = view.findViewById(R.id.textAttemptsNumber);
+        final SeekBar seekAttemptsBar = view.findViewById(R.id.seekAttempts);
+        seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
+        seekAttemptsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO Auto-generated method stub
+                seekAttemptsCount.setText(Integer.toString(progress + 1));
+            }
+        });
+
+        final Button createPatientButton = view.findViewById(R.id.buttonCreate);
+        createPatientButton.setOnClickListener(new View.OnClickListener(){
+            //Initializing the UI elements
+            EditText editPatientID = view.findViewById(R.id.inputPatientID);
+            CheckBox checkBoxReaction = view.findViewById(R.id.checkReactionTime);
+            CheckBox checkBoxMotor = view.findViewById(R.id.checkMotorSkills);
+            CheckBox checkBoxAttention = view.findViewById(R.id.checkSelectiveAttention);
+            CheckBox checkBoxMemory = view.findViewById(R.id.checkVisualShortTermMemory);
+
+            @Override
+            public void onClick(View view){
+                //Checking that patientID is alphanumerical
+                String patientIDRegex = "^[a-zA-Z0-9]+$";
+                Pattern pattern = Pattern.compile(patientIDRegex);
+                Matcher matcher = pattern.matcher(editPatientID.getText().toString());
+                if(TextUtils.isEmpty(editPatientID.getText().toString())) {
+                    editPatientID.setError("PatientID cannot be blank");
+                } else if(!matcher.matches()) {
+                    editPatientID.setError("PatientID contains 1 or more illegal characters");
+                } else {
+                    //TODO: Check database for duplicate PatientID
+
+                    String patientID = editPatientID.getText().toString();
+                    boolean boolReaction = checkBoxReaction.isChecked();
+                    boolean boolMotor = checkBoxMotor.isChecked();
+                    boolean boolAttention = checkBoxAttention.isChecked();
+                    boolean boolMemory = checkBoxMemory.isChecked();
+                    int attempts = seekAttemptsBar.getProgress() + 1;
+
+                    //TODO: Enter patient data into database
+
+                    Toast toastPatientCreated = Toast.makeText(getContext(), "Patient " + patientID + " Created", Toast.LENGTH_LONG);
+                    toastPatientCreated.show();
+
+                    editPatientID.setText("");
+                }
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
