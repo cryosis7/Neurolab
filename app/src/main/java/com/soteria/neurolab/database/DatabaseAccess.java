@@ -3,7 +3,9 @@ package com.soteria.neurolab.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.soteria.neurolab.Models.Game;
@@ -20,25 +22,32 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
     Cursor cursor = null;
 
-    //Private Constructor
-    private DatabaseAccess(Context context){
+    public DatabaseAccess(Context context){
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
-    //Return single instance of databases
-    public static DatabaseAccess getInstance(Context context){
+    public static DatabaseAccess getInstance(Context context) throws SQLiteException {
         if(instance == null){
             instance = new DatabaseAccess(context);
         }
         return instance;
     }
 
-    //Open databases
-    public  void open(){
-        this.db = openHelper.getWritableDatabase();
+    /**
+     * Opens the database
+     * @throws SQLiteException
+     */
+    public  void open() throws SQLiteException{
+        try {
+            this.db = openHelper.getWritableDatabase();
+        } catch (SQLiteException e){
+            e.printStackTrace();
+        }
     }
 
-    //Close database
+    /**
+     * Closes the database
+     */
     public void close(){
         if(db != null){
             this.db.close();
@@ -47,8 +56,12 @@ public class DatabaseAccess {
 
     //--------------------------------Patient Methods--------------------------------------//
 
-    //Create Patient
-    public void createPatient(Patient patient){
+    /**
+     *Inserts a patient object into the database
+     * @param patient The patient object to be inserted
+     * @throws SQLiteException
+     */
+    public void createPatient(Patient patient) throws SQLiteException{
         open();
         ContentValues values = new ContentValues();
         values.put("patient_reference", patient.getPatientReference());
@@ -56,8 +69,12 @@ public class DatabaseAccess {
         close();
     }
 
-    //Get List of all patients
-    public List<Patient> getAllPatients(){
+    /**
+     * Retrieves a list of all patients from the database
+     * @return a list of patients
+     * @throws SQLiteException
+     */
+    public List<Patient> getAllPatients() throws SQLiteException{
         open();
         List<Patient> patientList = new ArrayList<>();
         cursor = db.rawQuery("SELECT * FROM Patient", null);
@@ -74,8 +91,13 @@ public class DatabaseAccess {
         return patientList;
     }
 
-    //Get patients by reference
-    public List<Patient> searchPatients(String reference){
+    /**
+     * Search for patients by patient reference from the database
+     * @param reference The patient reference to search by
+     * @return All patients with the specified reference
+     * @throws SQLiteException
+     */
+    public List<Patient> searchPatients(String reference) throws SQLiteException{
         open();
         List<Patient> patientList = new ArrayList<>();
         cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_reference = ?",
@@ -93,8 +115,12 @@ public class DatabaseAccess {
         return patientList;
     }
 
-    //Update Patient Reference
-    public void updatePatient(Patient patient){
+    /**
+     * Updates a patient's reference in the database
+     * @param patient The updated patient
+     * @throws SQLiteException
+     */
+    public void updatePatient(Patient patient) throws SQLiteException{
         open();
         ContentValues values = new ContentValues();
         values.put("patient_reference", patient.getPatientReference());
@@ -103,18 +129,36 @@ public class DatabaseAccess {
         close();
     }
 
-    //Delete Patient
-    public void deletePatient(Patient patient){
+    /**
+     * Deletes a patient from the database
+     * @param patient The patient to be deleted
+     * @throws SQLiteException
+     */
+    public void deletePatient(Patient patient) throws SQLiteException{
         open();
-        db.delete("Patient", "patient_ID = ?",
-                new String[]{Integer.toString(patient.getPatientID())});
+        db.delete("Patient", "Patient_ID = " + patient.getPatientID(),
+                null);
+        close();
+    }
+
+    /**
+     * Deletes all patients from the database, for testing purposes
+     * @throws SQLException
+     */
+    public void deleteAllPatients() throws SQLException {
+        open();
+        db.delete("Patient", null, null);
         close();
     }
 
     //---------------------------------Game Methods-----------------------------------//
 
-    //Get list of games
-    public List<Game> getGames(){
+    /**
+     * Returns all games from the database
+     * @return A list of games
+     * @throws SQLiteException
+     */
+    public List<Game> getGames() throws SQLiteException{
         open();
         List<Game> gameList = new ArrayList<>();
         cursor = db.rawQuery("SELECT * FROM Game", null);
@@ -128,37 +172,48 @@ public class DatabaseAccess {
             cursor.moveToNext();
         }
         cursor.close();
-        close();
+        open();
         return gameList;
     }
 
     //---------------------------GameSession Methods---------------------------------//
 
-    //Insert game session into database
-    public void createSession(GameSession session){
+    /**
+     * Inserts a game session into the database
+     * @param session The game session to be inserted
+     * @throws SQLiteException
+     */
+    public void createSession(GameSession session) throws SQLiteException{
         open();
         ContentValues values = new ContentValues();
         values.put("patient_ID", session.getPatientID());
         values.put("game_ID", session.getGameID());
         values.put("metrics", session.getMetrics());
         values.put("date", session.getDate());
-        db.insert("Game_Session", null, values);
+        db.insertOrThrow("Game_Session", null, values);
         close();
     }
 
-    //Get list of game sessions for specific patient
-    public List<GameSession> getSessions(Patient patient, Game game){
+    /**
+     * Returns game sessions for a particular patient and game
+     * @param patient The patient to retrieve the session for
+     * @param game The game to retrieve the session for
+     * @return List of game sessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getSessions(Patient patient, Game game) throws SQLiteException{
         open();
         List<GameSession> sessionList = new ArrayList<>();
-        cursor = db.rawQuery("SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
-                new String[]{Integer.toString(patient.getPatientID(), game.getGameID())});
+        String query = "SELECT * FROM Game_Session WHERE patient_ID = " + patient.getPatientID() +
+                " AND game_ID = " + game.getGameID();
+        cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             GameSession session = new GameSession();
             session.setSessionID(cursor.getInt(0));
             session.setPatientID(cursor.getInt(1));
             session.setGameID(cursor.getInt(2));
-            session.setMetrics(cursor.getFloat(3));
+            session.setMetrics(cursor.getDouble(3));
             session.setDate(cursor.getString(4));
             sessionList.add(session);
             cursor.moveToNext();
@@ -170,8 +225,12 @@ public class DatabaseAccess {
 
     //-----------------------------GameAssignment Methods-----------------------------//
 
-    //Create game assignment
-    public void createAssignment(GameAssignment assignment){
+    /**
+     * Inserts a game assignment for a particular patient into the database
+     * @param assignment The game assignment to be inserted
+     * @throws SQLiteException
+     */
+    public void createAssignment(GameAssignment assignment) throws SQLiteException{
         open();
         ContentValues values = new ContentValues();
         values.put("game_ID", assignment.getGameID());
@@ -181,8 +240,13 @@ public class DatabaseAccess {
         close();
     }
 
-    //Get game assignments for specific patient
-    public List<GameAssignment> getAssignments(Patient patient){
+    /**
+     * Returns all game assignments for a particular patient from the database
+     * @param patient The patient to retrieve game assignments for
+     * @return List of game assignments
+     * @throws SQLiteException
+     */
+    public List<GameAssignment> getAssignments(Patient patient)throws SQLiteException{
         open();
         List<GameAssignment> gameAssignments = new ArrayList<>();
         cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
@@ -201,8 +265,12 @@ public class DatabaseAccess {
         return gameAssignments;
     }
 
-   //Update game assignments for specific patient
-    public void updateAssignments(GameAssignment assignment){
+    /**
+     * Updates a game assignment for a particular patient
+     * @param assignment The assignment to be updated
+     * @throws SQLiteException
+     */
+    public void updateAssignment(GameAssignment assignment) throws SQLiteException{
         open();
         ContentValues values = new ContentValues();
         values.put("game_ID", assignment.getGameID());

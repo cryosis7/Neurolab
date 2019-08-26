@@ -5,10 +5,10 @@ public class GameSession {
     private int sessionID;
     private int patientID;
     private int gameID;
-    private float metrics;
+    private double metrics;
     private String date;
 
-    public GameSession(int patientID, int gameID, float metrics, String date) {
+    public GameSession(int patientID, int gameID, double metrics, String date) {
         this.patientID = patientID;
         this.gameID = gameID;
         this.metrics = metrics;
@@ -41,11 +41,11 @@ public class GameSession {
         this.gameID = gameID;
     }
 
-    public float getMetrics() {
+    public double getMetrics() {
         return metrics;
     }
 
-    public void setMetrics(float metrics) {
+    public void setMetrics(double metrics) {
         this.metrics = metrics;
     }
 
