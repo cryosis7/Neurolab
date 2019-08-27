@@ -34,26 +34,29 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * onClick handler for a button to run a round of the game.
+     * The start game should disappear, the information text will be cleared and the asyncTask that
+     * starts the reaction timer will be started.
      *
-     * @param view The start button that is tapped to run the game.
+     * @param startButton The start button that is tapped to run the game.
      */
-    public void runRound(View view) {
-        view.setVisibility(View.INVISIBLE);
+    public void runRound(View startButton) {
+        startButton.setVisibility(View.INVISIBLE);
+        ((TextView) findViewById(R.id.information_txt)).setText("");
         reactionTimer = new ReactionTimer();
         reactionTimer.execute(this);
 
-        if (((Button) view).getText().equals(getResources().getString(R.string.start_game)))
-            ((Button) view).setText(R.string.next_round);
+        if (((Button) startButton).getText().equals(getResources().getString(R.string.start_game)))
+            ((Button) startButton).setText(R.string.next_round);
     }
 
     /**
      * onClick handler to stop the timer and measure reaction time.
      * If it's the last round, it will end the game - endGame()
-     * @param view The circle button that is tapped.
+     * @param circleButton The circle button that is tapped.
      */
-    public void stopTimer(View view) {
+    public void stopTimer(View circleButton) {
         long endTime = System.currentTimeMillis();
-        view.setVisibility(View.INVISIBLE);
+        circleButton.setVisibility(View.INVISIBLE);
         if (startTime == -1)
             throw new IllegalStateException(getString(R.string.reactionGame_exception_timer_not_started));
 
