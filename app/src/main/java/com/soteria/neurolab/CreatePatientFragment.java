@@ -3,21 +3,22 @@ package com.soteria.neurolab;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,6 +81,14 @@ public class CreatePatientFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view =  inflater.inflate(R.layout.fragment_create_patient, container, false);
 
+        //Initializing the UI elements
+        final TextInputEditText editPatientID = view.findViewById(R.id.inputPatientID);
+        final TextInputLayout editPatientIDLayout = view.findViewById(R.id.inputPatientIDLayout);
+        final CheckBox checkBoxReaction = view.findViewById(R.id.checkReactionTime);
+        final CheckBox checkBoxMotor = view.findViewById(R.id.checkMotorSkills);
+        final CheckBox checkBoxAttention = view.findViewById(R.id.checkSelectiveAttention);
+        final CheckBox checkBoxMemory = view.findViewById(R.id.checkVisualShortTermMemory);
+
         //Initializing attempts seekbar and setting the on change listener
         final TextView seekAttemptsCount = view.findViewById(R.id.textAttemptsNumber);
         final SeekBar seekAttemptsBar = view.findViewById(R.id.seekAttempts);
@@ -102,13 +111,6 @@ public class CreatePatientFragment extends Fragment {
 
         final Button createPatientButton = view.findViewById(R.id.buttonCreate);
         createPatientButton.setOnClickListener(new View.OnClickListener(){
-            //Initializing the UI elements
-            EditText editPatientID = view.findViewById(R.id.inputPatientID);
-            CheckBox checkBoxReaction = view.findViewById(R.id.checkReactionTime);
-            CheckBox checkBoxMotor = view.findViewById(R.id.checkMotorSkills);
-            CheckBox checkBoxAttention = view.findViewById(R.id.checkSelectiveAttention);
-            CheckBox checkBoxMemory = view.findViewById(R.id.checkVisualShortTermMemory);
-
             @Override
             public void onClick(View view){
                 //Checking that patientID is alphanumerical
@@ -116,9 +118,11 @@ public class CreatePatientFragment extends Fragment {
                 Pattern pattern = Pattern.compile(patientIDRegex);
                 Matcher matcher = pattern.matcher(editPatientID.getText().toString());
                 if(TextUtils.isEmpty(editPatientID.getText().toString())) {
-                    editPatientID.setError("PatientID cannot be blank");
+                    editPatientIDLayout.setErrorEnabled(true);
+                    editPatientIDLayout.setError("PatientID cannot be blank");
                 } else if(!matcher.matches()) {
-                    editPatientID.setError("PatientID contains 1 or more illegal characters");
+                    editPatientIDLayout.setErrorEnabled(true);
+                    editPatientIDLayout.setError("PatientID contains 1 or more illegal characters");
                 } else {
                     //TODO: Check database for duplicate PatientID
 
@@ -137,6 +141,17 @@ public class CreatePatientFragment extends Fragment {
                     editPatientID.setText("");
                 }
             }
+        });
+
+        editPatientID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editPatientIDLayout.setErrorEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
         return view;
     }

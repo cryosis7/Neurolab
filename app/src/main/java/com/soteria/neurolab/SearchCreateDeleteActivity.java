@@ -25,7 +25,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     final Fragment searchPatientFragment = new SearchPatientFragment();
     final Fragment deletePatientFragment = new DeletePatientFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    private Fragment active = createPatientFragment;
+    private Fragment active = searchPatientFragment;
 
     private ActionBar toolbar;
 
