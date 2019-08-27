@@ -41,7 +41,7 @@ public class ReactionGameActivity extends AppCompatActivity {
      */
     public void runRound(View startButton) {
         startButton.setVisibility(View.INVISIBLE);
-        ((TextView) findViewById(R.id.information_txt)).setText("");
+        ((TextView) findViewById(R.id.reaction_game_information_txt)).setText("");
         reactionTimer = new ReactionTimer();
         reactionTimer.execute(this);
 
@@ -67,13 +67,13 @@ public class ReactionGameActivity extends AppCompatActivity {
             return;
         }
 
-        ((TextView) findViewById(R.id.information_txt)).setText(
+        ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(
                 String.format(Locale.getDefault(), "Round %d\nReaction Time: %dms", round + 1, result));
 
         round++;
         if (round < 5) {
             startTime = -1;
-            findViewById(R.id.start_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.reaction_game_start_button).setVisibility(View.VISIBLE);
         } else
             endGame();
     }
@@ -102,9 +102,9 @@ public class ReactionGameActivity extends AppCompatActivity {
      */
     public void stopTimerFoul() {
         startTime = -1;
-        ((TextView) findViewById(R.id.information_txt)).setText(R.string.reactionGame_tap_to_early);
-        findViewById(R.id.circle_button).setVisibility(View.INVISIBLE);
-        findViewById(R.id.start_button).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(R.string.reactionGame_tap_to_early);
+        findViewById(R.id.reaction_game_circle_button).setVisibility(View.INVISIBLE);
+        findViewById(R.id.reaction_game_start_button).setVisibility(View.VISIBLE);
         reactionTimer.cancel(true);
     }
 
@@ -117,8 +117,8 @@ public class ReactionGameActivity extends AppCompatActivity {
      * @param view
      */
     public void screenTapped(View view) {
-        View circleButton = findViewById(R.id.circle_button);
-        View startButton = findViewById(R.id.start_button);
+        View circleButton = findViewById(R.id.reaction_game_circle_button);
+        View startButton = findViewById(R.id.reaction_game_start_button);
         if (circleButton.getVisibility() == View.VISIBLE)
             stopTimer(circleButton);
         else if (startButton.getVisibility() == View.INVISIBLE)
@@ -158,7 +158,7 @@ public class ReactionGameActivity extends AppCompatActivity {
 
             // Due to weak reference, there is a chance the activity does not exist anymore or is closing down.
             if (activity != null && !activity.isFinishing())
-                activity.findViewById(R.id.circle_button).setVisibility(View.VISIBLE);
+                activity.findViewById(R.id.reaction_game_circle_button).setVisibility(View.VISIBLE);
         }
     }
 }

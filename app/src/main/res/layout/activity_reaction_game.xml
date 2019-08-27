@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reaction_game_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
@@ -9,7 +10,7 @@
     tools:context=".ReactionGameActivity">
 
     <Button
-        android:id="@+id/start_button"
+        android:id="@+id/reaction_game_start_button"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
@@ -27,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/circle_button"
+        android:id="@+id/reaction_game_circle_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -46,7 +47,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/information_txt"
+        android:id="@+id/reaction_game_information_txt"
         android:layout_width="600dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -56,7 +57,7 @@
         android:textAlignment="center"
         android:textColor="@color/colorTextPrimary"
         android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/circle_button"
+        app:layout_constraintBottom_toTopOf="@+id/reaction_game_circle_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
