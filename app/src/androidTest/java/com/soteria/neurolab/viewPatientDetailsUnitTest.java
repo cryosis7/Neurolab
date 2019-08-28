@@ -1,17 +1,19 @@
 package com.soteria.neurolab;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
+
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -24,13 +26,39 @@ import static org.hamcrest.core.AllOf.allOf;
 @RunWith(AndroidJUnit4.class)
 public class viewPatientDetailsUnitTest
 {
+    /*
+        Rules established for testing
+     */
+
     /**Establishes the rule for activities*/
     @Rule
-    public ActivityTestRule<viewPatientDetails> activityRule = new ActivityTestRule<>(viewPatientDetails.class);
+    public ActivityTestRule<viewPatientDetails> activityRule = new ActivityTestRule<>(viewPatientDetails.class, false, false);
 
-    /**Establishes the rule for intents*/
-    @Rule
-    public IntentsTestRule<viewPatientDetails> intentsRule = new IntentsTestRule<>(viewPatientDetails.class);
+
+    /*
+        Below are the viewPatientDetails unit tests
+     */
+
+    @Before
+    public void setIntent()
+    {
+        Log.i("@Test", "--- --- --- --- Setting intents --- --- --- ---");
+        Intent testIntent = new Intent();
+        testIntent.putExtra( "pID", "T3ST" );
+        testIntent.putExtra( "pLastDayPlayed", "1/1/1000");
+        testIntent.putExtra( "pLastTimePlayed", "23:59");
+        activityRule.launchActivity(testIntent);
+    }
+
+    @Test
+    public void intentTest()
+    {
+        Log.i("@Test", "--- --- --- --- Intent Test - Correct Info --- --- --- ---");
+        onView(withId(R.id.patientIDTitleTextView)).check(matches(allOf
+                (withText(R.string.view_patient_details_patient_identifier), isDisplayed())));
+        onView(withId(R.id.patientGamesLastRunTextView)).check(matches(allOf
+                (withText(R.string.view_patient_details_last_date_played), isDisplayed())));
+    }
 
     /**Test to determine whether the delete patient button works as intended by displaying an alert
      * dialog. This test cancels the action. */
@@ -39,9 +67,28 @@ public class viewPatientDetailsUnitTest
     {
         String myDialogText="You are about to delete this patient and all data associated with them.";
         Log.i("@Test", " --- --- --- --- Performing Test - Delete Button --- --- --- ---");
-        Espresso.onView(withId(R.id.deletePatientButton)).perform(click()).check(matches(allOf(withText(myDialogText), isDisplayed())));
-        Espresso.onView(withId(android.R.id.button2)).perform(click());
+        onView(withId(R.id.deletePatientButton)).perform(click()).check(matches(allOf(withText(myDialogText), isDisplayed())));
+        onView(withId(android.R.id.button2)).perform(click());
     }
+
+    /**Test to determine whether the disclaimer button in the overflow menu works as intended by
+     * displaying the disclaimer in an alert dialog. Also tests the continue button inside the dialog*/
+    @Test
+    public void showDisclaimerTest()
+    {
+        String disclaimerText = "Neurolab by Soteria is designed as an assistant tool only.";
+        Log.i("@Test", " --- --- --- --- Performing Test - Overflow Menu Disclaimer --- --- --- ---");
+        Espresso.openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withId(R.id.action_disclaimer)).perform(click()).check(matches(allOf(withText(disclaimerText), isDisplayed())));
+        onView(withId(android.R.id.button1)).perform(click());
+    }
+
+
+
+
+    /*
+        Below are the viewPatientDetails integration tests
+     */
 
     /**Test to determine whether the delete patient button works as intended by displaying an alert
      * dialog. This test confirms the deletion of a patient. */
@@ -110,15 +157,5 @@ public class viewPatientDetailsUnitTest
         Intents.release();
     } */
 
-    /**Test to determine whether the disclaimer button in the overflow menu works as intended by
-     * displaying the disclaimer in an alert dialog. Also tests the continue button inside the dialog*/
-    @Test
-    public void showDisclaimerTest()
-    {
-        String disclaimerText = "Neurolab by Soteria is designed as an assistant tool only.";
-        Log.i("@Test", " --- --- --- --- Performing Test - Overflow Menu Disclaimer --- --- --- ---");
-        Espresso.openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        Espresso.onView(withId(R.id.action_disclaimer)).perform(click()).check(matches(allOf(withText(disclaimerText), isDisplayed())));
-        Espresso.onView(withId(android.R.id.button1)).perform(click());
-    }
+
 }

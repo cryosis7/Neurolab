@@ -1,6 +1,7 @@
 package com.soteria.neurolab;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,35 +23,60 @@ public class viewPatientDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //TODO Hardcoded values, remove after parameters can be passed through
-        String patientIdentifier = "SC17";
-        Date lastDayPlayed = new Date();
+        /* Variable declarations
+         */
+        String patientIdentifier, lastDayPlayed, lastTimePlayed;
 
-        /*
-        TODO Values that are passed through from the previous screen. Update these when needed.
-        Bundle viewBundle = getIntent.getExtras();
-        String patientIdentifier = bundle.getString("pID");
-        Date lastDayPlayed = bundle.getDate("pDate");
-        */
+        /* Attempts to retrieve data from an intent. If intent retrieval fails, insert placeholder data instead
+         */
+        try {
+            Bundle viewBundle = getIntent().getExtras();
+            patientIdentifier = viewBundle.getString("pID");
+            lastDayPlayed = viewBundle.getString("pLastDayPlayed");
+            lastTimePlayed = viewBundle.getString( "pLastTimePlayed");
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(),"No patients passed, go back to try again",Toast.LENGTH_SHORT).show();
+            patientIdentifier = "/0";
+            lastDayPlayed = "01/01/2019";
+            lastTimePlayed = "00:00";
+        }
 
-        //Update the support action bar to set the back button and title to appropriate values
+        /*  Update the support action bar to set the back button and title to appropriate values
+         */
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Patient Details");
+        getSupportActionBar().setTitle(getString(R.string.view_patient_details_action_bar_title));
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_view_patient_details);
 
-        /*Code for changing the patientID and lastGamesRun text views to display the information
-          passed through to it from another page. */
+        /*  Sets all buttons and textviews to variables for later use
+         */
         final TextView patientID = findViewById(R.id.patientIDTitleTextView);
         final TextView lastPlayed = findViewById(R.id.patientGamesLastRunTextView);
-        String inputDate = new SimpleDateFormat("dd-mm-yyyy hh:mm a", Locale.ENGLISH).format(lastDayPlayed);
-        patientID.setText(getString(R.string.view_patient_details_patient_identifier, patientIdentifier));
-        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, inputDate));
+        final Button runButton = findViewById(R.id.runGamesButton);
+        final Button manageButton = findViewById(R.id.managePatientButton);
+        final Button reportButton = findViewById(R.id.viewReportButton);
+        final Button deleteButton = findViewById(R.id.deletePatientButton);
+
+        /* Hides buttons for patient access if no patient is passed through. This will only occur
+           as a result of an error in passing information.
+         */
+        if(patientIdentifier.equals("/0"))
+        {
+            runButton.setVisibility(View.GONE);
+            manageButton.setVisibility(View.GONE);
+            reportButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
+        }
+
+        /*Code for changing the patientID and lastGamesRun text views to display the information
+          passed through to it from another page. */
+        patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientIdentifier));
+        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastDayPlayed, lastTimePlayed));
+
 
         /*When run games is pressed, sends user to the patient profile
         TODO add link to send users to patient home once created, remove toast and comment markers  once done. */
-        final Button runButton = findViewById(R.id.runGamesButton);
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"RUN GAMES PRESSED: Sending to patient home",Toast.LENGTH_SHORT).show();
@@ -65,7 +91,6 @@ public class viewPatientDetails extends AppCompatActivity {
         /*When manage patient button is pressed, send the user to the manage patient screen for the
           current patient.
           TODO add link to send users to the manage patient screen once created, remove toast and comment markers  once done. */
-        final Button manageButton = findViewById(R.id.managePatientButton);
         manageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
@@ -80,7 +105,6 @@ public class viewPatientDetails extends AppCompatActivity {
         /*When the view report button is pressed, send the user to the report screen for the current
           patient.
           TODO add link to send users to the view report screen once created, remove toast and comment markers once done. */
-        final Button reportButton = findViewById(R.id.viewReportButton);
         reportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"VIEW REPORT PRESSED: Sending to report screen",Toast.LENGTH_SHORT).show();
@@ -95,7 +119,6 @@ public class viewPatientDetails extends AppCompatActivity {
         /*When the delete patient button is pressed, ask the user for confirmation. If they agree,
           remove the patient from the database and send the user to the create patient page.
           TODO add link to search patient and remove patient from database once created, remove toast once done. */
-        final Button deleteButton = findViewById(R.id.deletePatientButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Build the alert dialog warning the user of their action.
@@ -110,7 +133,8 @@ public class viewPatientDetails extends AppCompatActivity {
                         //TODO enter code to remove patient from database here
                         dialogInterface.cancel();
                         Toast.makeText(getApplicationContext(),"DELETE PRESSED: Removed patient, send to search",Toast.LENGTH_SHORT).show();
-                        //startActivity(new Intent(this, //TODO add link to search patient here));
+                        //TODO remove comment once merged with SearchCreateDeleteActivity
+                        //startActivity(new Intent(this, SearchCreateDeleteActivity.class));
                     }
                 });
                 //If cancel is pressed, close the alert dialog.
@@ -137,7 +161,8 @@ public class viewPatientDetails extends AppCompatActivity {
         homeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"HOME BUTTON PRESSED: Sending to search patients screen",Toast.LENGTH_SHORT).show();
-                /*startActivity(new Intent(this, TODO add link to search patient here));
+                //TODO remove comment once merged with SearchCreateDeleteActivity
+                /*startActivity(new Intent(this, SearchCreateDeleteActivity.class));
                   finish();*/
             }
         });
