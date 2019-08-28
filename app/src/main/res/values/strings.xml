@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Neurolab</string>
+
+    <!-- Page titles -->
+    <string name="title_search_patient">Search Patient</string>
+    <string name="title_create_patient">Create Patient</string>
+    <string name="title_delete_patient">Delete Patient</string>
+
+    <!-- Game titles -->
+    <string name="title_motor_skills">Motor Skills</string>
+    <string name="title_reaction_time">Reaction Time</string>
+    <string name="title_visual_short_term_memory">Visual Short Term Memory</string>
+    <string name="title_selective_attention">Selective Attention</string>
+
+    <!-- Create patient fragment strings -->
+    <string name="patient_id_title">Patient ID</string>
+    <string name="enter_unique_id">Enter a unique ID</string>
+    <string name="attempts_per_game_title">Attempts Per Game</string>
+    <string name="create_button">Create</string>
+    <string name="alpha_numeric_regex">^[a-zA-Z0-9]+$</string>
+    <string name="error_patient_id_blank">PatientID cannot be blank</string>
+    <string name="error_patient_id_special_characters">PatientID contains 1 or more illegal characters</string>
+    <string name="open">Open</string>
+
+    <string name="settings">
+        <item>Disclaimer</item>
+        <item>Logout</item>
+    </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
