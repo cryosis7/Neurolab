@@ -140,16 +140,16 @@ public class CreatePatientFragment extends Fragment {
             @Override
             public void onClick(View view){
                 //Checking that patientID is alphanumerical
-                String patientIDRegex = "^[a-zA-Z0-9]+$";
+                String patientIDRegex = getString(R.string.alpha_numeric_regex);
                 Pattern pattern = Pattern.compile(patientIDRegex);
                 Matcher matcher = pattern.matcher(editPatientID.getText().toString());
 
                 if(TextUtils.isEmpty(editPatientID.getText().toString())) {
                     editPatientIDLayout.setErrorEnabled(true);
-                    editPatientIDLayout.setError("PatientID cannot be blank");
+                    editPatientIDLayout.setError(getString(R.string.error_patient_id_blank));
                 } else if(!matcher.matches()) {
                     editPatientIDLayout.setErrorEnabled(true);
-                    editPatientIDLayout.setError("PatientID contains 1 or more illegal characters");
+                    editPatientIDLayout.setError(getString(R.string.error_patient_id_special_characters));
                 } else {
                     //TODO: Check database for duplicate PatientID
 
@@ -163,7 +163,7 @@ public class CreatePatientFragment extends Fragment {
                     //TODO: Enter patient data into database
 
                     Snackbar patientCreatedSnackbar = Snackbar.make(snackbarView, "Patient " + patientID + " created", Snackbar.LENGTH_LONG)
-                            .setAction("Open", new View.OnClickListener(){
+                            .setAction(getString(R.string.open), new View.OnClickListener(){
                                 @Override
                                 public void onClick(View view) {
                                     Toast openPatientToast = Toast.makeText(getContext(), "Implement view patient page", Toast.LENGTH_SHORT);

@@ -17,6 +17,10 @@
     <string name="enter_unique_id">Enter a unique ID</string>
     <string name="attempts_per_game_title">Attempts Per Game</string>
     <string name="create_button">Create</string>
+    <string name="alpha_numeric_regex">^[a-zA-Z0-9]+$</string>
+    <string name="error_patient_id_blank">PatientID cannot be blank</string>
+    <string name="error_patient_id_special_characters">PatientID contains 1 or more illegal characters</string>
+    <string name="open">Open</string>
 
     <string name="settings">
         <item>Disclaimer</item>
