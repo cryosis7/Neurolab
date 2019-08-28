@@ -67,6 +67,10 @@ public class CreatePatientFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Factory method for creating default fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,13 @@ public class CreatePatientFragment extends Fragment {
         }
     }
 
+    /**
+     * Initializes UI elements including buttons and onClickListeners of the fragment
+     * @param inflater - The fragment to be inflated
+     * @param container - Default argument from factory method
+     * @param savedInstanceState - Default argument from factory method
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,6 +100,7 @@ public class CreatePatientFragment extends Fragment {
         final CheckBox checkBoxMotor = view.findViewById(R.id.checkMotorSkills);
         final CheckBox checkBoxAttention = view.findViewById(R.id.checkSelectiveAttention);
         final CheckBox checkBoxMemory = view.findViewById(R.id.checkVisualShortTermMemory);
+        final View snackbarView = view.findViewById(R.id.snackbarCoordinator);
 
         //Initializing attempts seekbar and setting the on change listener
         final TextView seekAttemptsCount = view.findViewById(R.id.textAttemptsNumber);
@@ -103,15 +115,28 @@ public class CreatePatientFragment extends Fragment {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
             }
+
+            /**
+             * Changes the number displaying the attempts next to the seekbar
+             * @param seekBar - The seekbar object
+             * @param progress - The progress of the seekbar
+             * @param fromUser - Changed by user (true) or system (false)
+             */
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // TODO Auto-generated method stub
                 seekAttemptsCount.setText(Integer.toString(progress + 1));
             }
         });
 
         final Button createPatientButton = view.findViewById(R.id.buttonCreate);
         createPatientButton.setOnClickListener(new View.OnClickListener(){
+
+            /**
+             * The method for clicking the create patient button.
+             * Checks that the patientID is not blank and is alphanumeric.
+             * Creates a snackbar message to display that the patient was created and can be used to
+             * open the patient page.
+             */
             @Override
             public void onClick(View view){
                 //Checking that patientID is alphanumerical
@@ -137,7 +162,7 @@ public class CreatePatientFragment extends Fragment {
 
                     //TODO: Enter patient data into database
 
-                    Snackbar patientCreatedSnackbar = Snackbar.make(view, "Patient " + patientID + " Created", Snackbar.LENGTH_LONG)
+                    Snackbar patientCreatedSnackbar = Snackbar.make(snackbarView, "Patient " + patientID + " created", Snackbar.LENGTH_LONG)
                             .setAction("Open", new View.OnClickListener(){
                                 @Override
                                 public void onClick(View view) {
@@ -145,6 +170,10 @@ public class CreatePatientFragment extends Fragment {
                                     openPatientToast.show();
                                 }
                             });
+                    TextView snackbarTextView = patientCreatedSnackbar.getView().findViewById(R.id.snackbar_text);
+                    TextView snackbarActionTextView = patientCreatedSnackbar.getView().findViewById(R.id.snackbar_action);
+                    snackbarTextView.setTextSize(28);
+                    snackbarActionTextView.setTextSize(28);
                     patientCreatedSnackbar.show();
 
                     editPatientID.setText("");
@@ -152,6 +181,9 @@ public class CreatePatientFragment extends Fragment {
             }
         });
 
+        /**
+         * Listener on the edit text field to clear the error upon changing the patientID
+         */
         editPatientID.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
