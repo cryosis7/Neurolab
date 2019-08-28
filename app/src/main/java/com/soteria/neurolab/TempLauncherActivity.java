@@ -34,4 +34,8 @@ public class TempLauncherActivity extends AppCompatActivity {
         launchGame.putExtra("PATIENT_ID", "1234");
         startActivity(launchGame);
     }
+
+    public void launchMainScreen(View view) {
+        startActivity(new Intent(view.getContext(), SearchCreateDeleteActivity.class));
+    }
 }
