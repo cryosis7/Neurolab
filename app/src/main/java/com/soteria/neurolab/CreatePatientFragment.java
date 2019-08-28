@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -117,6 +118,7 @@ public class CreatePatientFragment extends Fragment {
                 String patientIDRegex = "^[a-zA-Z0-9]+$";
                 Pattern pattern = Pattern.compile(patientIDRegex);
                 Matcher matcher = pattern.matcher(editPatientID.getText().toString());
+
                 if(TextUtils.isEmpty(editPatientID.getText().toString())) {
                     editPatientIDLayout.setErrorEnabled(true);
                     editPatientIDLayout.setError("PatientID cannot be blank");
@@ -135,8 +137,15 @@ public class CreatePatientFragment extends Fragment {
 
                     //TODO: Enter patient data into database
 
-                    Toast toastPatientCreated = Toast.makeText(getContext(), "Patient " + patientID + " Created", Toast.LENGTH_LONG);
-                    toastPatientCreated.show();
+                    Snackbar patientCreatedSnackbar = Snackbar.make(view, "Patient " + patientID + " Created", Snackbar.LENGTH_LONG)
+                            .setAction("Open", new View.OnClickListener(){
+                                @Override
+                                public void onClick(View view) {
+                                    Toast openPatientToast = Toast.makeText(getContext(), "Implement view patient page", Toast.LENGTH_SHORT);
+                                    openPatientToast.show();
+                                }
+                            });
+                    patientCreatedSnackbar.show();
 
                     editPatientID.setText("");
                 }
