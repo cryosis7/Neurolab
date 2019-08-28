@@ -126,7 +126,7 @@ public class ReactionGameActivityTest {
         onView(withId(R.id.reaction_game_circle_button)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         Log.i("@Test", "Test Complete");
     }
-    
+
     /**
      * It should start a round of the game and tap the button when it appears.
      * After the circle button appears it should wait 250ms then tap the button and verify the layout.
