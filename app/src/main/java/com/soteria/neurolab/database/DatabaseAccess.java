@@ -126,6 +126,7 @@ public class DatabaseAccess {
         open();
         cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_id = ?",
                 new String[] {Integer.toString(patientID)} );
+        cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             patient.setPatientID(cursor.getInt(0));
             patient.setPatientReference(cursor.getString(1));

@@ -2,9 +2,13 @@ package com.soteria.neurolab;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.soteria.neurolab.Models.Game;
 import com.soteria.neurolab.Models.GameAssignment;
@@ -16,27 +20,46 @@ import java.util.List;
 
 public class ViewReportActivity extends AppCompatActivity {
 
-    private ListView gameListView;
+    private Spinner gameListSpinner;
     private Patient patient; //This will be the patient that is transferred to this page by intent
     private List<GameAssignment> listOfGameAssignments;
-    private DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+    private DatabaseAccess db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
+        db = DatabaseAccess.getInstance(getApplicationContext());
 
-        gameListView = findViewById(R.id.view_report_games_list);
+        Intent intent = getIntent();
+        if (intent.hasExtra("PATIENT_REFERENCE")) {
+            patient = db.getPatient(intent.getStringExtra("PATIENT_REFERENCE"));
+        }
+        else
+            throw new IllegalArgumentException("Expected Extra 'PATIENT_REFERENCE' in Intent - Received none");
 
-        patient = db.getPatient(1); //Hard coded atm - will use the patient trasnferred by intent
+        gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
+
         listOfGameAssignments = db.getAssignments(patient);
 
-        List<String> listOfGames = new ArrayList<>();
+        ArrayList<String> listOfGames = new ArrayList<>();
         for(GameAssignment ga: listOfGameAssignments){
             listOfGames.add(getGameName(ga.getGameID()));
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, )
+        ArrayAdapter<String> gameListAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, listOfGames);
+        gameListSpinner.setAdapter(gameListAdapter);
+        gameListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 

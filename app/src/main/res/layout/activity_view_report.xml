@@ -9,20 +9,32 @@
     <TextView
         android:id="@+id/view_report_text_patient_id"
         style="@style/TextSubHead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="128dp"
         android:text="Patient: SC17"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/view_report_games_list"
-        android:layout_width="570dp"
-        android:layout_height="214dp"
+    <Spinner
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+        android:id="@+id/view_report_game_list_spinner"
+        android:layout_width="458dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:theme="@style/SpinnerTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textPatientID" />
+        app:layout_constraintTop_toBottomOf="@+id/view_report_text_patient_id" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_report_game_header"
+        app:layout_constraintBottom_toTopOf="@+id/view_report_game_list_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

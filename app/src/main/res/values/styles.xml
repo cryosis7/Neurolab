@@ -47,6 +47,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- Text small grey -->
+    <style name="TextSmall" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <!-- Single line Text input -->
     <style name="EditText" parent="Widget.AppCompat.EditText">
         <item name="android:layout_width">match_parent</item>
@@ -73,6 +81,13 @@
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="SpinnerTheme">
+        <!-- Color when pressed -->
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
 </resources>

@@ -38,4 +38,10 @@ public class TempLauncherActivity extends AppCompatActivity {
     public void launchMainScreen(View view) {
         startActivity(new Intent(view.getContext(), SearchCreateDeleteActivity.class));
     }
+
+    public void launchViewReportPage(View view) {
+        Intent launchViewReport = new Intent(view.getContext(), ViewReportActivity.class);
+        launchViewReport.putExtra("PATIENT_REFERENCE", "SC17");
+        startActivity(launchViewReport);
+    }
 }
