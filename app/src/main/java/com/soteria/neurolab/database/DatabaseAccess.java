@@ -69,7 +69,6 @@ public class DatabaseAccess {
         long result = db.insert("Patient", null, values);
         if (result == -1)
             throw new SQLException("Error occurred while inserting " + patientReference + " into the database");
-        Log.i("database", String.valueOf(searchPatients(patientReference).get(0).getPatientID()));
         close();
     }
 
@@ -130,6 +129,7 @@ public class DatabaseAccess {
         open();
         cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_id = ?",
                 new String[] {Integer.toString(patientID)} );
+        cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             patient.setPatientID(cursor.getInt(0));
             patient.setPatientReference(cursor.getString(1));
@@ -151,6 +151,7 @@ public class DatabaseAccess {
         open();
         cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_reference = ?",
                 new String[] {patientReference} );
+        cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             patient.setPatientID(cursor.getInt(0));
             patient.setPatientReference(cursor.getString(1));
