@@ -26,6 +26,9 @@
         <item>Disclaimer</item>
         <item>Logout</item>
     </string>
+    
+    <!-- Search Patient fragment strings -->
+    <string name="search_patient_hint">Enter Patient ID</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
