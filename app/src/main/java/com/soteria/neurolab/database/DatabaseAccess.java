@@ -116,6 +116,27 @@ public class DatabaseAccess {
     }
 
     /**
+     * Search for a specific patient by patientID
+     * @param patientID - Internal database patient identifier (Not patient reference)
+     * @return - The patient with the specified ID
+     * @throws SQLiteException
+     */
+    public Patient getPatient(int patientID) throws SQLiteException {
+        Patient patient = new Patient();
+        open();
+        cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_id = ?",
+                new String[] {Integer.toString(patientID)} );
+        while (!cursor.isAfterLast()){
+            patient.setPatientID(cursor.getInt(0));
+            patient.setPatientReference(cursor.getString(1));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        close();
+        return patient;
+    }
+
+    /**
      * Updates a patient's reference in the database
      * @param patient The updated patient
      * @throws SQLiteException
