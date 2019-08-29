@@ -21,7 +21,7 @@
             android:launchMode="singleTop">
         </activity>
         <activity android:name=".ReactionGameActivity"></activity>
-        <activity android:name=".viewPatientDetails"></activity>
+        <activity android:name=".ViewPatientDetails"></activity>
     </application>
 
 </manifest>
