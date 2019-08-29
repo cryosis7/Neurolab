@@ -22,6 +22,8 @@
     <string name="error_patient_id_special_characters">PatientID contains 1 or more illegal characters</string>
     <string name="open">Open</string>
 
+    <!-- View patient report page strings -->
+
     <string name="settings">
         <item>Disclaimer</item>
         <item>Logout</item>

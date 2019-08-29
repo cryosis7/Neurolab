@@ -1,4 +1,4 @@
-package com.soteria.neurolab.Models;
+package com.soteria.neurolab.models;
 
 public class GameAssignment {
 
