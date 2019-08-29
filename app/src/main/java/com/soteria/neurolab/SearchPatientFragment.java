@@ -59,12 +59,8 @@ public class SearchPatientFragment extends Fragment {
         final View view =  inflater.inflate(R.layout.fragment_search_patient, container, false);
 
         //Initialise UI elements
-        final SearchView inputPatientID = view.findViewById(R.id.search_patient_SearchView);
-        final ListView patientListView = view.findViewById(R.id.search_patient_ListView);
-
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search_patient, container, false);
+        final SearchView inputPatientID = view.findViewById(R.id.searchPatient_searchInput);
+        final RecyclerView patientListView = view.findViewById(R.id.searchPatient_searchRecycler);
 
         searchRecycler = view.findViewById(R.id.searchPatient_searchRecycler);
 
