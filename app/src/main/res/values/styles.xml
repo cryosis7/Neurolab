@@ -72,5 +72,4 @@
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">36sp</item>
     </style>
-
 </resources>
