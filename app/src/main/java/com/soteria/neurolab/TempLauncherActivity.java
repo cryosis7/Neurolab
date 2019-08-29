@@ -44,4 +44,8 @@ public class TempLauncherActivity extends AppCompatActivity {
         launchViewReport.putExtra("PATIENT_REFERENCE", "SC17");
         startActivity(launchViewReport);
     }
+    
+    public void launchTestGraph(View view) {
+        startActivity(new Intent(view.getContext(), TestGraphActivity.class));
+    }
 }
