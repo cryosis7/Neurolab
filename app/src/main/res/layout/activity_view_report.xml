@@ -7,7 +7,7 @@
     tools:context=".ViewReportActivity">
 
     <TextView
-        android:id="@+id/textPatientID"
+        android:id="@+id/view_report_text_patient_id"
         style="@style/TextSubHead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,9 +18,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/listGames"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/view_report_games_list"
+        android:layout_width="570dp"
+        android:layout_height="214dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textPatientID" />
