@@ -24,7 +24,7 @@ import static org.hamcrest.core.AllOf.allOf;
 
 
 @RunWith(AndroidJUnit4.class)
-public class viewPatientDetailsUnitTest
+public class ViewPatientDetailsUnitTest
 {
     /*
         Rules established for testing
@@ -32,11 +32,11 @@ public class viewPatientDetailsUnitTest
 
     /**Establishes the rule for activities*/
     @Rule
-    public ActivityTestRule<viewPatientDetails> activityRule = new ActivityTestRule<>(viewPatientDetails.class, false, false);
+    public ActivityTestRule<ViewPatientDetails> activityRule = new ActivityTestRule<>(ViewPatientDetails.class, false, false);
 
 
     /*
-        Below are the viewPatientDetails unit tests
+        Below are the ViewPatientDetails unit tests
      */
 
     @Before
@@ -100,7 +100,7 @@ public class viewPatientDetailsUnitTest
 
 
     /*
-          Below are the viewPatientDetails integration tests
+          Below are the ViewPatientDetails integration tests
      */
 
     /**Test to determine whether the delete patient button works as intended by displaying an alert

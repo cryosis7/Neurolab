@@ -1,7 +1,6 @@
 package com.soteria.neurolab;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,15 +9,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class viewPatientDetails extends AppCompatActivity {
+public class ViewPatientDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +117,7 @@ public class viewPatientDetails extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Build the alert dialog warning the user of their action.
-                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(viewPatientDetails.this);
+                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(ViewPatientDetails.this);
                 deleteBuilder.setTitle("Deleting Patient");
                 deleteBuilder.setMessage(getString(R.string.view_patient_details_delete_patient_dialog));
                 //If delete is pressed, delete the patient and send the user to the search patients screen
