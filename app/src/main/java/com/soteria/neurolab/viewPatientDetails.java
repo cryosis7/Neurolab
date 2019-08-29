@@ -49,7 +49,7 @@ public class viewPatientDetails extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_view_patient_details);
 
-        /*  Sets all buttons and textviews to variables for later use
+        /*  Sets all buttons and text views to variables for later use
          */
         final TextView patientID = findViewById(R.id.patientIDTitleTextView);
         final TextView lastPlayed = findViewById(R.id.patientGamesLastRunTextView);
@@ -59,7 +59,7 @@ public class viewPatientDetails extends AppCompatActivity {
         final Button deleteButton = findViewById(R.id.deletePatientButton);
 
         /* Hides buttons for patient access if no patient is passed through. This will only occur
-           as a result of an error in passing information.
+           as a result of an error in passing information. Prevents progression
          */
         if(patientIdentifier.equals("/0"))
         {
@@ -124,8 +124,7 @@ public class viewPatientDetails extends AppCompatActivity {
                 //Build the alert dialog warning the user of their action.
                 AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(viewPatientDetails.this);
                 deleteBuilder.setTitle("Deleting Patient");
-                deleteBuilder.setMessage("You are about to delete this patient and all data associated with them.\n\n" +
-                        "This action cannot be undone.\n\nDo you wish to continue?");
+                deleteBuilder.setMessage(getString(R.string.view_patient_details_delete_patient_dialog));
                 //If delete is pressed, delete the patient and send the user to the search patients screen
                 deleteBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
@@ -199,10 +198,7 @@ public class viewPatientDetails extends AppCompatActivity {
                  case R.id.action_disclaimer:
                      final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(this );
                      disclaimerBuilder.setTitle("Disclaimer");
-                     disclaimerBuilder.setMessage("Neurolab by Soteria is designed as an assistant tool only.\n" +
-                             "It should not be relied upon for treatment, diagnosis or professional medical advice.\n" +
-                             "If you have any queries about its use, please consult your local physician or health care provider.\n\n" +
-                             "By accessing and using this app, you have confirmed that you have read, understood and accepted the above statement.");
+                     disclaimerBuilder.setMessage(getString(R.string.disclaimer_body));
                      //If the confirm button is pressed, close the dialog
                      disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()  {
                          @Override

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
-
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
@@ -54,10 +54,15 @@ public class viewPatientDetailsUnitTest
     public void intentTest()
     {
         Log.i("@Test", "--- --- --- --- Intent Test - Correct Info --- --- --- ---");
+        String testStringID = "Patient: T3ST";
+        String testStringDate = "Games last run: 1/1/1000 23:59";
+
         onView(withId(R.id.patientIDTitleTextView)).check(matches(allOf
-                (withText(R.string.view_patient_details_patient_identifier), isDisplayed())));
+                (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+                        withText(testStringID))));
         onView(withId(R.id.patientGamesLastRunTextView)).check(matches(allOf
-                (withText(R.string.view_patient_details_last_date_played), isDisplayed())));
+                (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+                        withText(testStringDate))));
     }
 
     /**Test to determine whether the delete patient button works as intended by displaying an alert
@@ -65,9 +70,11 @@ public class viewPatientDetailsUnitTest
     @Test
     public void deletePatientCancelTest()
     {
-        String myDialogText="You are about to delete this patient and all data associated with them.";
+        String testDelete = "You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?";
         Log.i("@Test", " --- --- --- --- Performing Test - Delete Button --- --- --- ---");
-        onView(withId(R.id.deletePatientButton)).perform(click()).check(matches(allOf(withText(myDialogText), isDisplayed())));
+        onView(withId(R.id.deletePatientButton)).perform(click());
+        onView(withText(R.string.view_patient_details_delete_patient_dialog)).check(matches(allOf
+                (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE), withText(testDelete))));
         onView(withId(android.R.id.button2)).perform(click());
     }
 
@@ -76,10 +83,16 @@ public class viewPatientDetailsUnitTest
     @Test
     public void showDisclaimerTest()
     {
-        String disclaimerText = "Neurolab by Soteria is designed as an assistant tool only.";
+        String disclaimerText = "Neurolab by Soteria is designed as an assistant tool only.\n" +
+        "It should not be relied upon for treatment, diagnosis or professional medical advice.\n" +
+                "If you have any queries about its use, please consult your local physician or health care provider.\n\n" +
+                "By accessing and using this app, you have confirmed that you have read, understood and accepted the above statement.";
         Log.i("@Test", " --- --- --- --- Performing Test - Overflow Menu Disclaimer --- --- --- ---");
         Espresso.openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        onView(withId(R.id.action_disclaimer)).perform(click()).check(matches(allOf(withText(disclaimerText), isDisplayed())));
+        onView(withText("Disclaimer")).perform(click());
+        onView(withText(R.string.disclaimer_body)).check(matches(allOf
+                (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+                        withText(disclaimerText))));
         onView(withId(android.R.id.button1)).perform(click());
     }
 
@@ -87,7 +100,7 @@ public class viewPatientDetailsUnitTest
 
 
     /*
-        Below are the viewPatientDetails integration tests
+          Below are the viewPatientDetails integration tests
      */
 
     /**Test to determine whether the delete patient button works as intended by displaying an alert
