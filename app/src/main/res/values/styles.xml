@@ -33,9 +33,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <!-- TODO Text Sub-heading  -->
+    <!-- Text Sub Head  -->
     <style name="TextSubHead" parent="TextAppearance.AppCompat.Subhead">
-
+        <item name="android:textSize">50sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <!-- Text Body -->
