@@ -6,36 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".SearchPatientFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <SearchView
-            android:id="@+id/search_patient_SearchView"
-            style="@style/EditText"
-            android:layout_width="684dp"
-            android:layout_height="72dp"
-            android:background="@drawable/searchview_border"
-            android:iconifiedByDefault="false"
-            android:queryHint="@string/search_patient_hint"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/searchPatient_searchInput"
+            android:layout_width="530dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="124dp"
+            android:background="@drawable/search_view_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.087" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ListView
-            android:layout_width="684dp"
-            android:layout_height="716dp"
-            android:id="@+id/search_patient_ListView"
-            android:background="@drawable/listview_border"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchPatient_searchRecycler"
+            android:layout_width="529dp"
+            android:layout_height="526dp"
+            android:layout_marginBottom="368dp"
+            android:background="@drawable/recycler_view_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_patient_SearchView"
-            app:layout_constraintVertical_bias="0.281" />
+            app:layout_constraintTop_toBottomOf="@+id/searchPatient_searchInput"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

@@ -5,12 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -24,6 +29,8 @@ import android.widget.SearchView;
 public class SearchPatientFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private RecyclerView searchRecycler;
+
 
     public SearchPatientFragment() {
         // Required empty public constructor
@@ -57,7 +64,20 @@ public class SearchPatientFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_patient, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_patient, container, false);
+
+        searchRecycler = view.findViewById(R.id.searchPatient_searchRecycler);
+
+        ArrayList<String> patientData = new ArrayList<>();
+        patientData.add("SC87");
+        patientData.add("JK90");
+        patientData.add("BW97");
+        patientData.add("RD92");
+
+        searchRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        SearchPatientRecyclerAdapter adapter = new SearchPatientRecyclerAdapter(this.getActivity(), patientData);
+        searchRecycler.setAdapter(adapter);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
