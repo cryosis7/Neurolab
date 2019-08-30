@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".ReactionGameActivity"></activity>
         <activity android:name=".ViewPatientDetails"></activity>
+        <activity android:name=".ViewReportActivity"></activity>
     </application>
 
 </manifest>
