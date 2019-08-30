@@ -65,6 +65,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         toolbar = getSupportActionBar();
         toolbar.setHomeButtonEnabled(true);
         toolbar.setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle("Search Patient");
 
         fragmentManager.beginTransaction().add(R.id.fragment_layout, createPatientFragment, "2").hide(createPatientFragment).commit();
         fragmentManager.beginTransaction().add(R.id.fragment_layout, deletePatientFragment, "3").hide(deletePatientFragment).commit();

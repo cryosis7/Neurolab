@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/recycler_view_select_item"
     android:padding="10sp">
+
+    <ImageView
+        android:layout_width="62dp"
+        android:layout_height="50dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/circle_small" />
 
     <TextView
         android:id="@+id/patientIdentifierOption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:textSize="36sp" />
+
 </LinearLayout>
