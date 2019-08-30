@@ -5,10 +5,10 @@ package com.soteria.neurolab;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.soteria.neurolab.Models.Game;
-import com.soteria.neurolab.Models.GameAssignment;
-import com.soteria.neurolab.Models.GameSession;
-import com.soteria.neurolab.Models.Patient;
+import com.soteria.neurolab.models.Game;
+import com.soteria.neurolab.models.GameAssignment;
+import com.soteria.neurolab.models.GameSession;
+import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.database.DatabaseAccess;
 
 import org.junit.Assert;
