@@ -8,15 +8,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.soteria.neurolab.models.Patient;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.soteria.neurolab.database.DatabaseAccess;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -58,21 +63,12 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_search_patient, container, false);
 
-        //Initialise UI elements
-        final SearchView inputPatientID = view.findViewById(R.id.searchPatient_searchInput);
+        final SearchView searchInput = view.findViewById(R.id.searchPatient_searchInput);
         final RecyclerView searchRecycler = view.findViewById(R.id.searchPatient_searchRecycler);
-
-        //String to store all information that will appear in the recycler view
-        ArrayList<String> patientData = new ArrayList<>();
-        //TODO remove hardcoded data and replace with database call once complete
-        patientData.add("SC87");
-        patientData.add("JK90");
-        patientData.add("BW97");
-        patientData.add("RD92");
 
         //Set the recyclerview layout to set the information and the click listener
         searchRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        adapter = new SearchPatientRecyclerAdapter(this.getActivity(), patientData);
+        adapter = new SearchPatientRecyclerAdapter(this.getActivity(), getPatientList());
         adapter.setClickListener(this);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity());
         DividerItemDecoration divider = new DividerItemDecoration(searchRecycler.getContext(), layout.getOrientation());
@@ -85,6 +81,12 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     public void onItemClick(View view, int position)
     {
         Toast.makeText(this.getActivity(),"OPTION " + adapter.getItem(position) + " selected",Toast.LENGTH_SHORT).show();
+    }
+    
+    public List<String> getPatientList(){
+        DatabaseAccess db = DatabaseAccess.getInstance(getContext());
+        List<String> patients = db.getAllPatientReferences();
+        return patients;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

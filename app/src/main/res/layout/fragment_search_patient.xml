@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".SearchPatientFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +17,10 @@
             android:layout_width="530dp"
             android:layout_height="75dp"
             android:layout_marginTop="124dp"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="@string/search_patient_hint"
+            android:iconifiedByDefault="false"
+            android:clickable="true"
             android:background="@drawable/search_view_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

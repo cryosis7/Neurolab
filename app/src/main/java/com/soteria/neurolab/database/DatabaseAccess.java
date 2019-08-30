@@ -94,6 +94,23 @@ public class DatabaseAccess {
         return patientList;
     }
 
+    public List<String> getAllPatientReferences() throws SQLiteException{
+        open();
+        List<String> patientList = new ArrayList<>();
+        cursor = db.rawQuery("SELECT patient_reference FROM Patient", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            String ref = cursor.getString(0);
+            patientList.add(ref);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        close();
+        return patientList;
+    }
+
+
+
     /**
      * Search for patients by patient reference from the database
      * @param reference The patient reference to search by
