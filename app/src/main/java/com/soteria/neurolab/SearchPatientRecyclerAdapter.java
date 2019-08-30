@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPatientRecyclerAdapter.ViewHolder> {
@@ -28,6 +29,12 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
     {
         View view = searchInflater.inflate(R.layout.search_patient_recycler_view_row, parent, false);
         return new ViewHolder(view);
+    }
+
+    public void updateList(List<String> newList){
+        searchData = new ArrayList<>();
+        searchData.addAll(newList);
+        notifyDataSetChanged();
     }
 
     @Override

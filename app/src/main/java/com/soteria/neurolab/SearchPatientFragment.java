@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -32,10 +33,12 @@ import java.util.List;
  * Use the {@link SearchPatientFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchPatientFragment extends Fragment implements SearchPatientRecyclerAdapter.ItemClickListener {
+public class SearchPatientFragment extends Fragment implements SearchPatientRecyclerAdapter.ItemClickListener,
+        SearchView.OnQueryTextListener {
 
     private OnFragmentInteractionListener mListener;
     private SearchPatientRecyclerAdapter adapter;
+
 
     public SearchPatientFragment() {
         // Required empty public constructor
@@ -65,6 +68,8 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
 
         final SearchView searchInput = view.findViewById(R.id.searchPatient_searchInput);
         final RecyclerView searchRecycler = view.findViewById(R.id.searchPatient_searchRecycler);
+        searchInput.setOnQueryTextListener(this);
+
 
         //Set the recyclerview layout to set the information and the click listener
         searchRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -74,15 +79,18 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
         DividerItemDecoration divider = new DividerItemDecoration(searchRecycler.getContext(), layout.getOrientation());
         searchRecycler.addItemDecoration(divider);
         searchRecycler.setAdapter(adapter);
+
         return view;
     }
+
 
     @Override
     public void onItemClick(View view, int position)
     {
         Toast.makeText(this.getActivity(),"OPTION " + adapter.getItem(position) + " selected",Toast.LENGTH_SHORT).show();
     }
-    
+
+
     public List<String> getPatientList(){
         DatabaseAccess db = DatabaseAccess.getInstance(getContext());
         List<String> patients = db.getAllPatientReferences();
@@ -111,6 +119,27 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        String userInput = s.toUpperCase();
+        List<String> newList = new ArrayList<>();
+
+        for(String patient : getPatientList()){
+            if(patient.toUpperCase().contains(userInput.toUpperCase())){
+                newList.add(patient);
+            }
+        }
+
+        adapter.updateList(newList);
+        return true;
     }
 
     /**
