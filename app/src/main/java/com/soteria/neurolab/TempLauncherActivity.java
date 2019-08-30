@@ -3,9 +3,17 @@ package com.soteria.neurolab;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.GameSession;
+
+import java.util.List;
 
 public class TempLauncherActivity extends AppCompatActivity {
 

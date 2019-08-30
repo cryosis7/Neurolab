@@ -63,6 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        style="@style/TextButtonBlue"
         android:id="@+id/viewReportBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,6 +88,6 @@
         android:text="Test Graph"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/score_text" />
+        app:layout_constraintTop_toBottomOf="@+id/viewReportBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

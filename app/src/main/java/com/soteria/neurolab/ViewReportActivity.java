@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.soteria.neurolab.Models.Game;
-import com.soteria.neurolab.Models.GameAssignment;
-import com.soteria.neurolab.Models.Patient;
+import com.soteria.neurolab.models.Game;
+import com.soteria.neurolab.models.GameAssignment;
+import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.database.DatabaseAccess;
 
 import java.util.ArrayList;

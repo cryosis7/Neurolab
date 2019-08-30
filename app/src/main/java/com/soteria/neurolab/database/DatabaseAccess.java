@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.se.omapi.Session;
 import android.util.Log;
 
 import com.soteria.neurolab.models.Game;
@@ -251,9 +252,9 @@ public class DatabaseAccess {
     public List<GameSession> getSessions(Patient patient, Game game) throws SQLiteException{
         open();
         List<GameSession> sessionList = new ArrayList<>();
-        String query = "SELECT * FROM Game_Session WHERE patient_ID = " + patient.getPatientID() +
-                " AND game_ID = " + game.getGameID();
-        cursor = db.rawQuery(query, null);
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
+                new String[] {String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID())});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             GameSession session = new GameSession();
@@ -268,6 +269,48 @@ public class DatabaseAccess {
         cursor.close();
         close();
         return sessionList;
+    }
+
+    /**
+     * Returns game sessions for a particular patient and game
+     * @param patientReference The patient to retrieve the session for
+     * @param gameID The game to retrieve the session for
+     * @return List of game sessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getSessions(String patientReference, String gameID) throws SQLiteException{
+        open();
+        List<GameSession> sessionList = new ArrayList<>();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
+                new String[] {patientReference, gameID});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            GameSession session = new GameSession();
+            session.setSessionID(cursor.getInt(0));
+            session.setPatientID(cursor.getInt(1));
+            session.setGameID(cursor.getInt(2));
+            session.setMetrics(cursor.getDouble(3));
+            session.setDate(cursor.getString(4));
+            sessionList.add(session);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        close();
+        return sessionList;
+    }
+
+    public void updateSession(GameSession session) {
+        open();
+        ContentValues values = new ContentValues();
+        values.put("patient_ID", session.getPatientID());
+        values.put("game_ID", session.getGameID());
+        values.put("metrics", session.getMetrics());
+        values.put("date", session.getDate());
+
+        db.update("Game_Session", values, "session_ID=?",
+                new String[]{Integer.toString(session.getPatientID())});
+        close();
     }
 
     //-----------------------------GameAssignment Methods-----------------------------//
