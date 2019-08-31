@@ -1,6 +1,7 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -87,7 +88,9 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     @Override
     public void onItemClick(View view, int position)
     {
-        Toast.makeText(this.getActivity(),"OPTION " + adapter.getItem(position) + " selected",Toast.LENGTH_SHORT).show();
+        Intent viewPatient = new Intent(getActivity(), ViewPatientDetails.class);
+        viewPatient.putExtra("pID", adapter.getItem(position));
+        startActivity(viewPatient);
     }
 
 
