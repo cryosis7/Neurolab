@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,6 +27,8 @@ public class ViewReportActivity extends AppCompatActivity {
     private TextView patientIDTextView;
     private Patient patient; //This will be the patient that is transferred to this page by intent
     private DatabaseAccess db;
+    private Button monthButton;
+    private Button weekButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +43,49 @@ public class ViewReportActivity extends AppCompatActivity {
         else
             throw new IllegalArgumentException("Expected Extra 'PATIENT_REFERENCE' in Intent - Received none");
 
-        patientIDTextView = findViewById(R.id.view_report_text_patient_id);
-        patientIDTextView.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patient.getPatientReference()));
-        gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
+        initializeUIElements();
 
         //Take this out later
         GameAssignment ga = new GameAssignment(3, 1, 1);
         db.createAssignment(ga);
 
-
         populateGameList();
+    }
+
+    /**
+     * Initializes UI elements/Sets listeners
+     */
+    public void initializeUIElements(){
+        patientIDTextView = findViewById(R.id.view_report_text_patient_id);
+        patientIDTextView.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patient.getPatientReference()));
+
+        gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
+
+        monthButton = findViewById(R.id.view_report_month_button);
+        monthButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
+                    weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                    //TODO: redraw graph for month
+                }
+                return true;
+            }
+        });
+
+        weekButton = findViewById(R.id.view_report_week_button);
+        weekButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
+                    monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                    //TODO: redraw graph for week
+                }
+                return true;
+            }
+        });
     }
 
     /**
