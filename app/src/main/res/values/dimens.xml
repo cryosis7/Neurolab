@@ -4,4 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="bottom_nav_bar_icon_size">48sp</dimen>
+
+    <!--    Text Sizes    -->
+    <dimen name="text_small">22sp</dimen>
+    <dimen name="text_body">36sp</dimen>
+    <dimen name="text_sub_heading">50sp</dimen>
 </resources>

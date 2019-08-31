@@ -1,28 +1,30 @@
 package com.soteria.neurolab;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.utilities.DateManager;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TestGraphActivity extends AppCompatActivity {
 
@@ -35,6 +37,9 @@ public class TestGraphActivity extends AppCompatActivity {
         graphStuff();
     }
 
+    /**
+     * https://weeklycoding.com/mpandroidchart-documentation/
+     */
     private void graphStuff() {
         DatabaseAccess databaseAccess = new DatabaseAccess(getApplicationContext());
         final List<GameSession> gameSessions = databaseAccess.getSessions("1", "1");
@@ -52,20 +57,47 @@ public class TestGraphActivity extends AppCompatActivity {
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Reaction Game Metrics");
-        dataSet.setColor(R.color.colorBlack);
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
+        chart.setData(new LineData(dataSet));
         formatChart(chart);
         chart.invalidate();
     }
 
     private void formatChart(LineChart chart) {
         chart.setDrawBorders(true);
-        chart.setBorderColor(getResources().getColor(R.color.colorPrimaryDark));
+        chart.setBorderColor(getResources().getColor(R.color.colorDivider));
         chart.setBorderWidth(2);
+//        chart.getLineData().setValueTextSize(getResources().getDimension(R.dimen.text_body));
+        chart.setDoubleTapToZoomEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.animateX(500);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setDrawAxisLine(false);
-//        xAxis.setdr
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
+                return df.format(new Date((long) value));
+            }
+        });
+        xAxis.setGranularity(86400000); // # of milliseconds in a day
+
+        chart.getAxisLeft().setGranularity(1);
+        chart.getAxisRight().setGranularity(1);
+
+        LineDataSet dataSet = (LineDataSet) chart.getLineData().getDataSetByIndex(0);
+        dataSet.setColors(getResources().getColor(R.color.colorPrimary));
+        dataSet.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
+        dataSet.setHighLightColor(getResources().getColor(R.color.colorPrimaryDark));
+        dataSet.setLineWidth(3);
+        dataSet.setCircleRadius(6);
+        dataSet.setCircleHoleRadius(4);
+        dataSet.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return String.valueOf(Math.round(value));
+            }
+        });
     }
 }

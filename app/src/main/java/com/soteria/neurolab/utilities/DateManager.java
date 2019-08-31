@@ -3,6 +3,7 @@ package com.soteria.neurolab.utilities;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateManager {
 
@@ -13,7 +14,7 @@ public class DateManager {
      * @return Date The date object if parsing was successful; null otherwise.
      */
     public static Date convertToDate(String dateString) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         return simpleDateFormat.parse(dateString);
     }
 }
