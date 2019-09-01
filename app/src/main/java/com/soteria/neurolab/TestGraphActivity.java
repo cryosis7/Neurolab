@@ -43,12 +43,12 @@ public class TestGraphActivity extends AppCompatActivity {
      */
     private void graphStuff() {
         DatabaseAccess databaseAccess = new DatabaseAccess(getApplicationContext());
+        //TODO: Dynamic lookup of gameID.
         final List<GameSession> gameSessions = databaseAccess.getAllSessions("2", "1");
 
         List<Entry> entries = new ArrayList<>();
         try {
             for (GameSession session : gameSessions) {
-//                Date date = DateManager.convertToCalendar(session.getDate());
                 long x = DateManager.convertToMillis(session.getDate());
                 float y = (float) session.getMetrics();
                 entries.add(new Entry(x, y));
