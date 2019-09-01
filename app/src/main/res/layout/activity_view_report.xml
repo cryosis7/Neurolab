@@ -38,6 +38,33 @@
             app:layout_constraintTop_toTopOf="@+id/view_report_month_button" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/view_report_report_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_container"
+        app:layout_constraintBottom_toTopOf="@+id/view_report_text_average">
+
+<!--        layout_weights act as percentages, so the graph takes 70%-->
+<!--        with two empty views on either side for padding-->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"/>
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/view_report_report_Chart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"/>
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/view_report_home_button"
         android:layout_width="90dp"
