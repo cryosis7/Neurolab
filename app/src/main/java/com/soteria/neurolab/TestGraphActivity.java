@@ -18,13 +18,11 @@ import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.utilities.DateManager;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class TestGraphActivity extends AppCompatActivity {
 
@@ -48,8 +46,12 @@ public class TestGraphActivity extends AppCompatActivity {
         List<Entry> entries = new ArrayList<>();
         try {
             for (GameSession session : gameSessions) {
-                Date date = DateManager.convertToDate(session.getDate());
-                entries.add(new Entry(date.getTime(), (float) session.getMetrics()));
+//                Date date = DateManager.convertToCalendar(session.getDate());
+                if (DateManager.convertToCalendar(session.getDate()).get(Calendar.DAY_OF_MONTH) == 20)
+                    Log.i(TAG, "Storing Date: " + DateManager.convertToMillis(session.getDate()));
+                long x = DateManager.convertToMillis(session.getDate());
+                float y = (float) session.getMetrics();
+                entries.add(new Entry(x, y));
             }
         }
         catch (ParseException ex) {
@@ -77,8 +79,7 @@ public class TestGraphActivity extends AppCompatActivity {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
-                return df.format(new Date((long) value));
+                return DateManager.getShortDateString(new Date((long) value));
             }
         });
         xAxis.setGranularity(86400000); // # of milliseconds in a day
