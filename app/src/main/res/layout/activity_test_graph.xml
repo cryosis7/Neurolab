@@ -6,17 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".TestGraphActivity">
 
-    <TextView
-        android:id="@+id/dataText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="getLastMonthSessions"
+            android:text="Month" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="getLastYearSessions"
+            android:text="Year" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -28,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dataText">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/reportChart"

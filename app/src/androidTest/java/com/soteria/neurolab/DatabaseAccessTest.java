@@ -203,7 +203,7 @@ public class DatabaseAccessTest extends Assert {
                 79.5, "2019-08-28");
         db.createSession(session);
 
-        List<GameSession> sessions = db.getSessions(patient, game);
+        List<GameSession> sessions = db.getAllSessions(patient, game);
         GameSession gameSession = sessions.get(0);
 
         assertThat(sessions.size(), is(1));

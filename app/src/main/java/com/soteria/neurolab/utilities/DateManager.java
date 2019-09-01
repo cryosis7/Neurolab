@@ -46,7 +46,18 @@ public class DateManager {
      * @return a String formatted as '13-Aug'.
      */
     public static String getShortDateString(Date date) {
-        DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+        return df.format(date);
+    }
+
+    /**
+     * Converts a date into a long date string.
+     * Use this function for consistency and readability throughout the application
+     * @param date a date to convert into a string.
+     * @return a String formatted as '2019-08-13'.
+     */
+    public static String getLongDateString(Date date) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         return df.format(date);
     }
 }

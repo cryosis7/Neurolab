@@ -7,15 +7,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.se.omapi.Session;
-import android.util.Log;
 
 import com.soteria.neurolab.models.Game;
 import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.models.Patient;
+import com.soteria.neurolab.utilities.DateManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseAccess {
@@ -249,14 +250,71 @@ public class DatabaseAccess {
      * @return List of game sessions
      * @throws SQLiteException
      */
-    public List<GameSession> getSessions(Patient patient, Game game) throws SQLiteException{
+    public List<GameSession> getAllSessions(Patient patient, Game game) throws SQLiteException{
         open();
-        List<GameSession> sessionList = new ArrayList<>();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
                 new String[] {String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID())});
+        return getSessionList(cursor);
+    }
+
+    /**
+     * Returns all game sessions for a particular patient and game
+     * @param patientReference The patient to retrieve the session for
+     * @param gameID The game to retrieve the session for
+     * @return List of game sessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getAllSessions(String patientReference, String gameID) throws SQLiteException{
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
+                new String[] {patientReference, gameID});
+        return getSessionList(cursor);
+    }
+
+    /**
+     * Returns the game sessions for a particular patient and game in the last month
+     * @param patientReference The patient to retrieve the session for
+     * @param gameID The game to retrieve the session for
+     * @return List of game sessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getLastMonthSessions(String patientReference, String gameID) throws SQLiteException{
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);
+        String dateString = DateManager.getLongDateString(cal.getTime());
+
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
+                new String[] {patientReference, gameID, dateString, DateManager.getLongDateString(new Date())});
+        return getSessionList(cursor);
+    }
+
+    /**
+     * Returns the game sessions for a particular patient and game in the last year
+     * @param patientReference The patient to retrieve the session for
+     * @param gameID The game to retrieve the session for
+     * @return List of game sessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getLastYearSessions(String patientReference, String gameID) throws SQLiteException{
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -1);
+        String dateString = DateManager.getLongDateString(cal.getTime());
+
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
+                new String[] {patientReference, gameID, dateString, DateManager.getLongDateString(new Date())});
+        return getSessionList(cursor);
+    }
+
+    private List<GameSession> getSessionList(Cursor cursor) {
+        List<GameSession> sessionList = new ArrayList<>();
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             GameSession session = new GameSession();
             session.setSessionID(cursor.getInt(0));
             session.setPatientID(cursor.getInt(1));
@@ -272,34 +330,9 @@ public class DatabaseAccess {
     }
 
     /**
-     * Returns game sessions for a particular patient and game
-     * @param patientReference The patient to retrieve the session for
-     * @param gameID The game to retrieve the session for
-     * @return List of game sessions
-     * @throws SQLiteException
+     * Updates all values for the session matching the sessionID
+     * @param session
      */
-    public List<GameSession> getSessions(String patientReference, String gameID) throws SQLiteException{
-        open();
-        List<GameSession> sessionList = new ArrayList<>();
-        cursor = db.rawQuery(
-                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
-                new String[] {patientReference, gameID});
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            GameSession session = new GameSession();
-            session.setSessionID(cursor.getInt(0));
-            session.setPatientID(cursor.getInt(1));
-            session.setGameID(cursor.getInt(2));
-            session.setMetrics(cursor.getDouble(3));
-            session.setDate(cursor.getString(4));
-            sessionList.add(session);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        close();
-        return sessionList;
-    }
-
     public void updateSession(GameSession session) {
         open();
         ContentValues values = new ContentValues();
@@ -310,6 +343,17 @@ public class DatabaseAccess {
 
         db.update("Game_Session", values, "session_ID=?",
                 new String[]{Integer.toString(session.getPatientID())});
+        close();
+    }
+
+    /**
+     * Deletes all sessions in the database matching the patientID and gameID.
+     * @param patientID
+     * @param gameID
+     */
+    public void deleteAllSessions(String patientID, String gameID) {
+        open();
+        db.delete("Game_Session", "patient_ID=? AND game_ID=?", new String[] {patientID, gameID});
         close();
     }
 
