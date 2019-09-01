@@ -40,9 +40,7 @@ public class DatabaseAccessTest extends Assert {
     public void testAddPatient() {
         db.deleteAllPatients();
 
-        Patient patient = new Patient("BW24");
-
-        db.createPatient(patient);
+        db.createPatient("BW24");
         List<Patient> patients = db.getAllPatients();
 
         assertThat(patients.size(), is(1));
@@ -53,11 +51,8 @@ public class DatabaseAccessTest extends Assert {
     public void testSelectAllPatients(){
         db.deleteAllPatients();
 
-        Patient patient1 = new Patient("BW01");
-        Patient patient2 = new Patient("MT02");
-
-        db.createPatient(patient1);
-        db.createPatient(patient2);
+        db.createPatient("BW01");
+        db.createPatient("MT02");
 
         assertThat(db.getAllPatients().size(), is(2));
     }
@@ -67,8 +62,7 @@ public class DatabaseAccessTest extends Assert {
         db.deleteAllPatients();
         assertThat(db.getAllPatients().size(), is(0));
 
-        Patient patient = new Patient("RD26");
-        db.createPatient(patient);
+        db.createPatient("RD26");
         List<Patient> patients = db.getAllPatients();
 
         assertThat(patients.size(), is(1));
@@ -80,13 +74,10 @@ public class DatabaseAccessTest extends Assert {
    @Test
     public void testAddDeleteMultiple(){
        db.deleteAllPatients();
-        Patient patient1 = new Patient("JK10");
-        Patient patient2 = new Patient("SC12");
-        Patient patient3 = new Patient("MT15");
 
-        db.createPatient(patient1);
-        db.createPatient(patient2);
-        db.createPatient(patient3);
+        db.createPatient("JK10");
+        db.createPatient("SC12");
+        db.createPatient("MT15");
 
         List<Patient> patients = db.getAllPatients();
         assertThat(patients.size(), is(3));
@@ -101,21 +92,18 @@ public class DatabaseAccessTest extends Assert {
     @Test
     public void testSelectPatient(){
         db.deleteAllPatients();
-        Patient patient1 = new Patient("BW05");
         Patient patient2 = new Patient("BW05");
-        db.createPatient(patient1);
-        db.createPatient(patient2);
+        db.createPatient("BW05");
 
         List<Patient> patients = db.searchPatients("BW05");
-        assertEquals(patients.size(), 2);
+        assertEquals(patients.size(), 1);
         assertEquals(patients.get(0).getPatientReference(), "BW05");
     }
 
     @Test
     public void testUpdatePatient(){
         db.deleteAllPatients();
-        Patient patient = new Patient("BW50");
-        db.createPatient(patient);
+        db.createPatient("BW05");
 
         List<Patient> patients = db.getAllPatients();
         Patient p = patients.get(0);
@@ -148,8 +136,7 @@ public class DatabaseAccessTest extends Assert {
 
     @Test
     public void testCreateAndGetAssignment(){
-        Patient p = new Patient("NP20");
-        db.createPatient(p);
+        db.createPatient("NP20");
         List<Patient> patients = db.getAllPatients();
         Patient patient = patients.get(0);
 
@@ -191,8 +178,7 @@ public class DatabaseAccessTest extends Assert {
 
     @Test
     public void testCreateAndGetSession(){
-        Patient p = new Patient("NP20");
-        db.createPatient(p);
+        db.createPatient("NP20");
         List<Patient> patients = db.getAllPatients();
         Patient patient = patients.get(0);
 

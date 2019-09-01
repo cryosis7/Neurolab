@@ -9,19 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.soteria.neurolab.models.Patient;
-
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
-
 import com.soteria.neurolab.database.DatabaseAccess;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +77,7 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     }
 
 
+    //Opens ViewPatientDetails page when a patient is clicked
     @Override
     public void onItemClick(View view, int position)
     {
@@ -94,6 +87,7 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     }
 
 
+    //Returns a list of all patients from the database
     public List<String> getPatientList(){
         DatabaseAccess db = DatabaseAccess.getInstance(getContext());
         List<String> patients = db.getAllPatientReferences();
@@ -129,6 +123,7 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
         return false;
     }
 
+    //Filters patient list when user types in search box
     @Override
     public boolean onQueryTextChange(String s) {
 
@@ -140,7 +135,6 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
                 newList.add(patient);
             }
         }
-
         adapter.updateList(newList);
         return true;
     }
