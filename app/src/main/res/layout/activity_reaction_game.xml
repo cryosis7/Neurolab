@@ -35,7 +35,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/circle"
+        android:background="@drawable/reaction_game_circle"
         android:onClick="stopTimer"
         android:text="@string/reactionGame_tap"
         android:textColor="@color/colorTextPrimary"

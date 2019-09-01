@@ -67,6 +67,11 @@ public class TestGraphActivity extends AppCompatActivity {
         chart.invalidate();
     }
 
+    /**
+     * Formats the appearance and interactivity of the chart EXCEPT for the data points;
+     * those are handled separately in formatLineData().
+     * chart.invalidate() will need to be called to update the graph.
+     */
     private void formatChart() {
         chart.setDrawBorders(true);
         chart.setBorderColor(getResources().getColor(R.color.colorDivider));
@@ -92,6 +97,10 @@ public class TestGraphActivity extends AppCompatActivity {
         chart.getAxisRight().setGranularity(1);
     }
 
+    /**
+     * Visually formats the data of the graph for when the data is changed.
+     * chart.invalidate() will need to be called to update the graph.
+     */
     private void formatLineData() {
         LineDataSet dataSet = (LineDataSet) chart.getLineData().getDataSetByIndex(0);
         dataSet.setColors(getResources().getColor(R.color.colorPrimary));
@@ -108,6 +117,11 @@ public class TestGraphActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Gets the session data for the last month from the database and updates the graph.
+     * TODO: Update for dynamic patient and game ID
+     * @param view
+     */
     public void getLastMonthSessions(View view) {
         DatabaseAccess databaseAccess = new DatabaseAccess(getApplicationContext());
         final List<GameSession> gameSessions = databaseAccess.getLastMonthSessions("2", "1");
@@ -115,6 +129,11 @@ public class TestGraphActivity extends AppCompatActivity {
         updateChartData(gameSessions);
     }
 
+    /**
+     * Gets the session data for the last year from the database and updates the graph.
+     * TODO: Update for dynamic patient and game ID
+     * @param view
+     */
     public void getLastYearSessions(View view) {
         DatabaseAccess databaseAccess = new DatabaseAccess(getApplicationContext());
         final List<GameSession> gameSessions = databaseAccess.getLastYearSessions("2", "1");
@@ -122,6 +141,10 @@ public class TestGraphActivity extends AppCompatActivity {
         updateChartData(gameSessions);
     }
 
+    /**
+     * Gets all sessions from the database and updates the graph.
+     * TODO: Update for dynamic patient and game ID
+     */
     public void getAllSessions() {
         DatabaseAccess databaseAccess = new DatabaseAccess(getApplicationContext());
         final List<GameSession> gameSessions = databaseAccess.getAllSessions("2", "1");
@@ -129,7 +152,12 @@ public class TestGraphActivity extends AppCompatActivity {
         updateChartData(gameSessions);
     }
 
+    /**
+     * Updates the chart with the given data.
+     * @param gameSessions
+     */
     private void updateChartData(List<GameSession> gameSessions) {
+        assert chart != null;
         List<Entry> entries = new ArrayList<>();
         try {
             for (GameSession session : gameSessions) {
@@ -148,5 +176,4 @@ public class TestGraphActivity extends AppCompatActivity {
         chart.fitScreen();
         chart.invalidate();
     }
-
 }
