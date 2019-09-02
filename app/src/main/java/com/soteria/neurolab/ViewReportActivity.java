@@ -1,14 +1,13 @@
 package com.soteria.neurolab;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.soteria.neurolab.Models.Game;
 import com.soteria.neurolab.Models.GameAssignment;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewReportActivity extends AppCompatActivity {
+    private final String TAG = "@ViewReportActivity";
 
     private Spinner gameListSpinner;
     private Patient patient; //This will be the patient that is transferred to this page by intent
@@ -34,6 +34,8 @@ public class ViewReportActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("PATIENT_REFERENCE")) {
             patient = db.getPatient(intent.getStringExtra("PATIENT_REFERENCE"));
+            if (patient == null)
+                throw new IllegalArgumentException("Patient reference does not exist in database: " + intent.getStringExtra("PATIENT_REFERENCE"));
         }
         else
             throw new IllegalArgumentException("Expected Extra 'PATIENT_REFERENCE' in Intent - Received none");
@@ -69,12 +71,8 @@ public class ViewReportActivity extends AppCompatActivity {
      * @return - String game name or null if no game found by given ID
      */
     private String getGameName(int gameID){
-        List<Game> fullGameList = db.getGames();
-        for(Game game : fullGameList){
-            if(game.getGameID() == gameID){
-                return game.getGameName();
-            }
-        }
-        return null;
+        DatabaseAccess db = new DatabaseAccess(this);
+        Game game = db.getGame(String.valueOf(gameID));
+        return game.getGameName();
     }
 }

@@ -100,7 +100,7 @@ public class DatabaseAccess {
     public List<Patient> searchPatients(String reference) throws SQLiteException{
         open();
         List<Patient> patientList = new ArrayList<>();
-        cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_reference = ?",
+        cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_reference = ?", //TODO: Should this not be patient_reference LIKE ?
                 new String[]{reference});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
@@ -118,7 +118,7 @@ public class DatabaseAccess {
     /**
      * Search for a specific patient by patientID
      * @param patientID - Internal database patient identifier (Not patient reference)
-     * @return - The patient with the specified ID
+     * @return - The patient with the specified ID or Null
      * @throws SQLiteException
      */
     public Patient getPatient(int patientID) throws SQLiteException {
@@ -126,15 +126,56 @@ public class DatabaseAccess {
         open();
         cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_id = ?",
                 new String[] {Integer.toString(patientID)} );
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
+        if (cursor.getCount() > 1) {
+            cursor.close();
+            close();
+            throw new SQLiteException("Multiple patients match patientID: " + patientID);
+        }
+        else if (cursor.getCount()== 0) {
+            cursor.close();
+            close();
+            return null;
+        }
+        else {
+            cursor.moveToFirst();
             patient.setPatientID(cursor.getInt(0));
             patient.setPatientReference(cursor.getString(1));
-            cursor.moveToNext();
+            cursor.close();
+            close();
+            return patient;
         }
-        cursor.close();
-        close();
-        return patient;
+    }
+
+    /**
+     * Search for a specific patient by patientID
+     * @param patientReference - Internal database patient identifier (Not patient reference)
+     * @return - The patient with the specified ID or Null
+     * @throws SQLiteException
+     */
+    public Patient getPatient(String patientReference) throws SQLiteException {
+        Patient patient = new Patient();
+        open();
+        cursor = db.rawQuery("SELECT * FROM Patient WHERE patient_reference = ?",
+                new String[] {patientReference} );
+
+        if (cursor.getCount() > 1) {
+            cursor.close();
+            close();
+            throw new SQLiteException("Multiple patients match patient_reference: " + patientReference);
+        }
+        else if (cursor.getCount()== 0) {
+            cursor.close();
+            close();
+            return null;
+        }
+        else {
+            cursor.moveToFirst();
+            patient.setPatientID(cursor.getInt(0));
+            patient.setPatientReference(cursor.getString(1));
+            cursor.close();
+            close();
+            return patient;
+        }
     }
 
     /**
@@ -196,6 +237,33 @@ public class DatabaseAccess {
         cursor.close();
         open();
         return gameList;
+    }
+
+    public Game getGame(String gameID) throws SQLiteException {
+        open();
+        Game game = new Game();
+        cursor = db.rawQuery("SELECT * FROM Game WHERE game_ID = ?", new String[] {gameID});
+
+        if (cursor.getCount() > 1) {
+            cursor.close();
+            close();
+            throw new SQLiteException("Multiple games match the gameID: " + gameID);
+        }
+        else if (cursor.getCount()== 0) {
+            cursor.close();
+            close();
+            return null;
+        }
+        else {
+            cursor.moveToFirst();
+            game.setGameID(cursor.getInt(0));
+            game.setGameName(cursor.getString(1));
+            game.setGameDesc(cursor.getString(2));
+
+            cursor.close();
+            close();
+            return game;
+        }
     }
 
     //---------------------------GameSession Methods---------------------------------//
