@@ -5,10 +5,10 @@ package com.soteria.neurolab;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.soteria.neurolab.Models.Game;
-import com.soteria.neurolab.Models.GameAssignment;
-import com.soteria.neurolab.Models.GameSession;
-import com.soteria.neurolab.Models.Patient;
+import com.soteria.neurolab.models.Game;
+import com.soteria.neurolab.models.GameAssignment;
+import com.soteria.neurolab.models.GameSession;
+import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.database.DatabaseAccess;
 
 import org.junit.Assert;
@@ -203,7 +203,7 @@ public class DatabaseAccessTest extends Assert {
                 79.5, "2019-08-28");
         db.createSession(session);
 
-        List<GameSession> sessions = db.getSessions(patient, game);
+        List<GameSession> sessions = db.getAllSessions(patient, game);
         GameSession gameSession = sessions.get(0);
 
         assertThat(sessions.size(), is(1));

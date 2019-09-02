@@ -43,5 +43,27 @@
 
     <!-- View report page strings -->
     <string name="view_report_game_header">Game</string>
+    <string name="view_report_month">Month</string>
+    <string name="view_report_week">Week</string>
+    <string name="view_report_average">Average: %1$s</string>
+    <string name="view_report_highest">Highest: %1$s</string>
 
+    <!--View Patient Details Strings-->
+    <string name="view_patient_details_delete_patient">DELETE PATIENT</string>
+    <string name="view_patient_details_view_report">VIEW REPORT</string>
+    <string name="view_patient_details_manage_patient">MANAGE PATIENT</string>
+    <string name="view_patient_details_run_games">RUN GAMES</string>
+    <string name="view_patient_details_disclaimer">Disclaimer</string>
+    <string name="view_patient_details_logout">Log Out</string>
+    <string name="view_patient_details_patient_identifier">Patient: %1$s</string>
+    <string name="view_patient_details_last_date_played">Games last run: %1$s %2$s</string>
+    <string name="view_patient_details_patient_id_not_found">Patient not found</string>
+    <string name="view_patient_details_patient_date_not_found">Please exit the page and try again</string>
+    <string name="view_patient_details_action_bar_title">Patient Details</string>
+    <string name="view_patient_details_delete_patient_dialog">You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?</string>
+    <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
+    <string-array name="settings">
+        <item>Disclaimer</item>
+        <item>Log Out</item>
+    </string-array>
 </resources>

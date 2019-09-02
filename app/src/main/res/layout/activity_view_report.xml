@@ -6,18 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".ViewReportActivity">
 
-    <TextView
-        android:id="@+id/view_report_text_patient_id"
-        style="@style/TextSubHead"
-        android:layout_marginTop="128dp"
-        android:text="Patient: SC17"
+    <Button
+        android:id="@+id/view_report_month_button"
+        style="@style/ToggleButton"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170sp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/button_selector_normal"
+        android:text="@string/view_report_month"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_report_game_list_spinner" />
+
+    <Button
+        android:id="@+id/view_report_week_button"
+        style="@style/ToggleButton"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector_normal"
+        android:text="@string/view_report_week"
+        app:layout_constraintBottom_toBottomOf="@+id/view_report_month_button"
+        app:layout_constraintStart_toEndOf="@+id/view_report_month_button"
+        app:layout_constraintTop_toTopOf="@+id/view_report_month_button" />
+
+    <ImageButton
+        android:id="@+id/view_report_home_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:contentDescription="TODO"
+        android:onClick="launchMainScreen"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.802"
+        app:srcCompat="@mipmap/baseline_home_black_48" />
 
     <Spinner
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:id="@+id/view_report_game_list_spinner"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="458dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
@@ -27,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view_report_text_patient_id" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/view_report_game_heading"
         style="@style/TextSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,5 +61,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/view_report_text_patient_id"
+        style="@style/TextSubHead"
+        android:layout_marginTop="128dp"
+        android:text="@string/patient_id_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/view_report_text_average"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:text="@string/view_report_average"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_report_month_button"
+        app:layout_constraintVertical_bias="0.435" />
+
+    <TextView
+        android:id="@+id/view_report_text_highest"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_report_highest"
+        app:layout_constraintStart_toStartOf="@+id/view_report_text_average"
+        app:layout_constraintTop_toBottomOf="@+id/view_report_text_average" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
