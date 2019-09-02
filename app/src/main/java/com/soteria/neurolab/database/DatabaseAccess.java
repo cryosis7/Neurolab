@@ -271,6 +271,33 @@ public class DatabaseAccess {
         }
     }
 
+    public Game getGameByName(String gameName) throws SQLiteException {
+        open();
+        Game game = new Game();
+        cursor = db.rawQuery("SELECT * FROM Game WHERE game_name = ?", new String[] {gameName});
+
+        if (cursor.getCount() > 1) {
+            cursor.close();
+            close();
+            throw new SQLiteException("Multiple games match the gameName: " + gameName);
+        }
+        else if (cursor.getCount()== 0) {
+            cursor.close();
+            close();
+            return null;
+        }
+        else {
+            cursor.moveToFirst();
+            game.setGameID(cursor.getInt(0));
+            game.setGameName(cursor.getString(1));
+            game.setGameDesc(cursor.getString(2));
+
+            cursor.close();
+            close();
+            return game;
+        }
+    }
+
     //---------------------------GameSession Methods---------------------------------//
 
     /**

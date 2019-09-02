@@ -17,6 +17,7 @@ import com.soteria.neurolab.models.Game;
 import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.utilities.ReportGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,10 @@ public class ViewReportActivity extends AppCompatActivity {
     private DatabaseAccess db;
     private Button monthButton;
     private Button weekButton;
+
+    private int selectedGameID;
+
+    private ReportGraph reportGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,15 @@ public class ViewReportActivity extends AppCompatActivity {
 
         initializeUIElements();
 
-        //Take this out later
-        GameAssignment ga = new GameAssignment(3, 1, 1);
+        //Adding game assignments so they are visible in drop down list for testing purposes
+        //Take this out later =======================
+        GameAssignment ga = new GameAssignment(2, 1, 1);
         db.createAssignment(ga);
+        ga = new GameAssignment(3, 1, 1);
+        db.createAssignment(ga);
+        ga = new GameAssignment(4, 1, 1);
+        db.createAssignment(ga);
+        //Take this out later =======================
 
         populateGameList();
     }
@@ -90,6 +101,8 @@ public class ViewReportActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        reportGraph = new ReportGraph(this);
     }
 
     /**
@@ -117,7 +130,7 @@ public class ViewReportActivity extends AppCompatActivity {
         gameListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                gameListSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -126,6 +139,7 @@ public class ViewReportActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     /**
