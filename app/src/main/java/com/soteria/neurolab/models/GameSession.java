@@ -17,7 +17,7 @@ public class GameSession {
      * @param patientID The database referenced ID of the patient
      * @param gameID The ID of the game
      * @param metrics The score from the game
-     * @param date The date of the session. Use DateManager.getLongDateString
+     * @param date The date of the session. Use DateManager.getDateString
      */
     public GameSession(int patientID, int gameID, double metrics, String date) {
         this.patientID = patientID;
@@ -37,7 +37,7 @@ public class GameSession {
         this.patientID = patientID;
         this.gameID = gameID;
         this.metrics = metrics;
-        this.date = DateManager.getLongDateString(date);
+        this.date = DateManager.getDateString(date);
     }
 
     public GameSession(){}
@@ -82,5 +82,5 @@ public class GameSession {
         this.date = date;
     }
 
-    public void setDate(Date date) { this.date = DateManager.getLongDateString(date); }
+    public void setDate(Date date) { this.date = DateManager.getDateString(date); }
 }

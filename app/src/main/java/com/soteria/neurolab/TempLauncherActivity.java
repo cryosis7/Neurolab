@@ -65,7 +65,7 @@ public class TempLauncherActivity extends AppCompatActivity {
         for (int i = 0; i < 250; i++) {
             Calendar cal = Calendar.getInstance();
             cal.set(random.nextInt(2) + 2018, random.nextInt(12) + 1, random.nextInt(30) + 1);
-            db.createSession(new GameSession(2, 1, random.nextInt(25) + 75, cal.getTime()));
+            db.createSession(new GameSession(2, 1, random.nextInt(200) + 300, cal.getTime()));
         }
     }
 }

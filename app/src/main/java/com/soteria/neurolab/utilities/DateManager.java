@@ -10,23 +10,11 @@ import java.util.Locale;
 public class DateManager {
 
     /**
-     * Converts a date string into a Date type.
-     * Returns Null if there was a parsing error.
-     * @param dateString the date string to be converted. It must be in yyyy-mm-dd format.
-     * @return Date The date object if parsing was successful; null otherwise.
+     * Converts a given date string into the number of milliseconds since the epoch.
+     * @param dateString A date in the format of '2019-04-20'
+     * @return long value representing milliseconds since epoch.
+     * @throws ParseException If there is a formatting error in the string.
      */
-    public static Calendar convertToCalendar(String dateString) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(simpleDateFormat.parse(dateString));
-            return cal;
-        }
-        catch (ParseException ex) {
-            throw ex;
-        }
-    }
-
     public static long convertToMillis(String dateString) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Calendar cal = Calendar.getInstance();
@@ -40,23 +28,12 @@ public class DateManager {
     }
 
     /**
-     * Converts a date into a short date string.
-     * Use this function for consistency and readability throughout the application
-     * @param date a date to convert into a string.
-     * @return a String formatted as '13-Aug'.
-     */
-    public static String getShortDateString(Date date) {
-        DateFormat df = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
-        return df.format(date);
-    }
-
-    /**
      * Converts a date into a long date string.
      * Use this function for consistency and readability throughout the application
      * @param date a date to convert into a string.
      * @return a String formatted as '2019-08-13'.
      */
-    public static String getLongDateString(Date date) {
+    public static String getDateString(Date date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         return df.format(date);
     }

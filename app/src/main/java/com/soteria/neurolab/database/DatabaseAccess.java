@@ -283,12 +283,12 @@ public class DatabaseAccess {
     public List<GameSession> getLastMonthSessions(String patientReference, String gameID) throws SQLiteException{
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
-        String dateString = DateManager.getLongDateString(cal.getTime());
+        String dateString = DateManager.getDateString(cal.getTime());
 
         open();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
-                new String[] {patientReference, gameID, dateString, DateManager.getLongDateString(new Date())});
+                new String[] {patientReference, gameID, dateString, DateManager.getDateString(new Date())});
         return getSessionList(cursor);
     }
 
@@ -302,12 +302,12 @@ public class DatabaseAccess {
     public List<GameSession> getLastYearSessions(String patientReference, String gameID) throws SQLiteException{
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -1);
-        String dateString = DateManager.getLongDateString(cal.getTime());
+        String dateString = DateManager.getDateString(cal.getTime());
 
         open();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
-                new String[] {patientReference, gameID, dateString, DateManager.getLongDateString(new Date())});
+                new String[] {patientReference, gameID, dateString, DateManager.getDateString(new Date())});
         return getSessionList(cursor);
     }
 
