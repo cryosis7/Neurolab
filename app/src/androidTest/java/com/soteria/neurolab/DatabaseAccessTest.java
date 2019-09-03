@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-
+/*
 @RunWith(AndroidJUnit4.class)
 public class DatabaseAccessTest extends Assert {
     private DatabaseAccess db;
@@ -211,3 +211,5 @@ public class DatabaseAccessTest extends Assert {
         assertEquals(gameSession.getPatientID(), session.getPatientID());
     }
 }
+*/
+

@@ -32,10 +32,6 @@ public class ViewReportActivity extends AppCompatActivity {
     private Button monthButton;
     private Button weekButton;
 
-    private int selectedGameID;
-
-    private ReportGraph reportGraph;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,8 +97,6 @@ public class ViewReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        reportGraph = new ReportGraph(this);
     }
 
     /**
@@ -130,7 +124,7 @@ public class ViewReportActivity extends AppCompatActivity {
         gameListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                gameListSpinner.getSelectedItem().toString();
+
             }
 
             @Override
