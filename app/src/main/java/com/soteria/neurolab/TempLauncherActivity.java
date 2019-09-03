@@ -60,12 +60,12 @@ public class TempLauncherActivity extends AppCompatActivity {
         Random random = new Random();
 
         DatabaseAccess db = new DatabaseAccess(getApplicationContext());
-        db.deleteAllSessions("2", "1");
+        db.deleteAllSessions("1", "1");
 
-        for (int i = 0; i < 250; i++) {
+        for (int i = 0; i < 75; i++) {
             Calendar cal = Calendar.getInstance();
-            cal.set(random.nextInt(2) + 2018, random.nextInt(12) + 1, random.nextInt(30) + 1);
-            db.createSession(new GameSession(2, 1, random.nextInt(200) + 300, cal.getTime()));
+            cal.set(2019, random.nextInt(12) + 1, random.nextInt(30) + 1);
+            db.createSession(new GameSession(1, 1, random.nextInt(200) + 300, cal.getTime()));
         }
     }
 }
