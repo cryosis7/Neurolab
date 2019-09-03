@@ -34,6 +34,6 @@ public class TestGraphActivity extends AppCompatActivity {
      * @param view
      */
     public void getLastYearSessions(View view) {
-        reportGraph.drawGraph("2", "1", ReportGraph.TIME_FRAME.YEAR);
+        reportGraph.drawGraph("2", "1", ReportGraph.TIME_FRAME.WEEK);
     }
 }

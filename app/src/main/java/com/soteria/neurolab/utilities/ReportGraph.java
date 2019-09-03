@@ -31,15 +31,15 @@ import java.util.Locale;
  * Documentation for library: https://weeklycoding.com/mpandroidchart-documentation/
  */
 public class ReportGraph {
-    private final String TAG = "ReportGraph";
+    private final String TAG = "@ReportGraph";
     private Activity activity;
     private LineChart chart;
 
-    public enum TIME_FRAME {ALL, YEAR, MONTH}
+    public enum TIME_FRAME {ALL, MONTH, WEEK}
 
     public ReportGraph(Activity activity) {
         this.activity = activity;
-        chart = activity.findViewById(R.id.reportChart);
+        chart = activity.findViewById(R.id.view_report_report_chart);
         formatChart();
     }
 
@@ -52,12 +52,13 @@ public class ReportGraph {
         chart.setDrawBorders(true);
         chart.setBorderColor(activity.getResources().getColor(R.color.colorDivider));
         chart.setBorderWidth(2);
-//        chart.getLineData().setValueTextSize(getResources().getDimension(R.dimen.text_body));
         chart.setDoubleTapToZoomEnabled(false);
         chart.setScaleYEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.getLegend().setEnabled(false);
         chart.animateX(500);
+        chart.setNoDataText("There is no data available for this time period");
+        chart.setNoDataTextColor(activity.getResources().getColor(R.color.colorPrimary));
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -78,32 +79,32 @@ public class ReportGraph {
 
     /**
      * Will draw a graph of ALL game-session data that matches the patient reference and game id.
-     * @param patientReference The patients reference number (NOT ID)
+     * @param patientID The patients ID
      * @param gameID the Game ID.
      */
-    public void drawGraph(String patientReference, String gameID) {
-        drawGraph(patientReference, gameID, TIME_FRAME.ALL);
+    public void drawGraph(String patientID, String gameID) {
+        drawGraph(patientID, gameID, TIME_FRAME.ALL);
     }
 
     /**
      * Will draw a graph of the game-session data that matches the patient reference and game id
      * for the selected time frame.
-     * @param patientReference The patients reference number (NOT ID)
+     * @param patientID The patients ID
      * @param gameID the Game ID.
      * @param timeFrame An enum representing the time frame to display.
      */
-    public void drawGraph(String patientReference, String gameID, TIME_FRAME timeFrame) {
+    public void drawGraph(String patientID, String gameID, TIME_FRAME timeFrame) {
         DatabaseAccess databaseAccess = new DatabaseAccess(activity.getApplicationContext());
         List<GameSession> gameSessions;
         switch (timeFrame) {
             case ALL:
-                gameSessions = databaseAccess.getAllSessions(patientReference, gameID);
-                break;
-            case YEAR:
-                gameSessions = databaseAccess.getLastYearSessions(patientReference, gameID);
+                gameSessions = databaseAccess.getAllSessions(patientID, gameID);
                 break;
             case MONTH:
-                gameSessions = databaseAccess.getLastMonthSessions(patientReference, gameID);
+                gameSessions = databaseAccess.getLastMonthSessions(patientID, gameID);
+                break;
+            case WEEK:
+                gameSessions = databaseAccess.getLastWeekSessions(patientID, gameID);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + timeFrame);
@@ -120,7 +121,7 @@ public class ReportGraph {
      */
     private void updateChartData(List<GameSession> gameSessions) {
         if (chart == null) {
-            chart = activity.findViewById(R.id.reportChart);
+            chart = activity.findViewById(R.id.view_report_report_chart);
             formatChart();
         }
 
@@ -136,8 +137,13 @@ public class ReportGraph {
             Log.e(TAG, "ParseException was thrown when adding converting dates from String into Date\n" + ex.toString());
         }
         Collections.sort(entries, new EntryXComparator());
-        chart.setData(new LineData(new LineDataSet(entries, "Reaction Game Metrics")));
-        formatLineData();
+
+        if (entries.size() > 0) {
+            chart.setData(new LineData(new LineDataSet(entries, "Game Metrics"))); //TODO: Change Label
+            formatLineData();
+        }
+        else
+            chart.clear();
     }
 
     /**
@@ -149,6 +155,7 @@ public class ReportGraph {
         dataSet.setColors(activity.getResources().getColor(R.color.colorPrimary));
         dataSet.setCircleColor(activity.getResources().getColor(R.color.colorPrimaryDark));
         dataSet.setHighLightColor(activity.getResources().getColor(R.color.colorPrimaryDark));
+        dataSet.setHighlightLineWidth(2);
         dataSet.setLineWidth(3);
         dataSet.setCircleRadius(6);
         dataSet.setCircleHoleRadius(4);
@@ -158,5 +165,6 @@ public class ReportGraph {
                 return String.valueOf(Math.round(value));
             }
         });
+        dataSet.setValueTextSize(activity.getResources().getDimension(R.dimen.text_very_small));
     }
 }

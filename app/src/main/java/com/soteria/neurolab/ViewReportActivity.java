@@ -1,9 +1,9 @@
 package com.soteria.neurolab;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,27 +13,22 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.Game;
 import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
-import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.utilities.ReportGraph;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewReportActivity extends AppCompatActivity {
     private final String TAG = "@ViewReportActivity";
 
-    private Spinner gameListSpinner;
-    private TextView patientIDTextView;
     private Patient patient; //This will be the patient that is transferred to this page by intent
+    private Game game;
     private DatabaseAccess db;
-    private Button monthButton;
-    private Button weekButton;
-
-    private int selectedGameID;
-
     private ReportGraph reportGraph;
 
     @Override
@@ -42,6 +37,7 @@ public class ViewReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_report);
 
         db = DatabaseAccess.getInstance(getApplicationContext());
+        reportGraph = new ReportGraph(this);
 
         Intent intent = getIntent();
         if (intent.hasExtra("PATIENT_REFERENCE")) {
@@ -54,55 +50,66 @@ public class ViewReportActivity extends AppCompatActivity {
 
         initializeUIElements();
 
+        //TODO: Remove
         //Adding game assignments so they are visible in drop down list for testing purposes
         //Take this out later =======================
-        GameAssignment ga = new GameAssignment(2, 1, 1);
-        db.createAssignment(ga);
-        ga = new GameAssignment(3, 1, 1);
-        db.createAssignment(ga);
-        ga = new GameAssignment(4, 1, 1);
-        db.createAssignment(ga);
+        try {
+            db.createAssignment(new GameAssignment(2, 1, 1));
+            db.createAssignment(new GameAssignment(3, 1, 1));
+            db.createAssignment(new GameAssignment(4, 1, 1));
+        }
+        catch (SQLiteException e) {
+            Log.e(TAG, e.getMessage());
+        }
         //Take this out later =======================
 
         populateGameList();
+        findViewById(R.id.view_report_all_button).performClick();
     }
 
     /**
      * Initializes UI elements/Sets listeners
      */
     public void initializeUIElements(){
-        patientIDTextView = findViewById(R.id.view_report_text_patient_id);
+        TextView patientIDTextView = findViewById(R.id.view_report_text_patient_id);
         patientIDTextView.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patient.getPatientReference()));
 
-        gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
+        final Button monthButton = findViewById(R.id.view_report_month_button);
+        final Button weekButton = findViewById(R.id.view_report_week_button);
+        final Button allButton = findViewById(R.id.view_report_all_button);
 
-        monthButton = findViewById(R.id.view_report_month_button);
-        monthButton.setOnTouchListener(new View.OnTouchListener() {
+        monthButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
-                    weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
-                    //TODO: redraw graph for month
-                }
-                return true;
+            public void onClick(View view) {
+                monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
+                weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                allButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                if (patient != null && game != null && reportGraph != null)
+                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), ReportGraph.TIME_FRAME.MONTH);
             }
         });
 
-        weekButton = findViewById(R.id.view_report_week_button);
-        weekButton.setOnTouchListener(new View.OnTouchListener() {
+        weekButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
-                    monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
-                    //TODO: redraw graph for week
-                }
-                return true;
+            public void onClick(View view) {
+                weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
+                monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                allButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                if (patient != null && game != null && reportGraph != null)
+                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), ReportGraph.TIME_FRAME.WEEK);
             }
         });
 
-        reportGraph = new ReportGraph(this);
+        allButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                allButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
+                weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
+                if (patient != null && game != null && reportGraph != null)
+                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), ReportGraph.TIME_FRAME.ALL);
+            }
+        });
     }
 
     /**
@@ -121,16 +128,24 @@ public class ViewReportActivity extends AppCompatActivity {
 
         ArrayList<String> listOfGames = new ArrayList<>();
         for(GameAssignment ga: listOfGameAssignments){
-            listOfGames.add(getGameName(ga.getGameID()));
+            String gameName = getGameName(ga.getGameID());
+            if (gameName != null)
+                listOfGames.add(gameName);
+            else
+                throw new InvalidParameterException("GameID: " + ga.getGameID() + " was not found in the database.");
         }
 
         ArrayAdapter<String> gameListAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, listOfGames);
         gameListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        final Spinner gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
         gameListSpinner.setAdapter(gameListAdapter);
         gameListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                gameListSpinner.getSelectedItem().toString();
+                game = db.getGameByName((String) gameListSpinner.getSelectedItem());
+                if (patient != null && game != null)
+                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()));
             }
 
             @Override

@@ -271,6 +271,12 @@ public class DatabaseAccess {
         }
     }
 
+    /**
+     * Retrieves a Game object using it's name as an identifier.
+     * @param gameName A string value of the game name.
+     * @return a Game object
+     * @throws SQLiteException
+     */
     public Game getGameByName(String gameName) throws SQLiteException {
         open();
         Game game = new Game();
@@ -333,27 +339,27 @@ public class DatabaseAccess {
 
     /**
      * Returns all game sessions for a particular patient and game
-     * @param patientReference The patient to retrieve the session for
+     * @param patientID The patient to retrieve the session for
      * @param gameID The game to retrieve the session for
      * @return List of game sessions
      * @throws SQLiteException
      */
-    public List<GameSession> getAllSessions(String patientReference, String gameID) throws SQLiteException{
+    public List<GameSession> getAllSessions(String patientID, String gameID) throws SQLiteException{
         open();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
-                new String[] {patientReference, gameID});
+                new String[] {patientID, gameID});
         return getSessionList(cursor);
     }
 
     /**
      * Returns the game sessions for a particular patient and game in the last month
-     * @param patientReference The patient to retrieve the session for
+     * @param patientID The patient to retrieve the session for
      * @param gameID The game to retrieve the session for
      * @return List of game sessions
      * @throws SQLiteException
      */
-    public List<GameSession> getLastMonthSessions(String patientReference, String gameID) throws SQLiteException{
+    public List<GameSession> getLastMonthSessions(String patientID, String gameID) throws SQLiteException{
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
         String dateString = DateManager.getDateString(cal.getTime());
@@ -361,26 +367,26 @@ public class DatabaseAccess {
         open();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
-                new String[] {patientReference, gameID, dateString, DateManager.getDateString(new Date())});
+                new String[] {patientID, gameID, dateString, DateManager.getDateString(new Date())});
         return getSessionList(cursor);
     }
 
     /**
-     * Returns the game sessions for a particular patient and game in the last year
-     * @param patientReference The patient to retrieve the session for
+     * Returns the game sessions for a particular patient and game in the last week
+     * @param patientID The patient to retrieve the session for
      * @param gameID The game to retrieve the session for
      * @return List of game sessions
      * @throws SQLiteException
      */
-    public List<GameSession> getLastYearSessions(String patientReference, String gameID) throws SQLiteException{
+    public List<GameSession> getLastWeekSessions(String patientID, String gameID) throws SQLiteException{
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, -1);
+        cal.add(Calendar.WEEK_OF_YEAR, -1);
         String dateString = DateManager.getDateString(cal.getTime());
 
         open();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
-                new String[] {patientReference, gameID, dateString, DateManager.getDateString(new Date())});
+                new String[] {patientID, gameID, dateString, DateManager.getDateString(new Date())});
         return getSessionList(cursor);
     }
 
