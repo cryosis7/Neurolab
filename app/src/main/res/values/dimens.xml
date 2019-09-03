@@ -6,9 +6,10 @@
     <dimen name="bottom_nav_bar_icon_size">48sp</dimen>
 
     <!--    Text Sizes      -->
-    <dimen name="text_small">22sp</dimen>
-    <dimen name="text_body">36sp</dimen>
-    <dimen name="text_sub_heading">50sp</dimen>
+    <dimen name="text_very_small">12sp</dimen>
+    <dimen name="text_small">18sp</dimen>
+    <dimen name="text_body">22sp</dimen>
+    <dimen name="text_sub_heading">48sp</dimen>
 
     <!--    Margin Sizes    -->
     <dimen name="margin_small">8dp</dimen>

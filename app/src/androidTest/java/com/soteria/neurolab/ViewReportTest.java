@@ -23,11 +23,10 @@ import static org.hamcrest.core.AllOf.allOf;
 public class ViewReportTest {
     //Selects the activity to be tested
     @Rule
-    public ActivityTestRule<ViewReportActivity> rule = new ActivityTestRule(ViewReportActivity.class);
+    public ActivityTestRule<ViewReportActivity> rule = new ActivityTestRule<>(ViewReportActivity.class, false, false);
 
     @Before
-    public void setIntent()
-    {
+    public void setIntent(){
         Log.i("@Test", "--- --- --- --- Setting intents --- --- --- ---");
         Intent testIntent = new Intent();
         testIntent.putExtra( "PATIENT_REFERENCE", "SC05" );
@@ -35,8 +34,7 @@ public class ViewReportTest {
     }
 
     @Test
-    public void intentTest()
-    {
+    public void intentTest(){
         Log.i("@Test", "--- --- --- --- Intent Test - Correct Info --- --- --- ---");
         String testStringID = "Patient: SC05";
 
@@ -44,4 +42,12 @@ public class ViewReportTest {
                 (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
                         withText(testStringID))));
     }
+
+    @Test
+    public void gameListSpinnerTest(){
+        Log.i("@Test", "--- --- --- --- Game List Spinner Test --- --- --- ---");
+
+    }
+
+
 }

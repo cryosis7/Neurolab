@@ -17,53 +17,63 @@
         app:layout_constraintTop_toBottomOf="@+id/view_report_game_list_spinner">
 
         <Button
-            android:layout_marginStart="@dimen/margin_small"
+            android:id="@+id/view_report_all_button"
+            style="@style/ToggleButton"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector_normal"
+            android:text="@string/view_report_all"/>
+
+        <Button
             android:id="@+id/view_report_month_button"
             style="@style/ToggleButton"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector_normal"
-            android:text="@string/view_report_month"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_report_game_list_spinner" />
+            android:text="@string/view_report_month"/>
 
         <Button
-            android:layout_marginEnd="@dimen/margin_small"
             android:id="@+id/view_report_week_button"
             style="@style/ToggleButton"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector_normal"
-            android:text="@string/view_report_week"
-            app:layout_constraintBottom_toBottomOf="@+id/view_report_month_button"
-            app:layout_constraintStart_toEndOf="@+id/view_report_month_button"
-            app:layout_constraintTop_toTopOf="@+id/view_report_month_button" />
+            android:text="@string/view_report_week" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_report_report_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_container"
-        app:layout_constraintBottom_toTopOf="@+id/view_report_text_average">
+        app:layout_constraintBottom_toTopOf="@id/view_report_text_average">
 
-<!--        layout_weights act as percentages, so the graph takes 70%-->
-<!--        with two empty views on either side for padding-->
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/view_report_report_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.15"/>
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/view_report_report_Chart"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"/>
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.15"/>
-    </LinearLayout>
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!--        layout_weights act as percentages, so the graph takes 70%-->
+            <!--        with two empty views on either side for padding-->
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/view_report_report_chart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/view_report_home_button"
@@ -115,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:text="@string/view_report_average"
+        android:text="@string/view_report_average_blank"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_container"
@@ -126,7 +136,7 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_report_highest"
+        android:text="@string/view_report_highest_blank"
         app:layout_constraintStart_toStartOf="@+id/view_report_text_average"
         app:layout_constraintTop_toBottomOf="@+id/view_report_text_average" />
 

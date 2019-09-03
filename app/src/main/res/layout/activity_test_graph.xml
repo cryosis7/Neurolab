@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/reportChart"
+            android:id="@+id/view_report_report_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

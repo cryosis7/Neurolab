@@ -37,7 +37,7 @@
     <style name="ToggleButton" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">28sp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:layout_width">230sp</item>
+        <item name="android:layout_width">150sp</item>
     </style>
 
     <!-- Text Sub Head  -->
