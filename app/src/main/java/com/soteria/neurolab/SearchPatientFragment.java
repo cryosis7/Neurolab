@@ -82,7 +82,7 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     public void onItemClick(View view, int position)
     {
         Intent viewPatient = new Intent(getActivity(), ViewPatientDetails.class);
-        viewPatient.putExtra("pID", adapter.getItem(position));
+        viewPatient.putExtra("PATIENT_ID", adapter.getItem(position));
         startActivity(viewPatient);
     }
 

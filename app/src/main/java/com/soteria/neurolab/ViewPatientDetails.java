@@ -1,40 +1,80 @@
 package com.soteria.neurolab;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.soteria.neurolab.database.DatabaseAccess;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 public class ViewPatientDetails extends AppCompatActivity {
 
+    /**
+     *  Handles the creation of UI elements that change on load and button press logic.
+     *
+     * @param savedInstanceState - I don't know why does life do this to me I don't know I don't know
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         /* Variable declarations
          */
-        String patientIdentifier, lastDayPlayed, lastTimePlayed;
+        String tempPatientIdentifier = "";
+        DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
 
         /* Attempts to retrieve data from an intent. If intent retrieval fails, insert placeholder data instead
          */
         try {
             Bundle viewBundle = getIntent().getExtras();
-            patientIdentifier = viewBundle.getString("pID");
-            lastDayPlayed = viewBundle.getString("pLastDayPlayed");
-            lastTimePlayed = viewBundle.getString( "pLastTimePlayed");
+            tempPatientIdentifier = viewBundle.getString("PATIENT_ID");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(),"No patients passed, go back to try again",Toast.LENGTH_SHORT).show();
-            patientIdentifier = "/0";
-            lastDayPlayed = "01/01/2019";
-            lastTimePlayed = "00:00";
+            Toast.makeText(getApplicationContext(),"No patients passed, pleased try again",Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }
+        final String patientIdentifier = tempPatientIdentifier;
+
+        /*
+            Attempts to find the most recent date to save as a string by pulling from all sessions
+            the patient has done on their account. If no sessions are displayed, save a string
+            stating that.
+         */
+        List<com.soteria.neurolab.models.GameSession> allSessions = null;
+        String tempLastTimePlayed = "";
+        for( int i = 1; i < db.getGames().size(); i++)
+        {
+            try {
+                allSessions.addAll(getSessionDate(patientIdentifier, Integer.toString(i)));
+                for (com.soteria.neurolab.models.GameSession m: allSessions)
+                {
+                    if(tempLastTimePlayed == null)
+                    {
+                        tempLastTimePlayed = m.getDate();
+                    }
+                    Date sessionDate = new SimpleDateFormat("yyyy/mm/dd").parse(m.getDate());
+                    Date highestDate = new SimpleDateFormat("yyyy/mm/dd").parse(tempLastTimePlayed);
+                    if(sessionDate.compareTo(highestDate) > 0)
+                    {
+                        tempLastTimePlayed = sessionDate.toString();
+                    }
+                }
+            } catch ( Exception e ) {
+                tempLastTimePlayed = "No games played on this account";
+            }
+        }
+
+        final String lastTimePlayed = tempLastTimePlayed;
 
         /*  Update the support action bar to set the back button and title to appropriate values
          */
@@ -53,33 +93,19 @@ public class ViewPatientDetails extends AppCompatActivity {
         final Button reportButton = findViewById(R.id.viewReportButton);
         final Button deleteButton = findViewById(R.id.deletePatientButton);
 
-        /* Hides buttons for patient access if no patient is passed through. This will only occur
-           as a result of an error in passing information. Prevents progression
-         */
-        if(patientIdentifier.equals("/0"))
-        {
-            runButton.setVisibility(View.GONE);
-            manageButton.setVisibility(View.GONE);
-            reportButton.setVisibility(View.GONE);
-            deleteButton.setVisibility(View.GONE);
-        }
-
         /*Code for changing the patientID and lastGamesRun text views to display the information
           passed through to it from another page. */
         patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientIdentifier));
-        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastDayPlayed, lastTimePlayed));
+        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastTimePlayed));
 
 
         /*When run games is pressed, sends user to the patient profile
         TODO add link to send users to patient home once created, remove toast and comment markers  once done. */
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"RUN GAMES PRESSED: Sending to patient home",Toast.LENGTH_SHORT).show();
-               /*
-               Intent gameIntent = new Intent(this, TODO add link to patient home here)
-               gameIntent.putExtra("pID", patientID);
+               Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
+               gameIntent.putExtra("PATIENT_ID", patientIdentifier);
                startActivity(gameIntent);
-                */
             }
         });
 
@@ -91,7 +117,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
                 /*
                Intent manageIntent = new Intent(this, TODO add link to manage patient here)
-               manageIntent.putExtra("pID", patientID);
+               manageIntent.putExtra("PATIENT_ID", patientIdentifier);
                startActivity(manageIntent);
                 */
             }
@@ -99,15 +125,12 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         /*When the view report button is pressed, send the user to the report screen for the current
           patient.
-          TODO add link to send users to the view report screen once created, remove toast and comment markers once done. */
+        */
         reportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"VIEW REPORT PRESSED: Sending to report screen",Toast.LENGTH_SHORT).show();
-                /*
-               Intent reportIntent = new Intent(this, TODO add link to reports here)
-               reportIntent.putExtra("pID", patientID);
+               Intent reportIntent = new Intent(ViewPatientDetails.this, ViewReportActivity.class);
+               reportIntent.putExtra("PATIENT_ID", patientIdentifier);
                startActivity(reportIntent);
-                */
             }
         });
 
@@ -148,21 +171,12 @@ public class ViewPatientDetails extends AppCompatActivity {
                 deleteConfirm.show();
             }
         });
-
-        /*When the home button is pressed, send the user to the search patient screen
-          TODO add link to search patient once created, remove toast once done. */
-        final ImageButton homeButton = findViewById(R.id.homeButton);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"HOME BUTTON PRESSED: Sending to search patients screen",Toast.LENGTH_SHORT).show();
-                //TODO remove comment once merged with SearchCreateDeleteActivity
-                /*startActivity(new Intent(this, SearchCreateDeleteActivity.class));
-                  finish();*/
-            }
-        });
     }
 
-    /** Sets the actions bar to include an overflow menu.
+    /** Sets the actions bar to include an overflow menu with the disclaimer and log out options.
+     *
+     * @param menu - Instance of the top bar
+     * @return true if the top bar was able to be updated and false if an error occurred.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -178,8 +192,12 @@ public class ViewPatientDetails extends AppCompatActivity {
         }
     }
 
-    /** Determines the behaviour of options selected from the action bar.
+    /** Determines the behaviour of options selected from the action bar. Options include displaying
+     *  the disclaimer and sending the user back to the main menu.
      *  TODO insert link for logout and database functions for removal
+     *
+     *  @param menu - The identifier of the item selected from the top bar.
+     *  @return true if an option was able to be selected and false if an exception occurred.
      */
     public boolean onOptionsItemSelected(MenuItem menu)
     {
@@ -228,5 +246,18 @@ public class ViewPatientDetails extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
                 return false;
         }
+    }
+
+    /**Returns a list of all patients from the database
+     *
+     * @param patientIdentifier - The reference of the patient selected
+     * @param gameID - The reference of the game being passed through
+     * @return the list of all sessions for the particular game
+     */
+    public List<com.soteria.neurolab.models.GameSession> getSessionDate(String patientIdentifier, String gameID)
+    {
+        DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+        List<com.soteria.neurolab.models.GameSession> gameSessions = db.getAllSessions(patientIdentifier, gameID);
+        return gameSessions;
     }
 }

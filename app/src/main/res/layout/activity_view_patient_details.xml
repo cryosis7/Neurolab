@@ -84,19 +84,6 @@
             app:layout_constraintTop_toBottomOf="@+id/runGamesButton"
             app:layout_constraintVertical_bias="0.071" />
 
-        <ImageButton
-            android:id="@+id/homeButton"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:contentDescription="TODO"
-            android:scaleType="fitStart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deletePatientButton"
-            app:layout_constraintVertical_bias="0.802"
-            app:srcCompat="@mipmap/baseline_home_black_48" />
-
         <TextView
             android:id="@+id/patientGamesLastRunTextView"
             android:layout_width="398dp"
