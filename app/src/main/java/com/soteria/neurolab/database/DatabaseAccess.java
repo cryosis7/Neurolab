@@ -453,6 +453,15 @@ public class DatabaseAccess {
         close();
     }
 
+    /**
+     * Deletes all sessions in the database
+     */
+    public void deleteAllSessions() {
+        open();
+        db.delete("Game_Session", null, null);
+        close();
+    }
+
     //-----------------------------GameAssignment Methods-----------------------------//
 
     /**
