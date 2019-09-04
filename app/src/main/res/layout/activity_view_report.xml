@@ -125,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:text="@string/view_report_average"
+        android:text="@string/view_report_average_blank"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_container"
@@ -136,7 +136,7 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_report_highest"
+        android:text="@string/view_report_highest_blank"
         app:layout_constraintStart_toStartOf="@+id/view_report_text_average"
         app:layout_constraintTop_toBottomOf="@+id/view_report_text_average" />
 

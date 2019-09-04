@@ -47,6 +47,8 @@
     <string name="view_report_week">Week</string>
     <string name="view_report_average">Average: %1$s</string>
     <string name="view_report_highest">Highest: %1$s</string>
+    <string name="view_report_average_blank">Average: -</string>
+    <string name="view_report_highest_blank">Highest: -</string>
     <string name="view_report_all">All</string>
 
     <!--View Patient Details Strings-->

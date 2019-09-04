@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.Game;
 import com.soteria.neurolab.models.GameAssignment;
+import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.utilities.ReportGraph;
 
@@ -30,6 +31,12 @@ public class ViewReportActivity extends AppCompatActivity {
     private Game game;
     private DatabaseAccess db;
     private ReportGraph reportGraph;
+    private List<GameSession> gameSessions;
+
+    private TextView averageScoreTextView;
+    private TextView highestScoreTextView;
+
+    private ReportGraph.TIME_FRAME timeFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,8 @@ public class ViewReportActivity extends AppCompatActivity {
     public void initializeUIElements(){
         TextView patientIDTextView = findViewById(R.id.view_report_text_patient_id);
         patientIDTextView.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patient.getPatientReference()));
+        averageScoreTextView = findViewById(R.id.view_report_text_average);
+        highestScoreTextView = findViewById(R.id.view_report_text_highest);
 
         final Button monthButton = findViewById(R.id.view_report_month_button);
         final Button weekButton = findViewById(R.id.view_report_week_button);
@@ -67,33 +76,33 @@ public class ViewReportActivity extends AppCompatActivity {
         monthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                timeFrame = ReportGraph.TIME_FRAME.MONTH;
                 monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
                 weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
                 allButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
-                if (patient != null && game != null && reportGraph != null)
-                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), ReportGraph.TIME_FRAME.MONTH);
+                drawGraphAndText();
             }
         });
 
         weekButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                timeFrame = ReportGraph.TIME_FRAME.WEEK;
                 weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
                 monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
                 allButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
-                if (patient != null && game != null && reportGraph != null)
-                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), ReportGraph.TIME_FRAME.WEEK);
+                drawGraphAndText();
             }
         });
 
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                timeFrame = ReportGraph.TIME_FRAME.ALL;
                 allButton.setBackground(getResources().getDrawable(R.drawable.button_selector_pressed));
                 weekButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
                 monthButton.setBackground(getResources().getDrawable(R.drawable.button_selector_normal));
-                if (patient != null && game != null && reportGraph != null)
-                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), ReportGraph.TIME_FRAME.ALL);
+                drawGraphAndText();
             }
         });
     }
@@ -130,8 +139,9 @@ public class ViewReportActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 game = db.getGameByName((String) gameListSpinner.getSelectedItem());
-                if (patient != null && game != null)
-                    reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()));
+                if (patient != null && game != null) {
+                    drawGraphAndText();
+                }
             }
 
             @Override
@@ -140,8 +150,6 @@ public class ViewReportActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     /**
      * Gets the name of a specific game with the given gameID
@@ -153,4 +161,58 @@ public class ViewReportActivity extends AppCompatActivity {
         Game game = db.getGame(String.valueOf(gameID));
         return game.getGameName();
     }
+
+    /**
+     * Calculates the average score for that game and time period and sets the text
+     */
+    private void getAverageScore(){
+        int scoreTotal = 0;
+        for(GameSession gs: gameSessions)
+            scoreTotal += gs.getMetrics();
+        if(gameSessions.size() == 0){
+            averageScoreTextView.setText(getResources().getString(R.string.view_report_average_blank));
+        } else {
+            averageScoreTextView.setText(getResources().getString(R.string.view_report_average, String.valueOf(scoreTotal / gameSessions.size())));
+        }
+    }
+
+    /**
+     * Calculates the highest score for that game and time period and sets the text
+     */
+    private void getHighestScore(){
+        double scoreHighest = 0;
+        for(GameSession gs: gameSessions)
+            scoreHighest = gs.getMetrics() > scoreHighest ? gs.getMetrics() : scoreHighest;
+        if(scoreHighest == 0){
+            highestScoreTextView.setText(getResources().getString(R.string.view_report_highest_blank));
+        } else {
+            highestScoreTextView.setText(getResources().getString(R.string.view_report_highest, String.valueOf(scoreHighest)));
+        }
+    }
+
+    /**
+     * calls the draw graph method and then sets the gameSessions list depending on the selected time frame
+     * then calls the average and highest methods
+     */
+    private void drawGraphAndText(){
+        if (patient != null && game != null && reportGraph != null) {
+            reportGraph.drawGraph(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()), timeFrame);
+            switch(timeFrame){
+                case ALL:
+                    gameSessions = db.getAllSessions(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()));
+                    break;
+
+                case WEEK:
+                    gameSessions = db.getLastWeekSessions(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()));
+                    break;
+
+                case MONTH:
+                    gameSessions = db.getLastMonthSessions(String.valueOf(patient.getPatientID()), String.valueOf(game.getGameID()));
+                    break;
+            }
+            getAverageScore();
+            getHighestScore();
+        }
+    }
+
 }
