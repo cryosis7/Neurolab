@@ -19,8 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReactionGameActivity"></activity>
-        <activity android:name=".ViewPatientDetails"></activity>
+        <activity android:name=".ReactionGameActivity" />
+        <activity android:name=".ViewPatientDetails" />
+        <activity android:name=".ViewReportActivity" />
+        <activity android:name=".TestGraphActivity" />
     </application>
 
 </manifest>

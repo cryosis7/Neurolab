@@ -53,10 +53,9 @@ public class ViewPatientDetails extends AppCompatActivity {
          */
         List<com.soteria.neurolab.models.GameSession> allSessions = null;
         String tempLastTimePlayed = "";
-        for( int i = 1; i < db.getGames().size() + 1; i++)
+        for( int i = 1; i <= db.getGames().size() + 1; i++)
         {
             try {
-                
                 allSessions.addAll(getSessionDate(patientIdentifier, Integer.toString(i)));
                 for (com.soteria.neurolab.models.GameSession m: allSessions)
                 {

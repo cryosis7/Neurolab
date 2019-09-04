@@ -1,7 +1,37 @@
 <resources>
     <string name="app_name">Neurolab</string>
 
-    <!--Game Related strings-->
+    <!-- Page titles -->
+    <string name="title_search_patient">Search Patient</string>
+    <string name="title_create_patient">Create Patient</string>
+    <string name="title_delete_patient">Delete Patient</string>
+
+    <!-- Game titles -->
+    <string name="title_motor_skills">Motor Skills</string>
+    <string name="title_reaction_time">Reaction Time</string>
+    <string name="title_visual_short_term_memory">Visual Short Term Memory</string>
+    <string name="title_selective_attention">Selective Attention</string>
+
+    <!-- Create patient fragment strings -->
+    <string name="patient_id_title">Patient ID</string>
+    <string name="enter_unique_id">Enter a unique ID</string>
+    <string name="attempts_per_game_title">Attempts Per Game</string>
+    <string name="create_button">Create</string>
+    <string name="alpha_numeric_regex">^[a-zA-Z0-9]+$</string>
+    <string name="error_patient_id_blank">PatientID cannot be blank</string>
+    <string name="error_patient_id_special_characters">PatientID contains 1 or more illegal characters</string>
+    <string name="open">Open</string>
+
+    <!-- View patient report page strings -->
+    <string name="settings">
+        <item>Disclaimer</item>
+        <item>Logout</item>
+    </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Generic Game Related strings-->
     <string name="start_game">Start Game</string>
     <string name="next_round">Next Round</string>
 
@@ -10,4 +40,30 @@
     <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
+
+    <!-- View report page strings -->
+    <string name="view_report_game_header">Game</string>
+    <string name="view_report_month">Month</string>
+    <string name="view_report_week">Week</string>
+    <string name="view_report_average">Average: %1$s</string>
+    <string name="view_report_highest">Highest: %1$s</string>
+
+    <!--View Patient Details Strings-->
+    <string name="view_patient_details_delete_patient">DELETE PATIENT</string>
+    <string name="view_patient_details_view_report">VIEW REPORT</string>
+    <string name="view_patient_details_manage_patient">MANAGE PATIENT</string>
+    <string name="view_patient_details_run_games">RUN GAMES</string>
+    <string name="view_patient_details_disclaimer">Disclaimer</string>
+    <string name="view_patient_details_logout">Log Out</string>
+    <string name="view_patient_details_patient_identifier">Patient: %1$s</string>
+    <string name="view_patient_details_last_date_played">Games last run: %1$s %2$s</string>
+    <string name="view_patient_details_patient_id_not_found">Patient not found</string>
+    <string name="view_patient_details_patient_date_not_found">Please exit the page and try again</string>
+    <string name="view_patient_details_action_bar_title">Patient Details</string>
+    <string name="view_patient_details_delete_patient_dialog">You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?</string>
+    <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
+    <string-array name="settings">
+        <item>Disclaimer</item>
+        <item>Log Out</item>
+    </string-array>
 </resources>
