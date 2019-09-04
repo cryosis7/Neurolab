@@ -202,6 +202,10 @@ public class DatabaseAccess {
         open();
         db.delete("Patient", "Patient_ID = ?",
                 new String[]{Integer.toString(patient.getPatientID())});
+        db.delete("Game_Assignment", "Patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
+        db.delete("Game_Session", "Patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
         close();
     }
 
@@ -285,6 +289,40 @@ public class DatabaseAccess {
         cursor.close();
         close();
         return sessionList;
+    }
+
+
+    private List<GameSession> getSessionList(Cursor cursor) {
+        List<GameSession> sessionList = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            GameSession session = new GameSession();
+            session.setSessionID(cursor.getInt(0));
+            session.setPatientID(cursor.getInt(1));
+            session.setGameID(cursor.getInt(2));
+            session.setMetrics(cursor.getDouble(3));
+            session.setDate(cursor.getString(4));
+            sessionList.add(session);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        close();
+        return sessionList;
+    }
+
+    /**
+     * Returns all game sessions for a particular patient and game
+     * @param patientID The patient to retrieve the session for
+     * @param gameID The game to retrieve the session for
+     * @return List of game sessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getAllSessions(String patientID, String gameID) throws SQLiteException{
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
+                new String[] {patientID, gameID});
+        return getSessionList(cursor);
     }
 
     //-----------------------------GameAssignment Methods-----------------------------//
@@ -386,36 +424,4 @@ public class DatabaseAccess {
         close();
     }
 
-    private List<GameSession> getSessionList(Cursor cursor) {
-        List<GameSession> sessionList = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            GameSession session = new GameSession();
-            session.setSessionID(cursor.getInt(0));
-            session.setPatientID(cursor.getInt(1));
-            session.setGameID(cursor.getInt(2));
-            session.setMetrics(cursor.getDouble(3));
-            session.setDate(cursor.getString(4));
-            sessionList.add(session);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        close();
-        return sessionList;
-    }
-
-    /**
-     * Returns all game sessions for a particular patient and game
-     * @param patientID The patient to retrieve the session for
-     * @param gameID The game to retrieve the session for
-     * @return List of game sessions
-     * @throws SQLiteException
-     */
-    public List<GameSession> getAllSessions(String patientID, String gameID) throws SQLiteException{
-        open();
-        cursor = db.rawQuery(
-                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
-                new String[] {patientID, gameID});
-        return getSessionList(cursor);
-    }
 }

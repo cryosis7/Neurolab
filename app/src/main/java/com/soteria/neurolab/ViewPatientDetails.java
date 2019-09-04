@@ -18,6 +18,7 @@ import com.soteria.neurolab.database.DatabaseAccess;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ViewPatientDetails extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class ViewPatientDetails extends AppCompatActivity {
          */
         try {
             Bundle viewBundle = getIntent().getExtras();
-            tempPatientIdentifier = viewBundle.getString("PATIENT_ID");
+            tempPatientIdentifier = viewBundle.getString("PATIENT_REFERENCE");
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(),"No patients passed, pleased try again",Toast.LENGTH_SHORT).show();
             onBackPressed();
@@ -52,18 +53,19 @@ public class ViewPatientDetails extends AppCompatActivity {
          */
         List<com.soteria.neurolab.models.GameSession> allSessions = null;
         String tempLastTimePlayed = "";
-        for( int i = 1; i < db.getGames().size(); i++)
+        for( int i = 1; i < db.getGames().size() + 1; i++)
         {
             try {
+                
                 allSessions.addAll(getSessionDate(patientIdentifier, Integer.toString(i)));
                 for (com.soteria.neurolab.models.GameSession m: allSessions)
                 {
-                    if(tempLastTimePlayed == null)
+                    if(tempLastTimePlayed.equals(""))
                     {
                         tempLastTimePlayed = m.getDate();
                     }
-                    Date sessionDate = new SimpleDateFormat("yyyy/mm/dd").parse(m.getDate());
-                    Date highestDate = new SimpleDateFormat("yyyy/mm/dd").parse(tempLastTimePlayed);
+                    Date sessionDate = new SimpleDateFormat("yyyy/mm/dd", Locale.ENGLISH).parse(m.getDate());
+                    Date highestDate = new SimpleDateFormat("yyyy/mm/dd", Locale.ENGLISH).parse(tempLastTimePlayed);
                     if(sessionDate.compareTo(highestDate) > 0)
                     {
                         tempLastTimePlayed = sessionDate.toString();
@@ -104,7 +106,7 @@ public class ViewPatientDetails extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
-               gameIntent.putExtra("PATIENT_ID", patientIdentifier);
+               gameIntent.putExtra("PATIENT_REFERENCE", patientIdentifier);
                startActivity(gameIntent);
             }
         });
@@ -117,7 +119,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
                 /*
                Intent manageIntent = new Intent(this, TODO add link to manage patient here)
-               manageIntent.putExtra("PATIENT_ID", patientIdentifier);
+               manageIntent.putExtra("PATIENT_REFERENCE", patientIdentifier);
                startActivity(manageIntent);
                 */
             }
@@ -129,14 +131,14 @@ public class ViewPatientDetails extends AppCompatActivity {
         reportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                Intent reportIntent = new Intent(ViewPatientDetails.this, ViewReportActivity.class);
-               reportIntent.putExtra("PATIENT_ID", patientIdentifier);
+               reportIntent.putExtra("PATIENT_REFERENCE", patientIdentifier);
                startActivity(reportIntent);
             }
         });
 
         /*When the delete patient button is pressed, ask the user for confirmation. If they agree,
           remove the patient from the database and send the user to the create patient page.
-          TODO add link to search patient and remove patient from database once created, remove toast once done. */
+         */
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Build the alert dialog warning the user of their action.
@@ -147,11 +149,11 @@ public class ViewPatientDetails extends AppCompatActivity {
                 deleteBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO enter code to remove patient from database here
+                        DatabaseAccess dbDelete = DatabaseAccess.getInstance(getApplicationContext());
+                        com.soteria.neurolab.models.Patient patientToDelete = dbDelete.getPatient(patientIdentifier);
+                        dbDelete.deletePatient(patientToDelete);
                         dialogInterface.cancel();
-                        Toast.makeText(getApplicationContext(),"DELETE PRESSED: Removed patient, send to search",Toast.LENGTH_SHORT).show();
-                        //TODO remove comment once merged with SearchCreateDeleteActivity
-                        //startActivity(new Intent(this, SearchCreateDeleteActivity.class));
+                        startActivity(new Intent(ViewPatientDetails.this, SearchCreateDeleteActivity.class));
                     }
                 });
                 //If cancel is pressed, close the alert dialog.
@@ -194,15 +196,15 @@ public class ViewPatientDetails extends AppCompatActivity {
 
     /** Determines the behaviour of options selected from the action bar. Options include displaying
      *  the disclaimer and sending the user back to the main menu.
-     *  TODO insert link for logout and database functions for removal
+     *  TODO insert link for logout
      *
-     *  @param menu - The identifier of the item selected from the top bar.
+     *  @param menuItem - The identifier of the item selected from the top bar.
      *  @return true if an option was able to be selected and false if an exception occurred.
      */
-    public boolean onOptionsItemSelected(MenuItem menu)
+    public boolean onOptionsItemSelected(MenuItem menuItem)
     {
         try {
-             switch(menu.getItemId()) {
+             switch(menuItem.getItemId()) {
                  //If the back button is pressed, return the user to the last visited page
                  case android.R.id.home:
                      super.onBackPressed();
@@ -257,7 +259,6 @@ public class ViewPatientDetails extends AppCompatActivity {
     public List<com.soteria.neurolab.models.GameSession> getSessionDate(String patientIdentifier, String gameID)
     {
         DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
-        List<com.soteria.neurolab.models.GameSession> gameSessions = db.getAllSessions(patientIdentifier, gameID);
-        return gameSessions;
+        return db.getAllSessions(patientIdentifier, gameID);
     }
 }
