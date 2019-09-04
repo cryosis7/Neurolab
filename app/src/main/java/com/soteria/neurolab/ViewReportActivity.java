@@ -49,20 +49,6 @@ public class ViewReportActivity extends AppCompatActivity {
             throw new IllegalArgumentException("Expected Extra 'PATIENT_REFERENCE' in Intent - Received none");
 
         initializeUIElements();
-
-        //TODO: Remove
-        //Adding game assignments so they are visible in drop down list for testing purposes
-        //Take this out later =======================
-        try {
-            db.createAssignment(new GameAssignment(2, 1, 1));
-            db.createAssignment(new GameAssignment(3, 1, 1));
-            db.createAssignment(new GameAssignment(4, 1, 1));
-        }
-        catch (SQLiteException e) {
-            Log.e(TAG, e.getMessage());
-        }
-        //Take this out later =======================
-
         populateGameList();
         findViewById(R.id.view_report_all_button).performClick();
     }
