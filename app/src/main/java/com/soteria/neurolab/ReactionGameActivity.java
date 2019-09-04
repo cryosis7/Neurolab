@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.GameSession;
+
 import java.lang.ref.WeakReference;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
 public class ReactionGameActivity extends AppCompatActivity {
-    private String patientID;
+    private int patientID;
     private ReactionTimer reactionTimer;
     private static long startTime = -1;
     private int round = 0;
@@ -26,9 +30,8 @@ public class ReactionGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reaction_game);
 
         Intent intent = getIntent();
-        if (intent.hasExtra("PATIENT_ID"))
-            patientID = intent.getStringExtra("PATIENT_ID");
-        else
+        patientID = intent.getIntExtra("PATIENT_ID", -1);
+        if (patientID == -1)
             throw new IllegalArgumentException("Expected Extra 'PATIENT_ID' in Intent - Received none");
     }
 
@@ -79,8 +82,9 @@ public class ReactionGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Averages the results will eventually save to the database and launches the next activity.
-     * bundles two extras into the intent.
+     * Averages the results and will save it to the database.
+     * It then launches the next activity. bundles two extras into the intent:
+     * PATIENT_ID & GAME_SCORE (An int value representing the gameSession metric)
      */
     private void endGame() {
         int avgResult = 0;
@@ -88,7 +92,10 @@ public class ReactionGameActivity extends AppCompatActivity {
             avgResult += x;
         avgResult /= results.length;
 
-        //TODO: Save to database
+        int gameID = 1;
+        GameSession gameSession = new GameSession(patientID, gameID, avgResult, new Date());
+        DatabaseAccess db = new DatabaseAccess(this);
+        db.createSession(gameSession);
 
         Intent launchGame = new Intent(this, TempLauncherActivity.class);
         launchGame.putExtra("PATIENT_ID", patientID);

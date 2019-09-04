@@ -9,6 +9,7 @@
         <item name="colorError">@color/colorWarning</item>
         <item name="android:textColorPrimary">@color/colorTextPrimary</item>
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
+        <item name="colorButtonNormal">@color/colorButtonDefault</item>
     </style>
 
     <!-- Blue Text Button theme (Text only button, no background) -->
@@ -33,6 +34,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="ToggleButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_width">150sp</item>
+    </style>
+
     <!-- Text Sub Head  -->
     <style name="TextSubHead" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:textSize">50sp</item>
@@ -43,6 +50,14 @@
     <!-- Text Body -->
     <style name="TextBody" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">36sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Text small grey -->
+    <style name="TextSmall" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -74,4 +89,12 @@
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">36sp</item>
     </style>
+
+    <style name="SpinnerTheme">
+        <!-- Color when pressed -->
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
 </resources>

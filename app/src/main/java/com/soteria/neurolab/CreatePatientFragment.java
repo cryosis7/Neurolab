@@ -141,7 +141,7 @@ public class CreatePatientFragment extends Fragment {
                 } else {
                     //TODO: Check database for duplicate PatientID
 
-                    String patientID = editPatientID.getText().toString();
+                    String patientID = editPatientID.getText().toString().toUpperCase();
                     boolean boolReaction = checkBoxReaction.isChecked();
                     boolean boolMotor = checkBoxMotor.isChecked();
                     boolean boolAttention = checkBoxAttention.isChecked();

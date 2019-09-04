@@ -23,7 +23,6 @@
     <string name="open">Open</string>
 
     <!-- View patient report page strings -->
-
     <string name="settings">
         <item>Disclaimer</item>
         <item>Logout</item>
@@ -44,7 +43,17 @@
     <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
-    
+
+    <!-- View report page strings -->
+    <string name="view_report_game_header">Game</string>
+    <string name="view_report_month">Month</string>
+    <string name="view_report_week">Week</string>
+    <string name="view_report_average">Average: %1$s</string>
+    <string name="view_report_highest">Highest: %1$s</string>
+    <string name="view_report_average_blank">Average: -</string>
+    <string name="view_report_highest_blank">Highest: -</string>
+    <string name="view_report_all">All</string>
+
     <!--View Patient Details Strings-->
     <string name="view_patient_details_delete_patient">DELETE PATIENT</string>
     <string name="view_patient_details_view_report">VIEW REPORT</string>
