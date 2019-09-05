@@ -489,6 +489,21 @@ public class DatabaseAccess {
         return gameAssignments;
     }
 
+    public boolean checkAssignments(Patient patient)throws SQLiteException{
+        open();
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return false;
+        } else {
+            cursor.close();
+            close();
+            return true;
+        }
+    }
+
     /**
      * Returns all game assignments for a particular patient from the database
      * @param patientReference The reference of the patient to retrieve game assignments for

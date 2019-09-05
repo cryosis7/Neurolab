@@ -14,12 +14,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.soteria.neurolab.database.DatabaseAccess;
-import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.models.Patient;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 
 public class ViewPatientDetails extends AppCompatActivity {
@@ -35,7 +33,7 @@ public class ViewPatientDetails extends AppCompatActivity {
         /* Variable declarations
          */
         String patientIdentifier = "";
-        DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+        final DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
         String lastTimePlayed;
 
         /* Attempts to retrieve data from an intent. If intent retrieval fails, sends the user back
@@ -87,9 +85,13 @@ public class ViewPatientDetails extends AppCompatActivity {
         TODO add link to send users to patient home once created, remove toast and comment markers  once done. */
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
-               gameIntent.putExtra("PATIENT_REFERENCE", patientReference);
-               startActivity(gameIntent);
+                if( db.checkAssignments(patient) ) {
+                    Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
+                    gameIntent.putExtra("PATIENT_ID", patient.getPatientID());
+                    startActivity(gameIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"ERROR - No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -230,17 +232,5 @@ public class ViewPatientDetails extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
                 return false;
         }
-    }
-
-    /**Returns a list of all patients from the database
-     *
-     * @param patientIdentifier - The reference of the patient selected
-     * @param gameID - The reference of the game being passed through
-     * @return the list of all sessions for the particular game
-     */
-    public List<GameSession> getSessionDates(String patientIdentifier, String gameID)
-    {
-        DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
-        return db.getAllSessions(patientIdentifier, gameID);
     }
 }

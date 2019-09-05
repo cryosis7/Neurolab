@@ -39,12 +39,14 @@
     <string name="next_round">Next Round</string>
 
     <!--Reaction Game Strings-->
+    <string name="reactionGame_title">Reaction Time</string>
     <string name="reactionGame_tap">TAP</string>
     <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!-- View report page strings -->
+    <string name="view_report_title">View Report</string>
     <string name="view_report_game_header">Game</string>
     <string name="view_report_month">Month</string>
     <string name="view_report_week">Week</string>
