@@ -1,15 +1,16 @@
 package com.soteria.neurolab;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ import com.soteria.neurolab.models.Game;
 import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.models.Patient;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 import com.soteria.neurolab.utilities.ReportGraph;
 
 import java.security.InvalidParameterException;
@@ -26,6 +28,8 @@ import java.util.List;
 
 public class ViewReportActivity extends AppCompatActivity {
     private final String TAG = "@ViewReportActivity";
+
+    Spinner gameListSpinner;
 
     private Patient patient; //This will be the patient that is transferred to this page by intent
     private Game game;
@@ -61,6 +65,51 @@ public class ViewReportActivity extends AppCompatActivity {
         initializeUIElements();
         populateGameList();
         findViewById(R.id.view_report_all_button).performClick();
+    }
+
+    /** Sets the actions bar to include an overflow menu with the disclaimer and log out options.
+     *
+     * @param menu - Instance of the top bar
+     * @return true if the top bar was able to be updated and false if an error occurred.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        /*Grabs the information from the overflow_menu resource in the menu folder and sets them
+          to the action bar*/
+        try {
+            getMenuInflater().inflate(R.menu.overflow_menu, menu);
+            return true;
+        } catch ( Exception e ) {
+            Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+                return true;
+            case R.id.action_disclaimer:
+                DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
+                dad.showDisclaimer(this, getResources());
+                return true;
+            //If the log out button is pressed, send the user to the log in screen
+            case R.id.action_logout:
+                //TODO link to logout, remove toast afterwards
+                Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
+                     /*startActivity(new Intent(this, //TODO add link to log in here));
+                       finish();
+                     */
+                return true;
+            //If an unknown option is selected, display an error to the user
+            default:
+                Toast.makeText(getApplicationContext(), "INVALID - Option not valid or completed", Toast.LENGTH_SHORT).show();
+                return false;
+        }
     }
 
     /**
@@ -108,6 +157,8 @@ public class ViewReportActivity extends AppCompatActivity {
                 drawGraphAndText();
             }
         });
+
+        gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
     }
 
     /**
@@ -136,7 +187,6 @@ public class ViewReportActivity extends AppCompatActivity {
         ArrayAdapter<String> gameListAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, listOfGames);
         gameListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        final Spinner gameListSpinner = findViewById(R.id.view_report_game_list_spinner);
         gameListSpinner.setAdapter(gameListAdapter);
         gameListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -182,15 +232,20 @@ public class ViewReportActivity extends AppCompatActivity {
     /**
      * Calculates the highest score for that game and time period and sets the text
      */
-    private void getHighestScore(){
-        double scoreHighest = 0;
-        for(GameSession gs: gameSessions)
-            scoreHighest = gs.getMetrics() > scoreHighest ? gs.getMetrics() : scoreHighest;
-        if(scoreHighest == 0){
-            highestScoreTextView.setText(getResources().getString(R.string.view_report_highest_blank));
+    private void getBestScore(){
+        double scoreBest = 0;
+        if(gameListSpinner.getSelectedItem().toString().equals(getResources().getString(R.string.title_reaction_time))) {
+            for (GameSession gs : gameSessions)
+                scoreBest = gs.getMetrics() < scoreBest || scoreBest == 0 ? gs.getMetrics() : scoreBest;
         } else {
-            highestScoreTextView.setText(getResources().getString(R.string.view_report_highest, String.valueOf(scoreHighest)));
+            for (GameSession gs : gameSessions)
+                scoreBest = gs.getMetrics() > scoreBest ? gs.getMetrics() : scoreBest;
         }
+            if (scoreBest == 0) {
+                highestScoreTextView.setText(getResources().getString(R.string.view_report_best_blank));
+            } else {
+                highestScoreTextView.setText(getResources().getString(R.string.view_report_best, String.valueOf(scoreBest)));
+            }
     }
 
     /**
@@ -214,7 +269,7 @@ public class ViewReportActivity extends AppCompatActivity {
                     break;
             }
             getAverageScore();
-            getHighestScore();
+            getBestScore();
         }
     }
 

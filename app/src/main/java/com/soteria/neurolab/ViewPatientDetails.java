@@ -2,6 +2,7 @@ package com.soteria.neurolab;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.Patient;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -151,10 +153,15 @@ public class ViewPatientDetails extends AppCompatActivity {
                 deleteConfirm.setOnShowListener( new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface arg0 ) {
+                        deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
+                        deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWarning));
+                        deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
                         deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
                     }
                 });
                 deleteConfirm.show();
+                TextView bodyText = deleteConfirm.findViewById(android.R.id.message);
+                bodyText.setTextSize(24);
             }
         });
     }
@@ -195,25 +202,8 @@ public class ViewPatientDetails extends AppCompatActivity {
                      return true;
                  //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                  case R.id.action_disclaimer:
-                     final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(this );
-                     disclaimerBuilder.setTitle("Disclaimer");
-                     disclaimerBuilder.setMessage(getString(R.string.disclaimer_body));
-                     //If the confirm button is pressed, close the dialog
-                     disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()  {
-                         @Override
-                         public void onClick(DialogInterface dialogInterface, int i) {
-                             dialogInterface.cancel();
-                         }
-                     });
-                     final AlertDialog showDisclaimer = disclaimerBuilder.create();
-                     //Change the button colour of the alert dialog to be the primary colour
-                     showDisclaimer.setOnShowListener( new DialogInterface.OnShowListener() {
-                         @Override
-                         public void onShow(DialogInterface arg0 ) {
-                             showDisclaimer.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
-                         }
-                     });
-                     showDisclaimer.show();
+                     DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
+                     dad.showDisclaimer(this, getResources());
                      return true;
                   //If the log out button is pressed, send the user to the log in screen
                  case R.id.action_logout:

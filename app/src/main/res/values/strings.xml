@@ -51,9 +51,9 @@
     <string name="view_report_month">Month</string>
     <string name="view_report_week">Week</string>
     <string name="view_report_average">Average: %1$s</string>
-    <string name="view_report_highest">Highest: %1$s</string>
+    <string name="view_report_best">Best: %1$s</string>
     <string name="view_report_average_blank">Average: -</string>
-    <string name="view_report_highest_blank">Highest: -</string>
+    <string name="view_report_best_blank">Best: -</string>
     <string name="view_report_all">All</string>
 
     <!--View Patient Details Strings-->
@@ -69,6 +69,8 @@
     <string name="view_patient_details_patient_date_not_found">Please exit the page and try again</string>
     <string name="view_patient_details_action_bar_title">Patient Details</string>
     <string name="view_patient_details_delete_patient_dialog">You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?</string>
+
+    <!--Generic Strings-->
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
     <string-array name="settings">
         <item>Disclaimer</item>
