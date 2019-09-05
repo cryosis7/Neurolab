@@ -215,7 +215,7 @@ public class DatabaseAccess {
     }
 
     /**
-     * Deletes a patient from the database
+     * Deletes a patient from all tables in the database
      * @param patient The patient to be deleted
      * @throws SQLiteException
      */
@@ -227,16 +227,6 @@ public class DatabaseAccess {
                 new String[]{Integer.toString(patient.getPatientID())});
         db.delete("Game_Session", "Patient_ID = ?",
                 new String[]{Integer.toString(patient.getPatientID())});
-        close();
-    }
-
-    /**
-     * Deletes all patients from the database, for testing purposes
-     * @throws SQLException
-     */
-    public void deleteAllPatients() throws SQLException {
-        open();
-        db.delete("Patient", null, null);
         close();
     }
 
@@ -556,4 +546,28 @@ public class DatabaseAccess {
         close();
     }
 
+    //---------------------------Other Methods---------------------------------//
+
+
+    public String getLatestDate(int patientID) {
+        String latestDate;
+
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? ORDER BY date DESC",
+                new String[]{String.valueOf(patientID)});
+
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return "No games have been played on this account";
+        }
+        else {
+            cursor.moveToFirst();
+            latestDate = (cursor.getString(4));
+            cursor.close();
+            close();
+            return latestDate;
+        }
+    }
 }

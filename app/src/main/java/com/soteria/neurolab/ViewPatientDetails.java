@@ -14,9 +14,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.GameSession;
+import com.soteria.neurolab.models.Patient;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,50 +34,31 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         /* Variable declarations
          */
-        String tempPatientIdentifier = "";
+        String patientIdentifier = "";
         DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+        String lastTimePlayed;
 
-        /* Attempts to retrieve data from an intent. If intent retrieval fails, insert placeholder data instead
+        /* Attempts to retrieve data from an intent. If intent retrieval fails, sends the user back
+           to the search patient screen.
          */
         try {
             Bundle viewBundle = getIntent().getExtras();
-            tempPatientIdentifier = viewBundle.getString("PATIENT_REFERENCE");
+            patientIdentifier = viewBundle.getString("PATIENT_REFERENCE");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(),"No patients passed, pleased try again",Toast.LENGTH_SHORT).show();
-            onBackPressed();
+            Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SearchPatientFragment.class));
+            finish();
         }
-        final String patientIdentifier = tempPatientIdentifier;
 
-        /*
-            Attempts to find the most recent date to save as a string by pulling from all sessions
-            the patient has done on their account. If no sessions are displayed, save a string
-            stating that.
+        /* Attempts to grab the most recent date the patient has played any game. It will attempt
+           to display the date in an appropriate format but if unable to due to a syntax error will
+           display the date as is.
          */
-        List<com.soteria.neurolab.models.GameSession> allSessions = null;
-        String tempLastTimePlayed = "";
-        for( int i = 1; i <= db.getGames().size() + 1; i++)
-        {
-            try {
-                allSessions.addAll(getSessionDate(patientIdentifier, Integer.toString(i)));
-                for (com.soteria.neurolab.models.GameSession m: allSessions)
-                {
-                    if(tempLastTimePlayed.equals(""))
-                    {
-                        tempLastTimePlayed = m.getDate();
-                    }
-                    Date sessionDate = new SimpleDateFormat("yyyy/mm/dd", Locale.ENGLISH).parse(m.getDate());
-                    Date highestDate = new SimpleDateFormat("yyyy/mm/dd", Locale.ENGLISH).parse(tempLastTimePlayed);
-                    if(sessionDate.compareTo(highestDate) > 0)
-                    {
-                        tempLastTimePlayed = sessionDate.toString();
-                    }
-                }
-            } catch ( Exception e ) {
-                tempLastTimePlayed = "No games played on this account";
-            }
-        }
-
-        final String lastTimePlayed = tempLastTimePlayed;
+        final String patientReference = patientIdentifier;
+        final Patient patient = db.getPatient(patientReference);
+        try {
+            lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
+        } catch ( ParseException e ) { lastTimePlayed = db.getLatestDate(patient.getPatientID()); }
 
         /*  Update the support action bar to set the back button and title to appropriate values
          */
@@ -96,7 +79,7 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         /*Code for changing the patientID and lastGamesRun text views to display the information
           passed through to it from another page. */
-        patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientIdentifier));
+        patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientReference));
         lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastTimePlayed));
 
 
@@ -105,7 +88,7 @@ public class ViewPatientDetails extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
-               gameIntent.putExtra("PATIENT_REFERENCE", patientIdentifier);
+               gameIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(gameIntent);
             }
         });
@@ -118,7 +101,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
                 /*
                Intent manageIntent = new Intent(this, TODO add link to manage patient here)
-               manageIntent.putExtra("PATIENT_REFERENCE", patientIdentifier);
+               manageIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(manageIntent);
                 */
             }
@@ -130,7 +113,7 @@ public class ViewPatientDetails extends AppCompatActivity {
         reportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                Intent reportIntent = new Intent(ViewPatientDetails.this, ViewReportActivity.class);
-               reportIntent.putExtra("PATIENT_REFERENCE", patientIdentifier);
+               reportIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(reportIntent);
             }
         });
@@ -149,7 +132,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DatabaseAccess dbDelete = DatabaseAccess.getInstance(getApplicationContext());
-                        com.soteria.neurolab.models.Patient patientToDelete = dbDelete.getPatient(patientIdentifier);
+                        com.soteria.neurolab.models.Patient patientToDelete = dbDelete.getPatient(patientReference);
                         dbDelete.deletePatient(patientToDelete);
                         dialogInterface.cancel();
                         startActivity(new Intent(ViewPatientDetails.this, SearchCreateDeleteActivity.class));
@@ -255,7 +238,7 @@ public class ViewPatientDetails extends AppCompatActivity {
      * @param gameID - The reference of the game being passed through
      * @return the list of all sessions for the particular game
      */
-    public List<com.soteria.neurolab.models.GameSession> getSessionDate(String patientIdentifier, String gameID)
+    public List<GameSession> getSessionDates(String patientIdentifier, String gameID)
     {
         DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
         return db.getAllSessions(patientIdentifier, gameID);
