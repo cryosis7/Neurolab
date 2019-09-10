@@ -44,9 +44,7 @@ public class ViewPatientDetailsUnitTest
     {
         Log.i("@Test", "--- --- --- --- Setting intents --- --- --- ---");
         Intent testIntent = new Intent();
-        testIntent.putExtra( "pID", "T3ST" );
-        testIntent.putExtra( "pLastDayPlayed", "1/1/1000");
-        testIntent.putExtra( "pLastTimePlayed", "23:59");
+        testIntent.putExtra( "PATIENT_REFERENCE", "PL15" );
         activityRule.launchActivity(testIntent);
     }
 
@@ -54,8 +52,8 @@ public class ViewPatientDetailsUnitTest
     public void intentTest()
     {
         Log.i("@Test", "--- --- --- --- Intent Test - Correct Info --- --- --- ---");
-        String testStringID = "Patient: T3ST";
-        String testStringDate = "Games last run: 1/1/1000 23:59";
+        String testStringID = "Patient: PL15";
+        String testStringDate = "Games last run: No games recorded on current patient";
 
         onView(withId(R.id.patientIDTitleTextView)).check(matches(allOf
                 (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),

@@ -58,7 +58,8 @@ public class ViewPatientDetails extends AppCompatActivity {
         final Patient patient = db.getPatient(patientReference);
         try {
             lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
-        } catch ( ParseException e ) { lastTimePlayed = db.getLatestDate(patient.getPatientID()); }
+        } catch ( ParseException e ) { lastTimePlayed = db.getLatestDate(patient.getPatientID());
+        } catch ( NullPointerException e ) { lastTimePlayed = "No games recorded on current patient"; }
 
         /*  Update the support action bar to set the back button and title to appropriate values
          */
@@ -140,6 +141,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                         dbDelete.deletePatient(patientToDelete);
                         dialogInterface.cancel();
                         startActivity(new Intent(ViewPatientDetails.this, SearchCreateDeleteActivity.class));
+                        finish();
                     }
                 });
                 //If cancel is pressed, close the alert dialog.

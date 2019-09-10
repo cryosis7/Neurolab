@@ -84,7 +84,7 @@ public class CreatePatientFragmentTest {
     public void testCreatePatient(){
         //Given - Database stuff will go here once implemented
         Log.i("@Test", "testCreatePatient: Entering valid patientID");
-        String patientID = "Jason93";
+        String patientID = "JASON93";
         onView(withId(R.id.inputPatientID)).perform(replaceText(patientID));
         onView(withId(R.id.inputPatientID)).check(matches(withText(patientID)));
 

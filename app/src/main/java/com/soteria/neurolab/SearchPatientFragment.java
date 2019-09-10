@@ -44,9 +44,8 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
      * @return A new instance of fragment SearchPatientFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchPatientFragment newInstance(String param1, String param2) {
-        SearchPatientFragment fragment = new SearchPatientFragment();
-        return fragment;
+    private static SearchPatientFragment newInstance(String param1, String param2) {
+        return new SearchPatientFragment();
     }
 
     @Override
@@ -62,7 +61,6 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
         final SearchView searchInput = view.findViewById(R.id.searchPatient_searchInput);
         final RecyclerView searchRecycler = view.findViewById(R.id.searchPatient_searchRecycler);
         searchInput.setOnQueryTextListener(this);
-
 
         //Set the recyclerview layout to set the information and the click listener
         searchRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -88,10 +86,9 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
 
 
     //Returns a list of all patients from the database
-    public List<String> getPatientList(){
+    private List<String> getPatientList(){
         DatabaseAccess db = DatabaseAccess.getInstance(getContext());
-        List<String> patients = db.getAllPatientReferences();
-        return patients;
+        return db.getAllPatientReferences();
     }
 
     @Override

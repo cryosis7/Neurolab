@@ -112,4 +112,16 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
                 return false;
         }
     }
+
+    /* Action that occurs when the back button on the device or app is pressed on search, create or
+    delete fragments. Hardcoded to prevent erroneous data from being selected if going back to the
+    view patients screen after a patient has been deleted.
+
+    TODO replace with link to log in screen when created
+     */
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+    }
 }

@@ -32,7 +32,7 @@ public class ReactionGameActivityTest {
     public void setIntent() {
         Log.i("@Test", "------------------------------------------");
         Intent intent = new Intent();
-        intent.putExtra("PATIENT_ID", "TEST_ID");
+        intent.putExtra("PATIENT_ID", 1);
         rule.launchActivity(intent);
     }
 

@@ -36,7 +36,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 public class SearchPatientFragmentTest {
 
     @Rule
-    public ActivityTestRule<SearchCreateDeleteActivity> rule = new ActivityTestRule(SearchCreateDeleteActivity.class);
+    public ActivityTestRule<SearchCreateDeleteActivity> rule = new ActivityTestRule<>(SearchCreateDeleteActivity.class);
 
     @Before
     public void setUp() throws Exception {
