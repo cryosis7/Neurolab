@@ -56,6 +56,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_create_delete_page);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -119,6 +120,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
 
     TODO replace with link to log in screen when created
      */
+
     @Override
     public void onBackPressed()
     {

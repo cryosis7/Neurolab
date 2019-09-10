@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,9 +33,8 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     private OnFragmentInteractionListener mListener;
     private SearchPatientRecyclerAdapter adapter;
 
-
     public SearchPatientFragment() {
-        // Required empty public constructor
+
     }
 
     /**
@@ -57,12 +57,11 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_search_patient, container, false);
-
         final SearchView searchInput = view.findViewById(R.id.searchPatient_searchInput);
         final RecyclerView searchRecycler = view.findViewById(R.id.searchPatient_searchRecycler);
         searchInput.setOnQueryTextListener(this);
 
-        //Set the recyclerview layout to set the information and the click listener
+        //Set the recycler view layout to set the information and the click listener
         searchRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         adapter = new SearchPatientRecyclerAdapter(this.getActivity(), getPatientList());
         adapter.setClickListener(this);
@@ -142,5 +141,10 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void refreshFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 }
