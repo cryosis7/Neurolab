@@ -1,11 +1,13 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,19 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.Game;
+import com.soteria.neurolab.models.GameAssignment;
+import com.soteria.neurolab.models.Patient;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,33 +147,47 @@ public class CreatePatientFragment extends Fragment {
                 } else if(!matcher.matches()) {
                     editPatientIDLayout.setErrorEnabled(true);
                     editPatientIDLayout.setError(getString(R.string.error_patient_id_special_characters));
+                } else if( editPatientID.getText().toString().length() > 10 ) {
+                    editPatientIDLayout.setErrorEnabled(true);
+                    editPatientIDLayout.setError(getString(R.string.error_patient_id_length));
                 } else {
                     //TODO: Check database for duplicate PatientID
+                    final String patientReference = editPatientID.getText().toString().toUpperCase();
+                    DatabaseAccess db = DatabaseAccess.getInstance(getContext());
 
-                    String patientID = editPatientID.getText().toString().toUpperCase();
-                    boolean boolReaction = checkBoxReaction.isChecked();
-                    boolean boolMotor = checkBoxMotor.isChecked();
-                    boolean boolAttention = checkBoxAttention.isChecked();
-                    boolean boolMemory = checkBoxMemory.isChecked();
-                    int attempts = seekAttemptsBar.getProgress() + 1;
+                    if( patientNameCheck(db.getAllPatients(), patientReference) ) {
+                        db.createPatient(patientReference);
+                        Patient newPatient = db.getPatient(patientReference);
+                        int attempts = seekAttemptsBar.getProgress() + 1;
 
-                    //TODO: Enter patient data into database
+                        if(checkBoxReaction.isChecked())
+                            db.createAssignment(new GameAssignment(1, newPatient.getPatientID(), attempts ));
+                        if(checkBoxMemory.isChecked())
+                            db.createAssignment(new GameAssignment(2, newPatient.getPatientID(), attempts ));
+                        if(checkBoxMotor.isChecked())
+                            db.createAssignment(new GameAssignment(3, newPatient.getPatientID(), attempts ));
+                        if(checkBoxAttention.isChecked())
+                            db.createAssignment(new GameAssignment(4, newPatient.getPatientID(), attempts ));
 
-                    Snackbar patientCreatedSnackbar = Snackbar.make(snackbarView, "Patient " + patientID + " created", Snackbar.LENGTH_LONG)
-                            .setAction(getString(R.string.open), new View.OnClickListener(){
-                                @Override
-                                public void onClick(View view) {
-                                    Toast openPatientToast = Toast.makeText(getContext(), "Implement view patient page", Toast.LENGTH_SHORT);
-                                    openPatientToast.show();
-                                }
-                            });
-                    TextView snackbarTextView = patientCreatedSnackbar.getView().findViewById(R.id.snackbar_text);
-                    TextView snackbarActionTextView = patientCreatedSnackbar.getView().findViewById(R.id.snackbar_action);
-                    snackbarTextView.setTextSize(28);
-                    snackbarActionTextView.setTextSize(28);
-                    patientCreatedSnackbar.show();
-
-                    editPatientID.setText("");
+                        Snackbar patientCreatedSnackbar = Snackbar.make(snackbarView, "Patient " + patientReference + " created", Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.open), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent viewIntent = new Intent(getActivity(), ViewPatientDetails.class);
+                                        viewIntent.putExtra("PATIENT_REFERENCE", patientReference);
+                                        startActivity(viewIntent);
+                                    }
+                                });
+                        TextView snackbarTextView = patientCreatedSnackbar.getView().findViewById(R.id.snackbar_text);
+                        TextView snackbarActionTextView = patientCreatedSnackbar.getView().findViewById(R.id.snackbar_action);
+                        snackbarTextView.setTextSize(28);
+                        snackbarActionTextView.setTextSize(28);
+                        patientCreatedSnackbar.show();
+                        editPatientID.setText("");
+                    } else {
+                        editPatientIDLayout.setErrorEnabled(true);
+                        editPatientIDLayout.setError(getString(R.string.error_patient_id_in_use));
+                    }
                 }
             }
         });
@@ -222,5 +245,15 @@ public class CreatePatientFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private boolean patientNameCheck( List<Patient> databasePatients, String newID )
+    {
+        for( Patient temp : databasePatients )
+        {
+            if( temp.getPatientReference().equals(newID))
+                return false;
+        }
+        return true;
     }
 }

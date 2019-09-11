@@ -136,7 +136,7 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_report_highest_blank"
+        android:text="@string/view_report_best_blank"
         app:layout_constraintStart_toStartOf="@+id/view_report_text_average"
         app:layout_constraintTop_toBottomOf="@+id/view_report_text_average" />
 

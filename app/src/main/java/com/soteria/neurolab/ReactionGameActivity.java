@@ -1,10 +1,12 @@
 package com.soteria.neurolab;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +29,11 @@ public class ReactionGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle(R.string.reactionGame_title);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_reaction_game);
+
 
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
@@ -92,16 +98,32 @@ public class ReactionGameActivity extends AppCompatActivity {
             avgResult += x;
         avgResult /= results.length;
 
-        int gameID = 1;
+        int gameID = 1; //TODO: Change to actual game ID
         GameSession gameSession = new GameSession(patientID, gameID, avgResult, new Date());
         DatabaseAccess db = new DatabaseAccess(this);
         db.createSession(gameSession);
 
-        Intent launchGame = new Intent(this, TempLauncherActivity.class);
+        //TODO change view patient details to the score screen once implemented
+        /*Intent launchGame = new Intent(this, ViewPatientDetails.class);
         launchGame.putExtra("PATIENT_ID", patientID);
         launchGame.putExtra("GAME_SCORE", avgResult);
         startActivity(launchGame);
+        */
+        onBackPressed();
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+                return true;
+            default:
+                finish();
+                return false;
+        }
     }
 
     /**

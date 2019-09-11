@@ -1,40 +1,65 @@
 package com.soteria.neurolab;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.Patient;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class ViewPatientDetails extends AppCompatActivity {
 
+    /**
+     *  Handles the creation of UI elements that change on load and button press logic.
+     *
+     * @param savedInstanceState - I don't know why does life do this to me I don't know I don't know
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         /* Variable declarations
          */
-        String patientIdentifier, lastDayPlayed, lastTimePlayed;
+        String patientIdentifier = "";
+        final DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
+        String lastTimePlayed;
 
-        /* Attempts to retrieve data from an intent. If intent retrieval fails, insert placeholder data instead
+        /* Attempts to retrieve data from an intent. If intent retrieval fails, sends the user back
+           to the search patient screen.
          */
         try {
             Bundle viewBundle = getIntent().getExtras();
-            patientIdentifier = viewBundle.getString("pID");
-            lastDayPlayed = viewBundle.getString("pLastDayPlayed");
-            lastTimePlayed = viewBundle.getString( "pLastTimePlayed");
+            patientIdentifier = viewBundle.getString("PATIENT_REFERENCE");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(),"No patients passed, go back to try again",Toast.LENGTH_SHORT).show();
-            patientIdentifier = "/0";
-            lastDayPlayed = "01/01/2019";
-            lastTimePlayed = "00:00";
+            Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SearchPatientFragment.class));
+            finish();
         }
+
+        /* Attempts to grab the most recent date the patient has played any game. It will attempt
+           to display the date in an appropriate format but if unable to due to a syntax error will
+           display the date as is.
+         */
+        final String patientReference = patientIdentifier;
+        final Patient patient = db.getPatient(patientReference);
+        try {
+            lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
+        } catch ( ParseException e ) { lastTimePlayed = db.getLatestDate(patient.getPatientID());
+        } catch ( NullPointerException e ) { lastTimePlayed = "No games recorded on current patient"; }
 
         /*  Update the support action bar to set the back button and title to appropriate values
          */
@@ -53,33 +78,23 @@ public class ViewPatientDetails extends AppCompatActivity {
         final Button reportButton = findViewById(R.id.viewReportButton);
         final Button deleteButton = findViewById(R.id.deletePatientButton);
 
-        /* Hides buttons for patient access if no patient is passed through. This will only occur
-           as a result of an error in passing information. Prevents progression
-         */
-        if(patientIdentifier.equals("/0"))
-        {
-            runButton.setVisibility(View.GONE);
-            manageButton.setVisibility(View.GONE);
-            reportButton.setVisibility(View.GONE);
-            deleteButton.setVisibility(View.GONE);
-        }
-
         /*Code for changing the patientID and lastGamesRun text views to display the information
           passed through to it from another page. */
-        patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientIdentifier));
-        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastDayPlayed, lastTimePlayed));
+        patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientReference));
+        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastTimePlayed));
 
 
         /*When run games is pressed, sends user to the patient profile
         TODO add link to send users to patient home once created, remove toast and comment markers  once done. */
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"RUN GAMES PRESSED: Sending to patient home",Toast.LENGTH_SHORT).show();
-               /*
-               Intent gameIntent = new Intent(this, TODO add link to patient home here)
-               gameIntent.putExtra("pID", patientID);
-               startActivity(gameIntent);
-                */
+                if( db.checkAssignments(patient) ) {
+                    Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
+                    gameIntent.putExtra("PATIENT_ID", patient.getPatientID());
+                    startActivity(gameIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"ERROR - No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -91,7 +106,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
                 /*
                Intent manageIntent = new Intent(this, TODO add link to manage patient here)
-               manageIntent.putExtra("pID", patientID);
+               manageIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(manageIntent);
                 */
             }
@@ -99,21 +114,18 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         /*When the view report button is pressed, send the user to the report screen for the current
           patient.
-          TODO add link to send users to the view report screen once created, remove toast and comment markers once done. */
+        */
         reportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"VIEW REPORT PRESSED: Sending to report screen",Toast.LENGTH_SHORT).show();
-                /*
-               Intent reportIntent = new Intent(this, TODO add link to reports here)
-               reportIntent.putExtra("pID", patientID);
+               Intent reportIntent = new Intent(ViewPatientDetails.this, ViewReportActivity.class);
+               reportIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(reportIntent);
-                */
             }
         });
 
         /*When the delete patient button is pressed, ask the user for confirmation. If they agree,
           remove the patient from the database and send the user to the create patient page.
-          TODO add link to search patient and remove patient from database once created, remove toast once done. */
+         */
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Build the alert dialog warning the user of their action.
@@ -124,11 +136,12 @@ public class ViewPatientDetails extends AppCompatActivity {
                 deleteBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO enter code to remove patient from database here
+                        DatabaseAccess dbDelete = DatabaseAccess.getInstance(getApplicationContext());
+                        com.soteria.neurolab.models.Patient patientToDelete = dbDelete.getPatient(patientReference);
+                        dbDelete.deletePatient(patientToDelete);
                         dialogInterface.cancel();
-                        Toast.makeText(getApplicationContext(),"DELETE PRESSED: Removed patient, send to search",Toast.LENGTH_SHORT).show();
-                        //TODO remove comment once merged with SearchCreateDeleteActivity
-                        //startActivity(new Intent(this, SearchCreateDeleteActivity.class));
+                        startActivity(new Intent(ViewPatientDetails.this, SearchCreateDeleteActivity.class));
+                        finish();
                     }
                 });
                 //If cancel is pressed, close the alert dialog.
@@ -142,27 +155,23 @@ public class ViewPatientDetails extends AppCompatActivity {
                 deleteConfirm.setOnShowListener( new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface arg0 ) {
+                        deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
+                        deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWarning));
+                        deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
                         deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
                     }
                 });
                 deleteConfirm.show();
-            }
-        });
-
-        /*When the home button is pressed, send the user to the search patient screen
-          TODO add link to search patient once created, remove toast once done. */
-        final ImageButton homeButton = findViewById(R.id.homeButton);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"HOME BUTTON PRESSED: Sending to search patients screen",Toast.LENGTH_SHORT).show();
-                //TODO remove comment once merged with SearchCreateDeleteActivity
-                /*startActivity(new Intent(this, SearchCreateDeleteActivity.class));
-                  finish();*/
+                TextView bodyText = deleteConfirm.findViewById(android.R.id.message);
+                bodyText.setTextSize(24);
             }
         });
     }
 
-    /** Sets the actions bar to include an overflow menu.
+    /** Sets the actions bar to include an overflow menu with the disclaimer and log out options.
+     *
+     * @param menu - Instance of the top bar
+     * @return true if the top bar was able to be updated and false if an error occurred.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -178,38 +187,25 @@ public class ViewPatientDetails extends AppCompatActivity {
         }
     }
 
-    /** Determines the behaviour of options selected from the action bar.
-     *  TODO insert link for logout and database functions for removal
+    /** Determines the behaviour of options selected from the action bar. Options include displaying
+     *  the disclaimer and sending the user back to the main menu.
+     *  TODO insert link for logout
+     *
+     *  @param menuItem - The identifier of the item selected from the top bar.
+     *  @return true if an option was able to be selected and false if an exception occurred.
      */
-    public boolean onOptionsItemSelected(MenuItem menu)
+    public boolean onOptionsItemSelected(MenuItem menuItem)
     {
         try {
-             switch(menu.getItemId()) {
+             switch(menuItem.getItemId()) {
                  //If the back button is pressed, return the user to the last visited page
                  case android.R.id.home:
                      super.onBackPressed();
                      return true;
                  //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                  case R.id.action_disclaimer:
-                     final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(this );
-                     disclaimerBuilder.setTitle("Disclaimer");
-                     disclaimerBuilder.setMessage(getString(R.string.disclaimer_body));
-                     //If the confirm button is pressed, close the dialog
-                     disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()  {
-                         @Override
-                         public void onClick(DialogInterface dialogInterface, int i) {
-                             dialogInterface.cancel();
-                         }
-                     });
-                     final AlertDialog showDisclaimer = disclaimerBuilder.create();
-                     //Change the button colour of the alert dialog to be the primary colour
-                     showDisclaimer.setOnShowListener( new DialogInterface.OnShowListener() {
-                         @Override
-                         public void onShow(DialogInterface arg0 ) {
-                             showDisclaimer.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
-                         }
-                     });
-                     showDisclaimer.show();
+                     DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
+                     dad.showDisclaimer(this, getResources());
                      return true;
                   //If the log out button is pressed, send the user to the log in screen
                  case R.id.action_logout:

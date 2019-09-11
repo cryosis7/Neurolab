@@ -215,7 +215,7 @@ public class DatabaseAccess {
     }
 
     /**
-     * Deletes a patient from the database
+     * Deletes a patient from all tables in the database
      * @param patient The patient to be deleted
      * @throws SQLiteException
      */
@@ -223,16 +223,10 @@ public class DatabaseAccess {
         open();
         db.delete("Patient", "Patient_ID = ?",
                 new String[]{Integer.toString(patient.getPatientID())});
-        close();
-    }
-
-    /**
-     * Deletes all patients from the database, for testing purposes
-     * @throws SQLException
-     */
-    public void deleteAllPatients() throws SQLException {
-        open();
-        db.delete("Patient", null, null);
+        db.delete("Game_Assignment", "Patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
+        db.delete("Game_Session", "Patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
         close();
     }
 
@@ -495,6 +489,21 @@ public class DatabaseAccess {
         return gameAssignments;
     }
 
+    public boolean checkAssignments(Patient patient)throws SQLiteException{
+        open();
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return false;
+        } else {
+            cursor.close();
+            close();
+            return true;
+        }
+    }
+
     /**
      * Returns all game assignments for a particular patient from the database
      * @param patientReference The reference of the patient to retrieve game assignments for
@@ -550,5 +559,30 @@ public class DatabaseAccess {
                         Integer.toString(assignment.getGameID())
                 });
         close();
+    }
+
+    //---------------------------Other Methods---------------------------------//
+
+
+    public String getLatestDate(int patientID) {
+        String latestDate;
+
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? ORDER BY date DESC",
+                new String[]{String.valueOf(patientID)});
+
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return "No games have been played on this account";
+        }
+        else {
+            cursor.moveToFirst();
+            latestDate = (cursor.getString(4));
+            cursor.close();
+            close();
+            return latestDate;
+        }
     }
 }

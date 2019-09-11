@@ -1,13 +1,12 @@
 package com.soteria.neurolab;
 
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -57,14 +56,13 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_create_delete_page);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         toolbar = getSupportActionBar();
-        toolbar.setHomeButtonEnabled(true);
-        toolbar.setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("Search Patient");
 
         fragmentManager.beginTransaction().add(R.id.fragment_layout, createPatientFragment, "2").hide(createPatientFragment).commit();
@@ -78,55 +76,54 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /*Grabs the information from the overflow_menu resource in the menu folder and sets them
+          to the action bar*/
         try {
             getMenuInflater().inflate(R.menu.overflow_menu, menu);
             return true;
-        } catch ( Exception e ) {
-            Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "EXCEPTION " + e + " occurred!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
-    public boolean onOptionsItemSelected(MenuItem menu)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+                return true;
+            case R.id.action_disclaimer:
+                DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
+                dad.showDisclaimer(this, getResources());
+                return true;
+            //If the log out button is pressed, send the user to the log in screen
+            case R.id.action_logout:
+                //TODO link to logout, remove toast afterwards
+                Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
+                     /*startActivity(new Intent(this, //TODO add link to log in here));
+                       finish();
+                     */
+                return true;
+            //If an unknown option is selected, display an error to the user
+            default:
+                Toast.makeText(getApplicationContext(), "INVALID - Option not valid or completed", Toast.LENGTH_SHORT).show();
+                return false;
+        }
+    }
+
+    /* Action that occurs when the back button on the device or app is pressed on search, create or
+    delete fragments. Hardcoded to prevent erroneous data from being selected if going back to the
+    view patients screen after a patient has been deleted.
+
+    TODO replace with link to log in screen when created
+     */
+
+    @Override
+    public void onBackPressed()
     {
-        try {
-            switch(menu.getItemId()) {
-                case R.id.action_disclaimer:
-                    final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(this );
-                    disclaimerBuilder.setTitle("Disclaimer");
-                    disclaimerBuilder.setMessage("Neurolab by Soteria is designed as an assistant tool only.\n" +
-                            "It should not be relied upon for treatment, diagnosis or professional medical advice.\n" +
-                            "If you have any queries about its use, please consult your local physician or health care provider.\n\n" +
-                            "By accessing and using this app, you have confirmed that you have read, understood and accepted the above statement.");
-                    disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()  {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-                    final AlertDialog showDisclaimer = disclaimerBuilder.create();
-                    showDisclaimer.setOnShowListener( new DialogInterface.OnShowListener() {
-                        @Override
-                        public void onShow(DialogInterface arg0 ) {
-                            showDisclaimer.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
-                        }
-                    });
-                    showDisclaimer.show();
-                    return true;
-                case R.id.action_logout:
-                    //TODO link to logout, remove toast afterwards
-                    Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(this, //TODO add link to log in here));
-                    return true;
-                default:
-                    return false;
-            }
-        } catch(Exception e) {
-            Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
+        finish();
     }
-
 }
