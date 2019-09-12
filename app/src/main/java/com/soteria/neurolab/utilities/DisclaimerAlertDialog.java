@@ -10,8 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.soteria.neurolab.R;
 
 public class DisclaimerAlertDialog {
-    public void showDisclaimer(Context callingClass, Resources temp) {
-        final Resources calledResource = temp;
+    public void showDisclaimer(Context callingClass, Resources calledResource) {
         final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(callingClass);
         disclaimerBuilder.setTitle("Disclaimer");
         disclaimerBuilder.setMessage(calledResource.getString(R.string.disclaimer_body));

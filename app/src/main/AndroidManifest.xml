@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ReactionGameActivity" />
+        <activity android:name=".VisualMemoryActivity" android:exported="true" />
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
         <activity android:name=".TestGraphActivity" />
