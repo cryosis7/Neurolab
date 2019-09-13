@@ -50,8 +50,8 @@
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!--Visual Memory Game Strings-->
-    <string name="visual_memory_game_lives_count">Lives remaining : %1$d</string>
-    <string name="visual_memory_game_current_level">Level $1$d</string>
+    <string name="visual_memory_game_lives_count">Lives remaining: %1$s</string>
+    <string name="visual_memory_game_current_level">Level %1$s</string>
     <string name="visual_memory_game_start_game">Start Game</string>
 
     <!-- View report page strings -->
