@@ -30,10 +30,11 @@
         <EditText
             android:id="@+id/login_password_edittext"
             android:layout_width="0dp"
-            android:layout_weight="0.7"
             android:layout_height="wrap_content"
+            android:layout_weight="0.7"
             android:ems="10"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:text="111111"/>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -43,7 +44,7 @@
 
     <Button
         android:id="@+id/login_sign_in_button"
-        android:enabled="false"
+        android:enabled="true"
         style="@style/TextButtonBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
