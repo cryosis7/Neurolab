@@ -29,7 +29,7 @@ public class ReactionGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle(R.string.reactionGame_title);
+        getSupportActionBar().setTitle(R.string.title_reaction_time);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_reaction_game);
