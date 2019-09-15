@@ -6,26 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.soteria.neurolab.utilities.PasswordAuthentication;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
-
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -57,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     public void signInButtonHandler(View view) {
         char[] password = ((EditText) findViewById(R.id.login_password_edittext)).getText().toString().toCharArray();
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.sharedPreferencesFilename), MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.apply();
 

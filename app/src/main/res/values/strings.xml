@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Neurolab</string>
-    <string name="app_name_login">Neurolab | Sign In</string>
 
     <!-- Page titles -->
     <string name="title_search_patient">Search Patient</string>
@@ -84,5 +83,5 @@
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
-    <string name="sharedPreferencesFilename">neurolabPrefs</string>
+    <string name="shared_preferences_filename">neurolabPrefs</string>
 </resources>

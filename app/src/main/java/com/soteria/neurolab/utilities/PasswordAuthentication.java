@@ -3,6 +3,7 @@ package com.soteria.neurolab.utilities;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import android.util.Base64;
+import android.util.Log;
 
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -83,6 +84,7 @@ public final class PasswordAuthentication
      */
     public boolean authenticate(char[] password, String token)
     {
+        token = token.replaceAll("[\\n\\r\\s]", "");
         Matcher m = LAYOUT.matcher(token);
         if (!m.matches())
             throw new IllegalArgumentException("Invalid token format");
