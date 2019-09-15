@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Neurolab</string>
+    <string name="app_name_login">Neurolab | Sign In</string>
 
     <!-- Page titles -->
     <string name="title_search_patient">Search Patient</string>
@@ -17,9 +18,13 @@
     <string name="enter_unique_id">Enter a unique ID</string>
     <string name="attempts_per_game_title">Attempts Per Game</string>
     <string name="create_button">Create</string>
+    <string name="identifier_disclaimer">Please make sure the patient ID does not contain any
+    personal information, including but not limited to the patients name, age, address and date of birth</string>
     <string name="alpha_numeric_regex">^[a-zA-Z0-9]+$</string>
     <string name="error_patient_id_blank">PatientID cannot be blank</string>
     <string name="error_patient_id_special_characters">PatientID contains 1 or more illegal characters</string>
+    <string name="error_patient_id_length">Patient ID is too long, must be 10 characters maximum</string>
+    <string name="error_patient_id_in_use">PatientID already in use</string>
     <string name="open">Open</string>
 
     <!-- View patient report page strings -->
@@ -27,6 +32,9 @@
         <item>Disclaimer</item>
         <item>Logout</item>
     </string>
+
+    <!-- Search Patient fragment strings -->
+    <string name="search_patient_hint">Enter Patient ID</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -36,17 +44,22 @@
     <string name="next_round">Next Round</string>
 
     <!--Reaction Game Strings-->
+    <string name="reactionGame_title">Reaction Time</string>
     <string name="reactionGame_tap">TAP</string>
     <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!-- View report page strings -->
+    <string name="view_report_title">View Report</string>
     <string name="view_report_game_header">Game</string>
     <string name="view_report_month">Month</string>
     <string name="view_report_week">Week</string>
     <string name="view_report_average">Average: %1$s</string>
-    <string name="view_report_highest">Highest: %1$s</string>
+    <string name="view_report_best">Best: %1$s</string>
+    <string name="view_report_average_blank">Average: -</string>
+    <string name="view_report_best_blank">Best: -</string>
+    <string name="view_report_all">All</string>
 
     <!--View Patient Details Strings-->
     <string name="view_patient_details_delete_patient">DELETE PATIENT</string>
@@ -56,11 +69,17 @@
     <string name="view_patient_details_disclaimer">Disclaimer</string>
     <string name="view_patient_details_logout">Log Out</string>
     <string name="view_patient_details_patient_identifier">Patient: %1$s</string>
-    <string name="view_patient_details_last_date_played">Games last run: %1$s %2$s</string>
+    <string name="view_patient_details_last_date_played">Games last run: %1$s</string>
     <string name="view_patient_details_patient_id_not_found">Patient not found</string>
     <string name="view_patient_details_patient_date_not_found">Please exit the page and try again</string>
     <string name="view_patient_details_action_bar_title">Patient Details</string>
     <string name="view_patient_details_delete_patient_dialog">You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?</string>
+
+    <!--    Login Screen-->
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_enter_password">Enter Password</string>
+
+    <!--Generic Strings-->
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
     <string-array name="settings">
         <item>Disclaimer</item>
