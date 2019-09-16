@@ -17,6 +17,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/visual_memory_play_again"
+        style="@style/TextButtonBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/visual_memory_game_continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visual_memory_game_board"
+        app:layout_constraintVertical_bias="0.008" />
+
+    <Button
+        android:id="@+id/visual_memory_exit_game"
+        style="@style/TextButtonBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="124dp"
+        android:text="@string/visual_memory_game_exit"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visual_memory_game_board"
+        app:layout_constraintVertical_bias="0.008" />
+
     <TextView
         android:id="@+id/visual_memory_lives_counter"
         style="@style/TextBody"
@@ -24,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/visual_memory_game_lives_count"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
