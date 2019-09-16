@@ -69,7 +69,6 @@ public final class PasswordAuthentication
     {
         byte[] salt = new byte[SIZE / 8];
         random.nextBytes(salt);
-        salt = "TempSaltTempSalt".getBytes(); //TODO: Remove
         byte[] dk = pbkdf2(password, salt, 1 << cost);
         byte[] hash = new byte[salt.length + dk.length];
         System.arraycopy(salt, 0, hash, 0, salt.length);

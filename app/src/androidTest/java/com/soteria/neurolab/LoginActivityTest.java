@@ -3,10 +3,16 @@ package com.soteria.neurolab;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
 
 import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -20,14 +26,15 @@ import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Checks.checkNotNull;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withInputType;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertNotNull;
@@ -137,10 +144,8 @@ public class LoginActivityTest {
         onView(withId(R.id.login_sign_in_button)).perform(click());
 
         clearOverlayFocus();
-        onView(withId(R.id.login_password_edittext)).check(matches(allOf(
-                withText(""),
-                hasErrorText("Incorrect Password")
-        )));
+        onView(withId(R.id.login_password_edittext)).check(matches(withText("")));
+        onView(withId(R.id.login_password_inputLayout)).check(matches(withErrorInInputLayout("Incorrect Password")));
         onView(withId(R.id.login_sign_in_button)).check(matches(not(isEnabled())));
     }
 
@@ -176,5 +181,39 @@ public class LoginActivityTest {
                 rule.getActivity().findViewById(R.id.login_password_edittext).clearFocus();
             }
         });
+    }
+
+    /**
+     * Checking for an error in a TextInputLayout
+     * @param stringMatcher
+     * @return
+     */
+    public static Matcher<View> withErrorInInputLayout(final Matcher<String> stringMatcher) {
+        checkNotNull(stringMatcher);
+
+        return new BoundedMatcher<View, TextInputLayout>(TextInputLayout.class) {
+            String actualError = "";
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with error: ");
+                stringMatcher.describeTo(description);
+                description.appendText("But got: " + actualError);
+            }
+
+            @Override
+            public boolean matchesSafely(TextInputLayout textInputLayout) {
+                CharSequence error = textInputLayout.getError();
+                if (error != null) {
+                    actualError = error.toString();
+                    return stringMatcher.matches(actualError);
+                }
+                return false;
+            }
+        };
+    }
+
+    public static Matcher<View> withErrorInInputLayout(final String string) {
+        return withErrorInInputLayout(is(string));
     }
 }

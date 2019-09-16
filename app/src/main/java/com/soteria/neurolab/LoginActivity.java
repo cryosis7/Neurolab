@@ -6,16 +6,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    private static final int PASSWORD_LENGTH_MINIMUM = 6; // TODO: discuss length and move to better location.
+    private static final int PASSWORD_LENGTH_MINIMUM = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,25 +24,26 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Will enable / disable the sign in button when enough characters are entered.
-        ((EditText) findViewById(R.id.login_password_edittext)).addTextChangedListener(new TextWatcher() {
+        ((TextInputEditText) findViewById(R.id.login_password_edittext)).addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 findViewById(R.id.login_sign_in_button).setEnabled(charSequence.length() >= PASSWORD_LENGTH_MINIMUM);
+                if (((TextInputLayout) findViewById(R.id.login_password_inputLayout)).isErrorEnabled())
+                    ((TextInputLayout) findViewById(R.id.login_password_inputLayout)).setErrorEnabled(false);
             }
-
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
     }
 
     public void signInButtonHandler(View view) {
-        EditText passwordEditText = findViewById(R.id.login_password_edittext);
+        signIn();
+    }
+
+    private void signIn() {
+        TextInputEditText passwordEditText = findViewById(R.id.login_password_edittext);
         char[] password = passwordEditText.getText().toString().toCharArray();
         passwordEditText.setText("");
 
@@ -57,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SearchCreateDeleteActivity.class));
             }
             else {
-                passwordEditText.setError("Incorrect Password");
+                ((TextInputLayout) findViewById(R.id.login_password_inputLayout)).setError("Incorrect Password");
             }
         } else {
             String hashedPassword = authenticator.hash(password);

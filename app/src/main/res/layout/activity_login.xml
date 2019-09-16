@@ -19,22 +19,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="128dp"
         android:layout_margin="@dimen/margin_large"
         android:orientation="horizontal">
+
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.15" />
 
-        <EditText
-            android:id="@+id/login_password_edittext"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_password_inputLayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="0.7"
-            android:ems="10"
-            android:inputType="textPassword"/>
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayoutAppearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password_edittext"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="0dp"

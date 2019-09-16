@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Neurolab</string>
-    <string name="app_name_login">Neurolab | Sign In</string>
 
     <!-- Page titles -->
     <string name="title_search_patient">Search Patient</string>
@@ -44,7 +43,6 @@
     <string name="next_round">Next Round</string>
 
     <!--Reaction Game Strings-->
-    <string name="reactionGame_title">Reaction Time</string>
     <string name="reactionGame_tap">TAP</string>
     <string name="reactionGame_information">Tap the blue circle as soon as you see it.\nPress the button to start.</string>
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
@@ -85,4 +83,5 @@
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
+    <string name="shared_preferences_filename">neurolabPrefs</string>
 </resources>
