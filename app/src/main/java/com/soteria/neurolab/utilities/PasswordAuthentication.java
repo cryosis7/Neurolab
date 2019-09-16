@@ -1,10 +1,9 @@
 package com.soteria.neurolab.utilities;
 
+import android.util.Base64;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import android.util.Base64;
-import android.util.Log;
-
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
