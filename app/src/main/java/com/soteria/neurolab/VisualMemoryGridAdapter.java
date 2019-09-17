@@ -1,6 +1,7 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -39,9 +40,17 @@ public class VisualMemoryGridAdapter extends BaseAdapter {
     // 5
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView dummyTextView = new TextView(mContext);
-        dummyTextView.setText(String.valueOf(position));
-        return dummyTextView;
+        Button playButton = gridButtons[position];
+
+        if(convertView == null )
+        {
+            final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            convertView = layoutInflater.inflate(R.layout.gridview_visual_memory, null);
+        }
+
+        playButton.setText(position);
+
+        return convertView;
     }
 }
 

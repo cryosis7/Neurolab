@@ -1,11 +1,14 @@
 package com.soteria.neurolab;
 
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
@@ -14,15 +17,16 @@ import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.GameSession;
 
 import java.util.Date;
+import java.util.Random;
 
-public class VisualMemoryActivity extends AppCompatActivity {
+public class VisualMemoryActivity extends AppCompatActivity implements View.OnClickListener {
 
     /*
         Global variables for use in multiple functions
      */
-    int level = 1, lives = 5, patientID = 0, attemptsLeft = 4;
+    int level = 1, lives = 5, patientID = 0, attemptsLeft = 4, currentPatternNumber = 1;
     boolean gameStarted = false;
-    GridLayout gameBoard;
+    Button[][] gridButton = new Button[5][5];
 
     /**
      * This function is called when the page is loaded. It sets the UI elements on the page and grabs
@@ -42,7 +46,6 @@ public class VisualMemoryActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_visual_memory_game);
-        gameBoard = findViewById(R.id.visual_memory_game_board);
 
         /*
             Grab information from the select games page relative to the patient
@@ -76,11 +79,11 @@ public class VisualMemoryActivity extends AppCompatActivity {
         startGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 attemptsLeft--;
-                setUpGrid();
                 levelText.setText(getResources().getString(R.string.visual_memory_game_current_level, level));
                 livesText.setText(getResources().getString(R.string.visual_memory_game_lives_count, lives));
                 livesText.setVisibility(View.VISIBLE);
                 startGameButton.setVisibility(View.INVISIBLE);
+                setUpGrid();
             }
         });
 
@@ -126,12 +129,38 @@ public class VisualMemoryActivity extends AppCompatActivity {
      */
     private void setUpGrid()
     {
-        VisualMemoryGridAdapter gridAdapter = new VisualMemoryGridAdapter(this, books);
-        gameBoard.setAdapter(gridAdapter);
+        Random patternRand = new Random(System.currentTimeMillis());
+        int patternArrayColumn, patternArrayRow;
+        int[][] randArray = new int[level + 3][2];
 
-        for( int i = 0; i < gameBoard.getChildCount(); i++ )
+        for( int i = 0; i < level + 3; i++ )
         {
-            gameBoard.getChildAt(i);
+            patternArrayColumn = patternRand.nextInt(5);
+            patternArrayRow = patternRand.nextInt(5);
+            for( int j = 0; j < randArray.length; j++) {
+                if(randArray[j][j] == patternArrayColumn && randArray[j][j+1] == patternArrayRow ) {
+                    i--;
+                    break;
+                }
+            }
+            randArray[i][i] = patternArrayColumn;
+            randArray[i][i+1] = patternArrayRow;
+        }
+
+        for( int i = 0; i < 5; i++ ) {
+            for (int j = 0; j < 5; j++) {
+                String buttonID = "gameButton" + i + j;
+                int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
+                gridButton[i][j] = findViewById(resID);
+                for( int k = 0; k < randArray.length; k++ )
+                {
+                    if( gridButton[i][j] == randArray[i][j] )
+                    {
+
+                    }
+                }
+                gridButton[i][j].setOnClickListener(VisualMemoryActivity.this);
+            }
         }
     }
 
@@ -175,6 +204,40 @@ public class VisualMemoryActivity extends AppCompatActivity {
             default:
                 finish();
                 return false;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(((Button) view).getBackground() == getResources().getColor(R.color.visualMemoryColorCorrect)) {
+            Toast.makeText(getApplicationContext(),"Square already selected before, please try another",Toast.LENGTH_SHORT).show();
+        } else {
+            if (((Button) view).getText().toString().equals(Integer.toString(currentPatternNumber))) {
+                view.setBackgroundResource(R.color.visualMemoryColorCorrect);
+                currentPatternNumber++;
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        if (gridButton[i][j].getBackground() == getResources().getColor(R.color.colorWarning)) {
+                            view.setBackgroundResource(R.color.colorPrimary);
+                        }
+                    }
+                }
+                if (currentPatternNumber > level + 3) {
+                    level++;
+                    currentPatternNumber = 1;
+                    if( level >= 30 )
+                        gameOver();
+                    else
+                        setUpGrid();
+                }
+            } else {
+                view.setBackgroundResource(R.color.colorWarning);
+                ((Button) view).setTextColor(getResources().getColor(R.color.colorWarning));
+                lives--;
+                if (lives == 0) {
+                    gameOver();
+                }
+            }
         }
     }
 }

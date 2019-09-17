@@ -8,11 +8,11 @@
 
     <Button
         android:id="@+id/gameButton"
+        android:text="Fanny fart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         style="@style/TextButtonBlue"
-
         />
 
 </LinearLayout>
