@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,6 +38,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+
+        final Fragment loginFragment = new LoginFragment();
+        final Fragment createPasswordFragment = new CreatePasswordFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.login_fragment_layout, loginFragment, "1").hide(loginFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.login_fragment_layout, createPasswordFragment, "1").commit();
     }
 
     public void signInButtonHandler(View view) {

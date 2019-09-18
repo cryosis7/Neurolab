@@ -9,6 +9,9 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
+    <include layout="@layout/login_fragment_layout" />
+
+
     <ImageView
         android:id="@+id/login_neurolab_logo"
         android:layout_width="wrap_content"
