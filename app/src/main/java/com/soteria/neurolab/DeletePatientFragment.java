@@ -5,10 +5,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 
 /**
@@ -19,7 +22,8 @@ import android.view.ViewGroup;
  * Use the {@link DeletePatientFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeletePatientFragment extends Fragment {
+public class DeletePatientFragment extends Fragment implements SearchPatientRecyclerAdapter.ItemClickListener,
+        SearchView.OnQueryTextListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -47,8 +51,16 @@ public class DeletePatientFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_delete_patient, container, false);
+        final View view = inflater.inflate(R.layout.fragment_delete_patient, container, false);
+        final SearchView searchInput = view.findViewById(R.id.deletePatient_searchInput);
+        final RecyclerView searchRecycler = view.findViewById(R.id.deletePatient_searchRecycler);
+        searchInput.setOnQueryTextListener(this);
+
+        //Set the recycler view layout to set the information and the click listener
+        searchRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -73,6 +85,21 @@ public class DeletePatientFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
     }
 
     /**

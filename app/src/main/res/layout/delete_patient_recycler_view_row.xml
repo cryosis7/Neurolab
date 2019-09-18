@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/recycler_view_select_item"
+    android:padding="10sp">
+
+    <CheckBox
+        android:id="@+id/delete_patient_recycler_checkbox"
+        style="@style/CheckBox"
+        android:layout_width="62dp"
+        android:layout_height="50dp"
+        android:scaleType="centerInside" />
+
+</LinearLayout>

@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".DeletePatientFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/deletePatientFragment">
 
+        <SearchView
+            android:id="@+id/deletePatient_searchInput"
+            android:layout_width="530dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="124dp"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="@string/search_patient_hint"
+            android:iconifiedByDefault="false"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/search_view_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/deletePatient_searchRecycler"
+            android:layout_width="529dp"
+            android:layout_height="526dp"
+            android:background="@drawable/recycler_view_background"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deletePatient_searchInput"
+            app:layout_constraintVertical_bias="0.236" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            style="@style/CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_patient_select_all"
+            app:layout_constraintBottom_toTopOf="@+id/deletePatient_searchRecycler"
+            app:layout_constraintStart_toStartOf="@+id/deletePatient_searchRecycler"
+            app:layout_constraintTop_toBottomOf="@+id/deletePatient_searchInput" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
