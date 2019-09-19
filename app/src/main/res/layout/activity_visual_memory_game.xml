@@ -50,10 +50,12 @@
         android:layout_height="157dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/visual_memory_lives_counter">
 
         <Button
             android:id="@+id/gameButton00"
+            android:tag="gameButton00"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -62,6 +64,7 @@
 
         <Button
             android:id="@+id/gameButton01"
+            android:tag="gameButton01"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -70,6 +73,7 @@
 
         <Button
             android:id="@+id/gameButton02"
+            android:tag="gameButton02"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -78,6 +82,7 @@
 
         <Button
             android:id="@+id/gameButton03"
+            android:tag="gameButton03"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -86,11 +91,14 @@
 
         <Button
             android:id="@+id/gameButton04"
+            android:tag="gameButton04"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
             android:layout_weight="1" />
+
+
 
     </LinearLayout>
 
@@ -98,6 +106,7 @@
         android:id="@+id/gameBoardRow1"
         android:layout_width="721dp"
         android:layout_height="157dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +114,7 @@
 
         <Button
             android:id="@+id/gameButton10"
+            android:tag="gameButton10"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -113,6 +123,7 @@
 
         <Button
             android:id="@+id/gameButton11"
+            android:tag="gameButton11"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -121,6 +132,7 @@
 
         <Button
             android:id="@+id/gameButton12"
+            android:tag="gameButton12"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -129,6 +141,7 @@
 
         <Button
             android:id="@+id/gameButton13"
+            android:tag="gameButton13"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -137,6 +150,7 @@
 
         <Button
             android:id="@+id/gameButton14"
+            android:tag="gameButton14"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -150,6 +164,7 @@
         android:layout_width="721dp"
         android:layout_height="157dp"
         android:layout_weight="1"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -157,6 +172,7 @@
 
         <Button
             android:id="@+id/gameButton20"
+            android:tag="gameButton20"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -165,6 +181,7 @@
 
         <Button
             android:id="@+id/gameButton21"
+            android:tag="gameButton21"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -173,6 +190,7 @@
 
         <Button
             android:id="@+id/gameButton22"
+            android:tag="gameButton22"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -181,6 +199,7 @@
 
         <Button
             android:id="@+id/gameButton23"
+            android:tag="gameButton23"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -189,6 +208,7 @@
 
         <Button
             android:id="@+id/gameButton24"
+            android:tag="gameButton24"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -202,6 +222,7 @@
         android:layout_width="721dp"
         android:layout_height="157dp"
         android:layout_weight="1"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -209,6 +230,7 @@
 
         <Button
             android:id="@+id/gameButton30"
+            android:tag="gameButton30"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -217,6 +239,7 @@
 
         <Button
             android:id="@+id/gameButton31"
+            android:tag="gameButton31"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -225,6 +248,7 @@
 
         <Button
             android:id="@+id/gameButton32"
+            android:tag="gameButton32"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -233,6 +257,7 @@
 
         <Button
             android:id="@+id/gameButton33"
+            android:tag="gameButton33"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -241,6 +266,7 @@
 
         <Button
             android:id="@+id/gameButton34"
+            android:tag="gameButton34"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -254,6 +280,7 @@
         android:layout_width="721dp"
         android:layout_height="157dp"
         android:layout_marginTop="2dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -261,6 +288,7 @@
 
         <Button
             android:id="@+id/gameButton40"
+            android:tag="gameButton40"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -269,6 +297,7 @@
 
         <Button
             android:id="@+id/gameButton41"
+            android:tag="gameButton41"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -277,6 +306,7 @@
 
         <Button
             android:id="@+id/gameButton42"
+            android:tag="gameButton42"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -285,6 +315,7 @@
 
         <Button
             android:id="@+id/gameButton43"
+            android:tag="gameButton43"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -293,6 +324,7 @@
 
         <Button
             android:id="@+id/gameButton44"
+            android:tag="gameButton44"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
@@ -306,7 +338,7 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="44dp"
         android:text="@string/visual_memory_game_lives_count"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
