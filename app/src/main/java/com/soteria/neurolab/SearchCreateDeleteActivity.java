@@ -1,5 +1,6 @@
 package com.soteria.neurolab;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -101,11 +102,8 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
                 return true;
             //If the log out button is pressed, send the user to the log in screen
             case R.id.action_logout:
-                //TODO link to logout, remove toast afterwards
-                Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
-                     /*startActivity(new Intent(this, //TODO add link to log in here));
-                       finish();
-                     */
+                 startActivity(new Intent(this, LoginCreatePasswordActivity.class));
+                 finish();
                 return true;
             //If an unknown option is selected, display an error to the user
             default:
@@ -114,16 +112,15 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         }
     }
 
-    /* Action that occurs when the back button on the device or app is pressed on search, create or
+    /** Action that occurs when the back button on the device or app is pressed on search, create or
     delete fragments. Hardcoded to prevent erroneous data from being selected if going back to the
     view patients screen after a patient has been deleted.
-
-    TODO replace with link to log in screen when created
-     */
-
+    */
     @Override
+
     public void onBackPressed()
     {
+        startActivity(new Intent(this, LoginCreatePasswordActivity.class));
         finish();
     }
 }

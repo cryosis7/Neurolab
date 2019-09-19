@@ -21,6 +21,7 @@ public class CreatePasswordFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_fragment_layout, container, false);
+        final View view = inflater.inflate(R.layout.fragment_create_password, container, false);
+        return view;
     }
 }
