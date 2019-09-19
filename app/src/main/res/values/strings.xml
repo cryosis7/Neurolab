@@ -34,6 +34,7 @@
     
     <!-- Search Patient fragment strings -->
     <string name="search_patient_hint">Enter Patient ID</string>
+    <string name="search_patient_error_toast_text">Patient doesn\'t exist in the database, updating the patient list</string>
 
     <!-- Delete Patient Fragment strings -->
     <string name="delete_patient_select_all">Select All</string>
