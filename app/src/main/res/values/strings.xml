@@ -40,6 +40,8 @@
     <string name="delete_patient_select_all">Select All</string>
     <string name="delete_patient_delete_text">Delete Patients</string>
     <string name="delete_patient_confirmation_dialog">You are about to delete %1$s patients and all data associated with them.\nThis action cannot be undone.\nDo you wish to continue?</string>
+    <string name="delete_patient_confirmation_dialog_1_selected">You are about to delete 1 patient and all data associated with them.\nThis action cannot be undone.\nDo you wish to continue?</string>
+    <string name="delete_patient_no_patients_selected">No patients selected</string>
 
     <!--Generic Game Related strings-->
     <string name="start_game">Start Game</string>

@@ -1,5 +1,9 @@
 package com.soteria.neurolab.viewModels;
 
+/**
+ * Each item in the delete patient page list is an object of this
+ * Getters and setters and a constructor
+ */
 public class DeletePatientRecyclerItem {
 
     private boolean isSelected;
@@ -7,10 +11,6 @@ public class DeletePatientRecyclerItem {
 
     public String getPatientReference() {
         return patientReference;
-    }
-
-    public void setPatientReference(String patientReference) {
-        this.patientReference = patientReference;
     }
 
     public DeletePatientRecyclerItem(String patientReference) {

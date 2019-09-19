@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.Patient;
@@ -42,6 +43,8 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
 
     private OnFragmentInteractionListener mListener;
     private DeletePatientRecyclerAdapter adapter;
+
+    //Full list is all in the database, current list is filtered by the search field
     private ArrayList<DeletePatientRecyclerItem> DPRItemFullList;
     private ArrayList<DeletePatientRecyclerItem> DPRItemCurrentList;
 
@@ -56,9 +59,8 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
      * @return A new instance of fragment DeletePatientFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeletePatientFragment newInstance() {
-        DeletePatientFragment fragment = new DeletePatientFragment();
-        return fragment;
+    private static DeletePatientFragment newInstance() {
+        return new DeletePatientFragment();
     }
 
     @Override
@@ -73,7 +75,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         final SearchView searchInput = view.findViewById(R.id.deletePatient_searchInput);
         final RecyclerView searchRecycler = view.findViewById(R.id.deletePatient_searchRecycler);
         final CheckBox selectAllCheckBox = view.findViewById(R.id.deletePatient_selectAllCheckBox);
-        final Button deletePatientsButton = view.findViewById(R.id.deletePatientButton);
+        final Button deletePatientsButton = view.findViewById(R.id.deletePatient_deleteButton);
         searchInput.setOnQueryTextListener(this);
 
         //Set the recycler view layout to set the information and the click listener
@@ -86,6 +88,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         searchRecycler.addItemDecoration(divider);
         searchRecycler.setAdapter(adapter);
 
+        //Sets all of the items in the current list to selected or deselected
         selectAllCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -96,58 +99,75 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
             }
         });
 
+        //Handler for the delete button
         deletePatientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            //Create a list and add all selected items in the current list
             public void onClick(View view) {
                 final ArrayList<DeletePatientRecyclerItem> markedForDeleteList = new ArrayList<>();
-                for(DeletePatientRecyclerItem item : DPRItemCurrentList){
-                    if(item.getIsSelected()){
+                for (DeletePatientRecyclerItem item : DPRItemCurrentList) {
+                    if (item.getIsSelected()) {
                         markedForDeleteList.add(item);
                     }
                 }
-                //Build the alert dialog warning the user of their action.
-                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getContext());
-                deleteBuilder.setTitle(getResources().getString(R.string.title_delete_patient));
-                deleteBuilder.setMessage(getString(R.string.delete_patient_confirmation_dialog, String.valueOf(markedForDeleteList.size())));
-                //If delete is pressed, delete the patient
-                deleteBuilder.setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        DatabaseAccess dbDelete = DatabaseAccess.getInstance(getContext());
-                        for(DeletePatientRecyclerItem item : markedForDeleteList){
-                            Patient patientToDelete = dbDelete.getPatient(item.getPatientReference());
-                            dbDelete.deletePatient(patientToDelete);
+                //If there are more than 0 items selected then handle delete stuff
+                if (markedForDeleteList.size() > 0) {
+                    //Build the alert dialog warning the user of their action.
+                    AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getContext());
+                    deleteBuilder.setTitle(getResources().getString(R.string.title_delete_patient));
+                    if(markedForDeleteList.size() == 1) {
+                        deleteBuilder.setMessage(getString(R.string.delete_patient_confirmation_dialog_1_selected));
+                    } else {
+                        deleteBuilder.setMessage(getString(R.string.delete_patient_confirmation_dialog, String.valueOf(markedForDeleteList.size())));
+                    }
+                    //If delete is pressed, delete the patient
+                    deleteBuilder.setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DatabaseAccess dbDelete = DatabaseAccess.getInstance(getContext());
+                            for (DeletePatientRecyclerItem item : markedForDeleteList) {
+                                Patient patientToDelete = dbDelete.getPatient(item.getPatientReference());
+                                dbDelete.deletePatient(patientToDelete);
+                            }
+                            dialogInterface.cancel();
+                            initializePatientList();
+                            searchInput.setQuery("", false);
+                            searchInput.clearFocus();
+                            selectAllCheckBox.setChecked(false);
+                            adapter.updateList(DPRItemCurrentList);
+                            startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
                         }
-                        dialogInterface.cancel();
-                        startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
-                    }
-                });
-                //If cancel is pressed, close the alert dialog.
-                deleteBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                final AlertDialog deleteConfirm = deleteBuilder.create();
-                deleteConfirm.setOnShowListener( new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface arg0 ) {
-                        deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
-                        deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWarning));
-                        deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
-                        deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
-                    }
-                });
-                deleteConfirm.show();
-                TextView bodyText = deleteConfirm.findViewById(android.R.id.message);
-                bodyText.setTextSize(24);
+                    });
+                    //If cancel is pressed, close the alert dialog.
+                    deleteBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    final AlertDialog deleteConfirm = deleteBuilder.create();
+                    deleteConfirm.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface arg0) {
+                            deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
+                            deleteConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWarning));
+                            deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
+                            deleteConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
+                        }
+                    });
+                    deleteConfirm.show();
+                    TextView bodyText = deleteConfirm.findViewById(android.R.id.message);
+                    bodyText.setTextSize(24);
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.delete_patient_no_patients_selected),Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         return view;
     }
 
+    //Calls the database and sets the full list of patients, also sets the current list to equal the full list
     private void initializePatientList() {
         DPRItemFullList = new ArrayList<>();
         DatabaseAccess db = DatabaseAccess.getInstance(getContext());
@@ -158,13 +178,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         DPRItemCurrentList = DPRItemFullList;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
+    //Method for attaching the fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -176,17 +190,20 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         }
     }
 
+    //Method for detaching the fragment
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    //Required by interface
     @Override
     public boolean onQueryTextSubmit(String s) {
         return false;
     }
 
+    //updates the current list based on the search string
     @Override
     public boolean onQueryTextChange(String s) {
         String userInput = s.toUpperCase();
@@ -204,6 +221,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
 
     @Override
     public void onItemClick(View view, int position) {
+        //Required by implemented class, not used here
     }
 
     /**
@@ -216,8 +234,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private interface OnFragmentInteractionListener {
+        //Lol why exist?
     }
 }

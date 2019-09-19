@@ -47,7 +47,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
                     toolbar.setTitle("Create Patient");
                     return true;
                 case R.id.navigation_delete_patient:
-                    fragmentManager.beginTransaction().hide(active).show(deletePatientFragment).commit();
+                    fragmentManager.beginTransaction().hide(active).detach(deletePatientFragment).attach(deletePatientFragment).show(deletePatientFragment).commit();
                     active = deletePatientFragment;
                     toolbar.setTitle("Delete Patient");
                     return true;

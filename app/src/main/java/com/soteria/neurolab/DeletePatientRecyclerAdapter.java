@@ -61,6 +61,13 @@ public class DeletePatientRecyclerAdapter extends RecyclerView.Adapter<DeletePat
         return searchData.size();
     }
 
+    /**
+     * The view holder for each item in the recycler view
+     *
+     * The commented out code is potentially a way to fix the usability issue of only being able to
+     * select the checkbox as opposed to selecting the entire item in the recycler view.
+     * To be used in refactor
+     */
     class MyViewHolder extends RecyclerView.ViewHolder {
         public CheckBox checkBox;
 
@@ -79,12 +86,6 @@ public class DeletePatientRecyclerAdapter extends RecyclerView.Adapter<DeletePat
 //            }
 //        }
     }
-
-    // This was in the SearchPatientFragment Class and I'm not sure why but just in case, it is still here
-//    String getItem(int id)
-//    {
-//        return searchData.get(id);
-//    }
 
     void setClickListener(DeletePatientRecyclerAdapter.ItemClickListener itemClickListener)
     {
