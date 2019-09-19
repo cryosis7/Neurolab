@@ -42,7 +42,7 @@
             app:layout_constraintVertical_bias="0.236" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/deletePatient_selectAllCheckBox"
             style="@style/CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,6 +50,16 @@
             app:layout_constraintBottom_toTopOf="@+id/deletePatient_searchRecycler"
             app:layout_constraintStart_toStartOf="@+id/deletePatient_searchRecycler"
             app:layout_constraintTop_toBottomOf="@+id/deletePatient_searchInput" />
+
+        <Button
+            android:id="@+id/deletePatient_deleteButton"
+            style="@style/TextButtonRed"
+            android:text="@string/delete_patient_delete_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deletePatient_searchRecycler"
+            app:layout_constraintVertical_bias="0.142" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

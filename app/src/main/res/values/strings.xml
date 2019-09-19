@@ -37,6 +37,8 @@
 
     <!-- Delete Patient Fragment strings -->
     <string name="delete_patient_select_all">Select All</string>
+    <string name="delete_patient_delete_text">Delete Patients</string>
+    <string name="delete_patient_confirmation_dialog">You are about to delete %1$s patients and all data associated with them.\nThis action cannot be undone.\nDo you wish to continue?</string>
 
     <!--Generic Game Related strings-->
     <string name="start_game">Start Game</string>
@@ -80,4 +82,6 @@
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

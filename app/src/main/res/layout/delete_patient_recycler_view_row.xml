@@ -9,8 +9,6 @@
     <CheckBox
         android:id="@+id/delete_patient_recycler_checkbox"
         style="@style/CheckBox"
-        android:layout_width="62dp"
-        android:layout_height="50dp"
         android:scaleType="centerInside" />
 
 </LinearLayout>

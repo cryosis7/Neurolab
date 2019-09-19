@@ -14,9 +14,7 @@
         app:srcCompat="@drawable/circle_small" />
 
     <TextView
-        android:id="@+id/patientIdentifierOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="36sp" />
+        style="@style/TextBody"
+        android:id="@+id/patientIdentifierOption"/>
 
 </LinearLayout>
