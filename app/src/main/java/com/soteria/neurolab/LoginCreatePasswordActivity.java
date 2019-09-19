@@ -1,6 +1,7 @@
 package com.soteria.neurolab;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +26,7 @@ public class LoginCreatePasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_create_password);
-        setFragment(); // TODO: Could this be inline instead of function call or is it reused
+        switchFragment(); // TODO: Could this be inline instead of function call or is it reused
     }
 
     @Override
@@ -67,13 +68,19 @@ public class LoginCreatePasswordActivity extends AppCompatActivity {
 
     // TODO: Handle back button pressed.
 
-    private void setFragment() {
+    void switchFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         if (activeFragment == null) {
             transaction.add(R.id.activity_login_create_password, loginFragment);
             transaction.add(R.id.activity_login_create_password, createPasswordFragment);
-            activeFragment = loginFragment;
+
+            SharedPreferences pref = this.getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.apply();
+
+            // Initialising the active fragment to the opposite of what we want since they'll be toggled 3 lines later.
+            activeFragment = pref.getString("passwordHash", null) == null ? loginFragment : createPasswordFragment;
         }
 
         transaction.hide(activeFragment);
