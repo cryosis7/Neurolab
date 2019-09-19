@@ -9,40 +9,45 @@
     <Button
         android:id="@+id/visual_memory_start_game"
         style="@style/TextButtonBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="275dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="120dp"
         android:text="@string/visual_memory_game_start_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameBoardRow4" />
+        app:layout_constraintTop_toBottomOf="@+id/gameBoardRow4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/visual_memory_play_again"
         style="@style/TextButtonBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
+        android:layout_marginStart="120dp"
         android:layout_marginBottom="68dp"
         android:text="@string/visual_memory_game_continue"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/visual_memory_exit_game"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameBoardRow4" />
+        app:layout_constraintTop_toBottomOf="@+id/gameBoardRow4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/visual_memory_exit_game"
         style="@style/TextButtonBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="128dp"
+        android:layout_marginEnd="120dp"
         android:layout_marginBottom="68dp"
         android:text="@string/visual_memory_game_exit"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameBoardRow4" />
+        app:layout_constraintTop_toBottomOf="@+id/gameBoardRow4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:id="@+id/gameBoardRow0"
@@ -297,12 +302,12 @@
 
         <Button
             android:id="@+id/gameButton41"
-            android:tag="gameButton41"
             style="@style/TextButtonBlueBackground"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:tag="gameButton41" />
 
         <Button
             android:id="@+id/gameButton42"
@@ -338,7 +343,6 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
         android:text="@string/visual_memory_game_lives_count"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"

@@ -55,6 +55,8 @@
     <string name="visual_memory_game_start_game">Start Game</string>
     <string name="visual_memory_game_continue">Play Again</string>
     <string name="visual_memory_game_exit">Exit Game</string>
+    <string name="visual_memory_game_over">Good try!</string>
+    <string name="visual_memory_game_won">Nice going!</string>
 
     <!-- View report page strings -->
     <string name="view_report_title">View Report</string>

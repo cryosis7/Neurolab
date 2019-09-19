@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.SparseIntArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     int[][] randArray;
     TextView livesText, levelText;
     boolean gameStarted = false;
-    delayPatternDisplay dpd = new delayPatternDisplay();
+    shortDelayPatternDisplay sdpd = new shortDelayPatternDisplay();
+    longDelayPatternDisplay ldpd = new longDelayPatternDisplay();
     Button[][] gridButton = new Button[5][5];
 
     /**
@@ -159,38 +161,22 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     private void setUpGrid()
     {
         ArrayList<Integer> randList = new ArrayList<>();
-        for( int i = 0; i < 25; i++ )
+
+        resetButtonText();
+        randList.clear();
+
+        for( int i = 0; i < 25; i++ ) {
             randList.add(i + 1);
-
-        Random patternRand = new Random(System.currentTimeMillis());
-        int patternArrayColumn, patternArrayRow;
-        randArray = new int[level + 3][2];
-
-        for( int i = 0; i < level + 3; i++ )
-        {
-            patternArrayColumn = patternRand.nextInt(5) + 1;
-            patternArrayRow = patternRand.nextInt(5) + 1;
-            for( int j = 0; j < randArray.length; j++) {
-                if(randArray[j][0] == patternArrayColumn && randArray[j][1] == patternArrayRow ) {
-                    i--;
-                    break;
-                }
-            }
-            randArray[i][0] = patternArrayColumn;
-            randArray[i][1] = patternArrayRow;
         }
+        Collections.shuffle(randList, new Random(System.currentTimeMillis()));
+
         //Determines the pattern and sets the text for each pattern
-        for( int i = 0; i < level + 3; i++ ) {
-            for( int j = 0; j < 5; j++ ) {
-                for (int k = 0; k < 5; k++) {
-                    for( int m = 0; m < randArray.length; m++ ) {
-                       if (gridButton[j][k].getTag().equals("gameButton" + randArray[m][0] + randArray[m][1])) {
-                           gridButton[j][k].setText(i);
-                           break;
-                       }
-                    }
-                }
-            }
+        for( int i = 0; i < level + 3; i++ ) { //The pattern count is equal to the level plus 3
+            int position = randList.remove(0);
+            int x = position / 5;
+            int y = position % 5;
+            gridButton[x][y].setText(String.valueOf(i + 1));
+            gridButton[x][y].setTextColor(getResources().getColor(R.color.colorBlack));
         }
         //Displays the pattern to the user
         for( int i = 0; i < level + 3; i++ ) {
@@ -198,8 +184,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                 for( int k = 0; k < 5; k++ ) {
                     if( gridButton[j][k].getText().equals(Integer.toString(i))) {
                         gridButton[j][k].setBackgroundColor(getResources().getColor(R.color.visualMemoryColorCorrect));
-                        gridButton[j][k].setTextColor(getResources().getColor(R.color.colorWhite));
-//                        dpd.doInBackground();
+                        gridButton[j][k].setTextColor(getResources().getColor(R.color.colorBlack));
                         break;
                     }
                 }
@@ -208,8 +193,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         //Hides the pattern and sets the on click listener for each button
         for( int i = 0; i < 5; i++ ) {
             for (int j = 0; j < 5; j++) {
-                gridButton[i][j].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
+                gridButton[i][j].setBackgroundColor(getResources().getColor(R.color.colorYellow));
+                gridButton[i][j].setTextColor(getResources().getColor(R.color.colorBlack));
                 gridButton[i][j].setOnClickListener(VisualMemoryActivity.this);
             }
         }
@@ -221,6 +206,15 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         for( int i = 0; i < 5; i++ ) {
             for( int j = 0; j < 5; j++ ) {
                 gridButton[i][j].setOnClickListener(null);
+            }
+        }
+    }
+
+    private void resetButtonText()
+    {
+        for( int i = 0; i < 5; i++ ) {
+            for( int j = 0; j < 5; j++ ) {
+                gridButton[i][j].setText("");
             }
         }
     }
@@ -275,6 +269,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         //Get the color of the button passed to it
         Drawable buttonBackground = view.getBackground();
+
         //If the button has a green or red background ( a correct or incorrect selection ) inform
         //the user that this selection does nothing.
         if(buttonBackground instanceof ColorDrawable ) {
@@ -297,8 +292,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                             if ( gridBackground instanceof ColorDrawable ){
                                 int gridColour = ((ColorDrawable) gridBackground).getColor();
                                 if (gridColour == getResources().getColor(R.color.colorWarning)) {
-                                    view.setBackgroundResource(R.color.colorPrimary);
-                                    ((Button) view).setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    gridButton[i][j].setBackgroundResource(R.color.colorPrimary);
+                                    gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
                                 }
                             }
                         }
@@ -318,7 +313,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                     lives--;
                     livesText.setText(getResources().getString(R.string.visual_memory_game_lives_count, lives));
                     if (lives == 0) {
-                        levelText.setText("GG, you lost Faggot");
+                        levelText.setText(getResources().getString(R.string.visual_memory_game_over));
                         livesText.setVisibility(View.INVISIBLE);
                         gameOver();
                     }
@@ -327,7 +322,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public static class delayPatternDisplay extends AsyncTask<VisualMemoryActivity, Void, Void> {
+    public static class shortDelayPatternDisplay extends AsyncTask<VisualMemoryActivity, Void, Void> {
         private WeakReference<VisualMemoryActivity> gameReference;
 
         @Override
@@ -350,13 +345,18 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public static class updatePatternDisplay extends AsyncTask<VisualMemoryActivity, Void, Void> {
+    public static class longDelayPatternDisplay extends AsyncTask<VisualMemoryActivity, Void, Void> {
         private WeakReference<VisualMemoryActivity> gameReference;
 
         @Override
         protected Void doInBackground(VisualMemoryActivity... params) {
             gameReference = new WeakReference<>(params[0]); // Weak reference to prevent memory leaks.
-
+            try {
+                Thread.sleep(2000);
+                publishProgress();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
