@@ -234,7 +234,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    private interface OnFragmentInteractionListener {
+    public interface OnFragmentInteractionListener {
         //Lol why exist?
     }
 }

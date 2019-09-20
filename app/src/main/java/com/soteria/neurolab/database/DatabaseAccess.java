@@ -458,6 +458,16 @@ public class DatabaseAccess {
         close();
     }
 
+    /**
+     * Deletes all game sessions, used for testing purposes only
+     * @throws SQLiteException
+     */
+    public void deleteAllSessions()throws SQLiteException{
+        open();
+        db.execSQL("delete from Game_Session");
+        close();
+    }
+
     //-----------------------------GameAssignment Methods-----------------------------//
 
     /**
