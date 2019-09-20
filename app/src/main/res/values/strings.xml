@@ -57,6 +57,7 @@
     <string name="visual_memory_game_exit">Exit Game</string>
     <string name="visual_memory_game_over">Good try!</string>
     <string name="visual_memory_game_won">Nice going!</string>
+    <string name="visual_memory_game_error_check">Error</string>
 
     <!-- View report page strings -->
     <string name="view_report_title">View Report</string>
@@ -89,4 +90,5 @@
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
+
 </resources>

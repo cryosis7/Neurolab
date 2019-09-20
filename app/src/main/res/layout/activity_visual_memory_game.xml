@@ -61,7 +61,7 @@
         <Button
             android:id="@+id/gameButton00"
             android:tag="gameButton00"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -70,7 +70,7 @@
         <Button
             android:id="@+id/gameButton01"
             android:tag="gameButton01"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -79,7 +79,7 @@
         <Button
             android:id="@+id/gameButton02"
             android:tag="gameButton02"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -88,7 +88,7 @@
         <Button
             android:id="@+id/gameButton03"
             android:tag="gameButton03"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -97,7 +97,7 @@
         <Button
             android:id="@+id/gameButton04"
             android:tag="gameButton04"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -120,7 +120,7 @@
         <Button
             android:id="@+id/gameButton10"
             android:tag="gameButton10"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -129,7 +129,7 @@
         <Button
             android:id="@+id/gameButton11"
             android:tag="gameButton11"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -138,7 +138,7 @@
         <Button
             android:id="@+id/gameButton12"
             android:tag="gameButton12"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -147,7 +147,7 @@
         <Button
             android:id="@+id/gameButton13"
             android:tag="gameButton13"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -156,7 +156,7 @@
         <Button
             android:id="@+id/gameButton14"
             android:tag="gameButton14"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -178,7 +178,7 @@
         <Button
             android:id="@+id/gameButton20"
             android:tag="gameButton20"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -187,7 +187,7 @@
         <Button
             android:id="@+id/gameButton21"
             android:tag="gameButton21"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -196,7 +196,7 @@
         <Button
             android:id="@+id/gameButton22"
             android:tag="gameButton22"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -205,7 +205,7 @@
         <Button
             android:id="@+id/gameButton23"
             android:tag="gameButton23"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -214,7 +214,7 @@
         <Button
             android:id="@+id/gameButton24"
             android:tag="gameButton24"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -236,7 +236,7 @@
         <Button
             android:id="@+id/gameButton30"
             android:tag="gameButton30"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -245,7 +245,7 @@
         <Button
             android:id="@+id/gameButton31"
             android:tag="gameButton31"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -254,7 +254,7 @@
         <Button
             android:id="@+id/gameButton32"
             android:tag="gameButton32"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -263,7 +263,7 @@
         <Button
             android:id="@+id/gameButton33"
             android:tag="gameButton33"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -272,7 +272,7 @@
         <Button
             android:id="@+id/gameButton34"
             android:tag="gameButton34"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -294,7 +294,7 @@
         <Button
             android:id="@+id/gameButton40"
             android:tag="gameButton40"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -302,7 +302,7 @@
 
         <Button
             android:id="@+id/gameButton41"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -312,7 +312,7 @@
         <Button
             android:id="@+id/gameButton42"
             android:tag="gameButton42"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -321,7 +321,7 @@
         <Button
             android:id="@+id/gameButton43"
             android:tag="gameButton43"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
@@ -330,7 +330,7 @@
         <Button
             android:id="@+id/gameButton44"
             android:tag="gameButton44"
-            style="@style/TextButtonBlueBackground"
+            style="@style/VisualMemoryGameButtonUnselected"
             android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
