@@ -70,31 +70,46 @@
             android:id="@+id/button_00"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_01"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_02"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_03"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_04"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -106,31 +121,46 @@
             android:id="@+id/button_10"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_11"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_12"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_13"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_14"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -142,31 +172,46 @@
             android:id="@+id/button_20"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_21"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_22"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_23"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_24"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -178,31 +223,46 @@
             android:id="@+id/button_30"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_31"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_32"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_34"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -214,31 +274,46 @@
             android:id="@+id/button_40"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_41"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_42"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_43"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/button_44"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/visual_attention_button"
+            android:clickable="true"/>
     </LinearLayout>
 
 </LinearLayout>
