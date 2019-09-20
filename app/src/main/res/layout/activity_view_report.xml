@@ -101,7 +101,7 @@
 
     <TextView
         android:id="@+id/view_report_game_heading"
-        style="@style/TextSmall"
+        style="@style/TextSmallGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/view_report_game_header"

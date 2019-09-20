@@ -78,6 +78,8 @@
     <string name="create_password">Create Password</string>
     <string name="create_a_new_password">Create A New Password</string>
     <string name="retype_password">Re-Enter Password</string>
+    <string name="create_password_criteria">Password must be at least 6 characters long and contain a letter, number and symbol.</string>
+    <string name="create_password_not_equal">Passwords do not match.</string>
 
     <!--Generic Strings-->
     <string name="disclaimer">Disclaimer</string>
