@@ -1,62 +1,66 @@
 package com.soteria.neurolab;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.SparseIntArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.gridlayout.widget.GridLayout;
 
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.GameSession;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Random;
 
+/**
+ *  This class contains all the logic for the Visual Short Term Memory game. It displays a grid
+ *  of squares and shows the patient a pattern. The patient must complete the pattern shown with
+ *  a fixed number of tries per pattern. If they fail three times in a single pattern. It is game
+ *  over.
+ *
+ *  This class retrieves the patient ID from the calling class and uses it to store the game session
+ *  later on. The attempt is stored into the database as a game session using the number of squares.
+ *  In the highest pattern remembered as the result.
+ */
 public class VisualMemoryActivity extends AppCompatActivity implements View.OnClickListener {
 
     /*
-        Global variables for use in multiple functions
+     * Global variables for use in multiple functions
+     * //TODO make patientID empty once intent is ready to be passed through
      */
-    int level = 1, lives = 5, patientID = 0, attemptsLeft = 4, currentPatternNumber = 1;
-    TextView livesText, levelText;
+    int squaresInPattern = 3, triesRemaining = 5, patientID = 0, attemptsLeft = 4, currentPatternNumber = 1;
+    TextView triesText, infoText;
+    //A multidimensional button array for holding all the visual memory game board buttons
     Button[][] gridButton = new Button[5][5];
 
     /**
      * This function is called when the page is loaded. It sets the UI elements on the page and grabs
      * the intent from the previous class.
      *
-     * @param savedInstanceState lol I dunno xD
+     * @param savedInstanceState preset class Bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-            Sets the top bar title, and back button to reflect that the user is on the visual
-            memory game.
-         */
+        // Sets the top bar title, and back button to reflect that the user is on the visual
+        // memory game.
         getSupportActionBar().setTitle(R.string.title_visual_short_term_memory);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_visual_memory_game);
 
         /*
-            Grab information from the select games page relative to the patient
+        // Grabs information from the select games pages intent. This will be used for determining
+        // the number of times the patient can play the game and for using the patients ID to
+        // update the game session table in the database.
 
         try {
             Bundle visualBundle = getIntent().getExtras();
@@ -67,17 +71,20 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             startActivity(new Intent(this, ViewPatientDetails.class)); //TODO change viewPatientDetails to select game once added
             finish();
         }
-
         */
-        /*
-            Declarations for all UI elements that will be used in the onCreate method
-         */
+
+        //  Declarations for the textviews and buttons for setting the text and on click actions
+        //  on them on page load.
         final Button playAgain = findViewById(R.id.visual_memory_play_again);
         final Button exitGame = findViewById(R.id.visual_memory_exit_game);
         final Button startGameButton = findViewById(R.id.visual_memory_start_game);
-        levelText = findViewById(R.id.visual_memory_current_level);
-        livesText = findViewById(R.id.visual_memory_lives_counter);
-        levelText.setText(getResources().getString(R.string.title_visual_short_term_memory));
+        infoText = findViewById(R.id.visual_memory_game_info);
+        triesText = findViewById(R.id.visual_memory_attempts_incorrect_info);
+        infoText.setText(getResources().getString(R.string.title_visual_short_term_memory));
+        if( attemptsLeft != 1 )
+            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_plural, Integer.toString(attemptsLeft)));
+        else
+            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_singular, Integer.toString(attemptsLeft)));
 
         /*
          * Pressing the start game button will set up the visual memory board and will allow the
@@ -85,43 +92,47 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
          */
         startGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // Sets the ID for each button and reduces the patients attempts at the game by one
                 setButtons();
                 attemptsLeft--;
-                levelText.setText(getResources().getString(R.string.visual_memory_game_current_level, level));
-                livesText.setText(getResources().getString(R.string.visual_memory_game_lives_count, lives));
+
+                //Makes the game board visible
                 findViewById(R.id.gameBoardRow0).setVisibility(View.VISIBLE);
                 findViewById(R.id.gameBoardRow1).setVisibility(View.VISIBLE);
                 findViewById(R.id.gameBoardRow2).setVisibility(View.VISIBLE);
                 findViewById(R.id.gameBoardRow3).setVisibility(View.VISIBLE);
                 findViewById(R.id.gameBoardRow4).setVisibility(View.VISIBLE);
-                livesText.setVisibility(View.VISIBLE);
+
+                // Prevent the user from starting a new game while one is in progress by hiding the
+                // start game button
                 startGameButton.setVisibility(View.INVISIBLE);
-                setUpGrid();
+
+                // Create the pattern for the game
+                setUpPattern();
             }
         });
 
         /*
          * Pressing the play again button will allow the user to play the game again, resetting
-         * the level and lives values. The code is almost the same as that from the start game
+         * the squaresInPattern and lives values. The code is almost the same as that from the start game
          * button.
          */
         playAgain.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //Reduces the patients attempts at the game by one
+                attemptsLeft--;
+
+                // Sets the play again and exit game buttons to invisible so the patient does not
+                // click on these accidentally while the game is running.
                 playAgain.setVisibility(View.INVISIBLE);
                 exitGame.setVisibility(View.INVISIBLE);
 
-                 /*
-                    Resets the values of the level and lives counter to reflect the start of a new
-                    game.
-                 */
-                level = 1;
-                lives = 5;
+                // Resets the values of the squaresInPattern and lives counter to reflect the start of a new
+                // game.
+                squaresInPattern = 3;
 
-                attemptsLeft--;
-                levelText.setText(getResources().getString(R.string.visual_memory_game_current_level, level));
-                livesText.setText(getResources().getString(R.string.visual_memory_game_lives_count, lives));
-                livesText.setVisibility(View.VISIBLE);
-                setUpGrid();
+                // Create the pattern for the game
+                setUpPattern();
             }
         });
 
@@ -138,63 +149,104 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /**
+     * This function sets each button used for the game into a multidimensional button array.
+     * Then it sets the drawable resource and tags for if an incorrect button is
+     * pressed on each of the game buttons.
+     */
     private void setButtons() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                String buttonID = "gameButton" + i + j;
-                int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
-                gridButton[i][j] = findViewById(resID);
+                //This line grabs the button for insertion into the array based off its ID.
+                gridButton[i][j] = findViewById(getResources().getIdentifier(
+                        "gameButton" + i + j, "id", getPackageName()));
+                //Sets the drawable for each button
                 gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
-                gridButton[i][j].setTag(R.string.visual_memory_game_error_check, "true");
+
+                //Sets a second tag on each button for use in the game. Used to define if the
+                //button has been pressed incorrectly.
+                gridButton[i][j].setTag(R.string.visual_memory_game_error_check, "false");
             }
         }
     }
 
     /**
-     * This class sets up the grid for the memory game and assigns the pattern to the board.
+     * This function creates the pattern for each round of the game. It displays the pattern
+     * one button at a time first, then hides the pattern and sets the onClickListener for each
+     * button and starts the game.
      */
-    private void setUpGrid() {
+    private void setUpPattern() {
+        //An number array list used to store the numbers 1 through to 25.
         ArrayList<Integer> randList = new ArrayList<>();
+        triesText.setText("");
 
+        //Resets the number of tries remaining whenever a new pattern is created.
+        triesRemaining = 5;
+
+        //Calls functions to reset the board after each round and clear the array list to help
+        //prevent errors
         disableButtons();
-        resetButtonText();
+        refreshButtons();
         randList.clear();
 
+        // Sets the values for randList equal to the maximum number of buttons in the game board,
+        // then randomizes the list by shuffling it with a random.
         for (int i = 0; i < 25; i++) {
             randList.add(i);
         }
         Collections.shuffle(randList, new Random(System.currentTimeMillis()));
 
-        //Determines the pattern and sets the text for each pattern
-        for (int i = 0; i < level + 3; i++) { //The pattern count is equal to the level plus 3
+        //Sets the title textview to alert the patient to remember the pattern shown.
+        infoText.setText(getResources().getString(R.string.visual_memory_textview_remember));
+
+        //Determines the pattern and sets the text for each button involved in the pattern.
+        for (int i = 0; i < squaresInPattern; i++) {
+            //Grab the position of the button using the randLists first value.
             int position = randList.remove(0);
             int x = position / 5;
             int y = position % 5;
+
+            //Set the text, background color and text colour to easily show the button in the
+            //pattern.
             gridButton[x][y].setText(String.valueOf(i + 1));
             gridButton[x][y].setBackgroundResource(R.drawable.button_visual_memory_correct);
             gridButton[x][y].setTextColor(getResources().getColor(R.color.colorBlack));
         }
-        //Hides the pattern and sets the on click listener for each button
+
+        //Hides the pattern and sets the on click listener for each button. A handler is used to
+        //delay the code, allowing the patient to easily see the pattern.
+        Handler longDelayHandler = new Handler();
+        longDelayHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshButtons();
+                infoText.setText(getResources().getString(R.string.visual_memory_textview_start_pattern));
+            }
+        }, 3100 + ( squaresInPattern * 300 ));
+    }
+
+    /**
+     * Sets all buttons to be their default values in preparation for the next round or after the
+     * pattern has been shown to the patient.
+     */
+    private void refreshButtons() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
-                gridButton[i][j].setTextColor(getResources().getColor(R.color.colorBlack));
+                gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
                 gridButton[i][j].setOnClickListener(VisualMemoryActivity.this);
             }
         }
     }
 
+    /**
+     * This function removes the onClickListener from all buttons and removes their text values
+     * in preparation for the next round
+     */
     private void disableButtons() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 gridButton[i][j].setOnClickListener(null);
-            }
-        }
-    }
-
-    private void resetButtonText() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
                 gridButton[i][j].setText("");
             }
         }
@@ -202,24 +254,30 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * Once a game has concluded, this functions takes the number of squares remembered and saves it
-     * as an induvidual session. Then, if the user has any attempts left, it will ask them if they
+     * as an individual session. Then, if the user has any attempts left, it will ask them if they
      * would like to go again.
      */
     private void gameOver() {
+        //Sets the current pattern number to one to prepare for the next attempt.
         currentPatternNumber = 1;
         disableButtons();
-        double score = Double.parseDouble(Integer.toString(level + 3));
-        Button playAgain = findViewById(R.id.visual_memory_play_again);
-        Button exitGame = findViewById(R.id.visual_memory_exit_game);
 
+        //Calculates the score by using the squaresInPattern number. This is reduced by one as the
+        //last pattern is a failure and is not counted towards the score.
+        double score = Double.parseDouble(Integer.toString(squaresInPattern--));
+
+        //Creates a new game session in the database
         GameSession gameSession = new GameSession(patientID, 2, score, new Date());
         DatabaseAccess db = new DatabaseAccess(this);
         db.createSession(gameSession);
+
+        //Reduces the attempts left by one and displays the play again and the exit game buttons.
+        //If the patient has no attempts left, the play again button will not be shown.
         attemptsLeft--;
         if (attemptsLeft > 0) {
-            playAgain.setVisibility(View.VISIBLE);
+            findViewById(R.id.visual_memory_play_again).setVisibility(View.VISIBLE);
         }
-        exitGame.setVisibility(View.VISIBLE);
+        findViewById(R.id.visual_memory_exit_game).setVisibility(View.VISIBLE);
     }
 
     /**
@@ -243,6 +301,11 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * Contains the logic associated with
+     *
+     * @param view the game button that is pressed by the patient
+     */
     @Override
     public void onClick(View view) {
         //If the buttons number matches
@@ -250,7 +313,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             view.setBackgroundResource(R.drawable.button_visual_memory_correct);
             ((Button) view).setTextColor(getResources().getColor(R.color.colorBlack));
             view.setOnClickListener(null);
-            view.setTag(R.string.visual_memory_game_error_check, "true");
+            view.setTag(R.string.visual_memory_game_error_check, "false");
             currentPatternNumber++;
             /*
              *    Iterate through all buttons, and sets the colour of all incorrect selections
@@ -258,35 +321,37 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
              */
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
-                    if (gridButton[i][j].getTag(R.string.visual_memory_game_error_check).equals("false")) {
+                    if (gridButton[i][j].getTag(R.string.visual_memory_game_error_check).equals("true")) {
                         gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
                         gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
-                        gridButton[i][j].setTag(R.string.visual_memory_game_error_check, "true");
+                        gridButton[i][j].setTag(R.string.visual_memory_game_error_check, "false");
                         gridButton[i][j].setOnClickListener(VisualMemoryActivity.this);
                     }
                 }
             }
-            if (currentPatternNumber > level + 3) {
-                level++;
-                levelText.setText(getResources().getString(R.string.visual_memory_game_current_level, level));
+            if (currentPatternNumber > squaresInPattern) {
+                squaresInPattern++;
                 currentPatternNumber = 1;
-                if (level >= 20)
+                if (squaresInPattern >= 20)
                     gameOver();
                 else
-                    setUpGrid();
+                    setUpPattern();
             }
         } else {
             view.setBackgroundResource(R.drawable.button_visual_memory_incorrect);
             ((Button) view).setTextColor(getResources().getColor(R.color.colorWarning));
             view.setOnClickListener(null);
-            view.setTag(R.string.visual_memory_game_error_check, "false");
-            lives--;
-            livesText.setText(getResources().getString(R.string.visual_memory_game_lives_count, lives));
-            if (lives == 0) {
-                levelText.setText(getResources().getString(R.string.visual_memory_game_over));
-                livesText.setVisibility(View.INVISIBLE);
+            view.setTag(R.string.visual_memory_game_error_check, "true");
+            triesRemaining--;
+            if(triesRemaining == 1)
+                triesText.setText(getResources().getString(R.string.visual_memory_textview_try_singular, Integer.toString(triesRemaining)));
+
+            else if (triesRemaining == 0) {
+                infoText.setText(getResources().getString(R.string.visual_memory_textview_game_complete));
+                triesText.setText(getResources().getString(R.string.visual_memory_textview_squares_remembered, Integer.toString(squaresInPattern)));
                 gameOver();
-            }
+            } else
+                triesText.setText(getResources().getString(R.string.visual_memory_textview_try_plural, Integer.toString(triesRemaining)));
         }
 
     }

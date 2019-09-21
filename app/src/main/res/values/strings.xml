@@ -50,13 +50,17 @@
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!--Visual Memory Game Strings-->
-    <string name="visual_memory_game_lives_count">Lives remaining: %1$d</string>
-    <string name="visual_memory_game_current_level">Level %1$d</string>
-    <string name="visual_memory_game_start_game">Start Game</string>
-    <string name="visual_memory_game_continue">Play Again</string>
-    <string name="visual_memory_game_exit">Exit Game</string>
-    <string name="visual_memory_game_over">Good try!</string>
-    <string name="visual_memory_game_won">Nice going!</string>
+    <string name="visual_memory_textview_remember">Remember this pattern</string>
+    <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
+    <string name="visual_memory_textview_game_complete">Game Complete</string>
+    <string name="visual_memory_textview_squares_remembered">You remembered %1$s squares</string>
+    <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
+    <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
+    <string name="visual_memory_textview_attempts_plural">%1$s attempts remaining</string>
+    <string name="visual_memory_textview_attempts_singular">%1$s attempt remaining</string>
+    <string name="visual_memory_button_start_game">Start Game</string>
+    <string name="visual_memory_button_continue">Play Again</string>
+    <string name="visual_memory_button_exit">Exit Game</string>
     <string name="visual_memory_game_error_check">Error</string>
 
     <!-- View report page strings -->

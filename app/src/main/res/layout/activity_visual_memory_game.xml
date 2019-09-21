@@ -12,7 +12,7 @@
         android:layout_width="275dp"
         android:layout_height="65dp"
         android:layout_marginBottom="120dp"
-        android:text="@string/visual_memory_game_start_game"
+        android:text="@string/visual_memory_button_start_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginBottom="68dp"
-        android:text="@string/visual_memory_game_continue"
+        android:text="@string/visual_memory_button_continue"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/visual_memory_exit_game"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="68dp"
-        android:text="@string/visual_memory_game_exit"
+        android:text="@string/visual_memory_button_exit"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/visual_memory_lives_counter">
+        app:layout_constraintTop_toBottomOf="@+id/visual_memory_attempts_incorrect_info">
 
         <Button
             android:id="@+id/gameButton00"
@@ -338,28 +338,29 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/visual_memory_lives_counter"
-        style="@style/TextBody"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/visual_memory_game_lives_count"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visual_memory_current_level" />
+
 
     <TextView
-        android:id="@+id/visual_memory_current_level"
+        android:id="@+id/visual_memory_game_info"
         style="@style/TextSubHead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
-        android:text="@string/visual_memory_game_current_level"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/visual_memory_attempts_incorrect_info"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visual_memory_game_info" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
