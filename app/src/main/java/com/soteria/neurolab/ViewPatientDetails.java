@@ -130,10 +130,10 @@ public class ViewPatientDetails extends AppCompatActivity {
             public void onClick(View v) {
                 //Build the alert dialog warning the user of their action.
                 AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(ViewPatientDetails.this);
-                deleteBuilder.setTitle("Deleting Patient");
+                deleteBuilder.setTitle(getResources().getString(R.string.title_delete_patient));
                 deleteBuilder.setMessage(getString(R.string.view_patient_details_delete_patient_dialog));
                 //If delete is pressed, delete the patient and send the user to the search patients screen
-                deleteBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                deleteBuilder.setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DatabaseAccess dbDelete = DatabaseAccess.getInstance(getApplicationContext());
@@ -145,7 +145,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                     }
                 });
                 //If cancel is pressed, close the alert dialog.
-                deleteBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                deleteBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();

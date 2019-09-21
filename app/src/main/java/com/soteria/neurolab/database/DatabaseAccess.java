@@ -230,6 +230,17 @@ public class DatabaseAccess {
         close();
     }
 
+
+    /**
+     * Function for cleaning the Patient table, used for testing purposes only.
+     * @throws SQLiteException
+     */
+    public void deleteAllPatients() throws SQLiteException{
+        open();
+        db.execSQL("delete from Patient");
+        close();
+    }
+
     //---------------------------------Game Methods-----------------------------------//
 
     /**
@@ -447,6 +458,16 @@ public class DatabaseAccess {
         close();
     }
 
+    /**
+     * Deletes all game sessions, used for testing purposes only
+     * @throws SQLiteException
+     */
+    public void deleteAllSessions()throws SQLiteException{
+        open();
+        db.execSQL("delete from Game_Session");
+        close();
+    }
+
     //-----------------------------GameAssignment Methods-----------------------------//
 
     /**
@@ -558,6 +579,17 @@ public class DatabaseAccess {
                         Integer.toString(assignment.getPatientID()),
                         Integer.toString(assignment.getGameID())
                 });
+        close();
+    }
+
+
+    /**
+     * Deletes all game assignments, used for testing purposes only
+     * @throws SQLiteException
+     */
+    public void deleteAllAssignments()throws SQLiteException{
+        open();
+        db.execSQL("delete from Game_Assignment");
         close();
     }
 
