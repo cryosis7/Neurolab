@@ -82,13 +82,19 @@
     <string name="login_sign_in">Sign In</string>
     <string name="login_enter_password">Enter Password</string>
 
+    <!-- Edit Patient Details Strings -->
+    <string name="edit_patient_details_confirm">Confirm</string>
+    <string name="edit_patient_details_exit">Exit</string>
+    <string name="edit_patient_details_patient_updated">Patient details updated</string>
+    <string name="edit_patient_details_title">Manage Patient</string>
+
     <!--Generic Strings-->
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
+    <string name="shared_preferences_filename">neurolabPrefs</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
     <string-array name="settings">
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
-    <string name="shared_preferences_filename">neurolabPrefs</string>
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
 </resources>
