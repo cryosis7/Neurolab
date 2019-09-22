@@ -38,18 +38,22 @@ public class VisualAttentionGame extends AppCompatActivity {
 
         roundNum.setText("Round " + roundCount);
         int[] roundImages = getRoundImages(roundCount);
-        Integer randomTarget = shuffleImages(roundImages);
+        Integer randomTarget = getRandomImages(roundImages);
         targetImage.setImageDrawable(resizeImages(randomTarget));
         targetImage.setTag(randomTarget);
+        int[] image_Array = imageArray(roundImages, randomTarget);
+        int count = 0;
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 String buttonID = "button_" + i + j;
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 buttons[i][j] = findViewById(resID);
-                int image = shuffleImages(roundImages);
-                buttons[i][j].setImageDrawable(resizeImages(image));
-                buttons[i][j].setTag(image);
+                //int image = shuffleImages(roundImages);
+                buttons[i][j].setImageDrawable(resizeImages(image_Array[count]));
+                buttons[i][j].setTag(image_Array[count]);
+                Log.i("counter", "count: " + count);
+                count++;
 
                 if (buttons[i][j].getTag().equals(targetImage.getTag())) {
                     numOfTargets++;
@@ -63,8 +67,8 @@ public class VisualAttentionGame extends AppCompatActivity {
                         if (view.getTag().equals(targetImage.getTag())) {
                             targetsFound++;
                             view.setClickable(false);
-                            view.setBackgroundColor(Color.YELLOW);
-                            if (targetsFound == numOfTargets) {
+                            view.setBackgroundResource(R.drawable.visual_attention_target_button);
+                            if (targetsFound == numOfTargets && roundCount != 4) {
                                 Log.i("round score", "score: " + calculateRoundScore(numOfTargets, numOfTaps));
                                 roundCount++;
                                 numOfTargets = 0; numOfTaps = 0; targetsFound = 0;
@@ -77,6 +81,48 @@ public class VisualAttentionGame extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    public int[] imageArray(int[] roundImages, int target){
+        Random rand = new Random();
+        int randNum = 5 + rand.nextInt((6 - 5) + 1);
+        int[] images = new int[25];
+        for(int i = 0; i < randNum; i++){
+            images[i] = target;
+        }
+
+        if(randNum == 5){
+            for (int i = 5; i < images.length; i++){
+                int randImage = getRandomImages(roundImages);
+                while (randImage == target){
+                    randImage = getRandomImages(roundImages);
+                }
+                images[i] = randImage;
+            }
+        }
+
+        if(randNum == 6){
+            for (int i = 6; i < images.length; i++){
+                int randImage = getRandomImages(roundImages);
+                while (randImage == target){
+                    randImage = getRandomImages(roundImages);
+                }
+                images[i] = randImage;
+            }
+        }
+        return shuffleImages(images);
+    }
+
+    public int[] shuffleImages(int[] images){
+        int tmp, index;
+        Random rand = new Random();
+        for (int i = images.length - 1; i > 0; i--){
+            index = rand.nextInt(i + 1);
+            tmp = images[index];
+            images[index] = images[i];
+            images[i] = tmp;
+        }
+        return images;
     }
 
     public void resetButtons(){
@@ -106,7 +152,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         return drawable;
     }
 
-    public Integer shuffleImages(int[] list){
+    public Integer getRandomImages(int[] list){
         Random rand = new Random();
         return list[rand.nextInt(list.length)];
     }
@@ -117,6 +163,10 @@ public class VisualAttentionGame extends AppCompatActivity {
                 return roundOneSets();
             case 2:
                 return roundTwoSets();
+            case 3:
+                return roundThreeSets();
+            case 4:
+                return roundFourSets();
         }
         return null;
     }
@@ -124,7 +174,7 @@ public class VisualAttentionGame extends AppCompatActivity {
     public int[] roundOneSets(){
         int[] roundOneSetOne = {R.mipmap.circle, R.mipmap.crown, R.mipmap.diamond, R.mipmap.flower, R.mipmap.star};
         int[] roundOneSetTwo = {R.mipmap.checked, R.mipmap.heart, R.mipmap.moon, R.mipmap.notification, R.mipmap.star2};
-        int[] roundOneSetThree = {R.mipmap.plus, R.mipmap.square, R.mipmap.star3, R.mipmap.sunny};
+        int[] roundOneSetThree = {R.mipmap.plus, R.mipmap.star3, R.mipmap.sunny, R.mipmap.crown2, R.mipmap.heart2};
 
         Random random = new Random();
         int setNum = random.nextInt(3) + 1;
@@ -141,12 +191,45 @@ public class VisualAttentionGame extends AppCompatActivity {
 
     public int[] roundTwoSets(){
         int[] roundTwoSetOne = {R.mipmap.check_box, R.mipmap.christian_cross, R.mipmap.pentagon, R.mipmap.plain_circle, R.mipmap.six_pointed_star};
+        int[] roundTwoSetTwo = {R.mipmap.cancel, R.mipmap.check, R.mipmap.padlock, R.mipmap.shining_sun, R.mipmap.tumble_dry};
+        int[] roundTwoSetThree = {R.mipmap.hexagon, R.mipmap.log_in_button, R.mipmap.peace_symbol, R.mipmap.plain_square, R.mipmap.plain_star};
+        int[] roundTwoSetFour = {R.mipmap.no_entry_sign, R.mipmap.plain_heart, R.mipmap.plain_triangle, R.mipmap.plus_sign, R.mipmap.star_and_crescent};
 
         Random random = new Random();
-        int setNum = 1;
+        int setNum = random.nextInt(4) + 1;
         switch (setNum){
             case 1:
                 return roundTwoSetOne;
+            case 2:
+                return roundTwoSetTwo;
+            case 3:
+                return roundTwoSetThree;
+            case 4:
+                return roundTwoSetFour;
+        }
+        return null;
+    }
+
+    public int[] roundThreeSets(){
+        int[] roundThreeSetOne = {R.mipmap.crown3, R.mipmap.dots, R.mipmap.hexagon2, R.mipmap.leo_sign, R.mipmap.sagittarius_arrow_sign};
+
+        Random random = new Random();
+        int setNum = random.nextInt(1) + 1;
+        switch (setNum){
+            case 1:
+                return roundThreeSetOne;
+        }
+        return null;
+    }
+
+    public int[] roundFourSets(){
+        int[] roundFourSetOne = {R.mipmap.hexagon3, R.mipmap.hexagon4, R.mipmap.rhombus, R.mipmap.triangle, R.mipmap.triangle2};
+
+        Random random = new Random();
+        int setNum = random.nextInt(1) + 1;
+        switch (setNum){
+            case 1:
+                return roundFourSetOne;
         }
         return null;
     }
