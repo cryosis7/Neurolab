@@ -1,13 +1,11 @@
 package com.soteria.neurolab;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,9 +34,13 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * //TODO make patientID empty once intent is ready to be passed through
      */
     int squaresInPattern = 3, triesRemaining = 5, patientID = 0, attemptsLeft = 4, currentPatternNumber = 1;
+    int loopCount = 0;
+    int revealPatternCount = 0;
     TextView triesText, infoText;
     //A multidimensional button array for holding all the visual memory game board buttons
     Button[][] gridButton = new Button[5][5];
+    //An number array list used to store the numbers 1 through to 25.
+    ArrayList<Integer> randList = new ArrayList<>();
 
     /**
      * This function is called when the page is loaded. It sets the UI elements on the page and grabs
@@ -176,8 +178,6 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * button and starts the game.
      */
     private void setUpPattern() {
-        //An number array list used to store the numbers 1 through to 25.
-        ArrayList<Integer> randList = new ArrayList<>();
         triesText.setText("");
 
         //Resets the number of tries remaining whenever a new pattern is created.
@@ -186,7 +186,6 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         //Calls functions to reset the board after each round and clear the array list to help
         //prevent errors
         disableButtons();
-        refreshButtons();
         randList.clear();
 
         // Sets the values for randList equal to the maximum number of buttons in the game board,
@@ -198,19 +197,26 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
 
         //Sets the title textview to alert the patient to remember the pattern shown.
         infoText.setText(getResources().getString(R.string.visual_memory_textview_remember));
-
         //Determines the pattern and sets the text for each button involved in the pattern.
-        for (int i = 0; i < squaresInPattern; i++) {
-            //Grab the position of the button using the randLists first value.
-            int position = randList.remove(0);
-            int x = position / 5;
-            int y = position % 5;
+        for (loopCount = 0; loopCount < squaresInPattern; loopCount++) {
+            Handler shortDelayHandler = new Handler();
+            shortDelayHandler.postDelayed(new Runnable() {
+                @Override
+                public synchronized void run() {
+                    //Grab the position of the button using the randLists first value.
+                    int position = randList.remove(0);
+                    int x = position / 5;
+                    int y = position % 5;
 
-            //Set the text, background color and text colour to easily show the button in the
-            //pattern.
-            gridButton[x][y].setText(String.valueOf(i + 1));
-            gridButton[x][y].setBackgroundResource(R.drawable.button_visual_memory_correct);
-            gridButton[x][y].setTextColor(getResources().getColor(R.color.colorBlack));
+                    //Set the text, background color and text colour to easily show the button in the
+                    //pattern.
+                    gridButton[x][y].setText(String.valueOf(revealPatternCount + 1));
+                    gridButton[x][y].setBackgroundResource(R.drawable.button_visual_memory_correct);
+                    gridButton[x][y].setTextColor(getResources().getColor(R.color.colorBlack));
+                    revealPatternCount++;
+                }
+            }, loopCount * 500 );
+
         }
 
         //Hides the pattern and sets the on click listener for each button. A handler is used to
@@ -222,7 +228,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                 refreshButtons();
                 infoText.setText(getResources().getString(R.string.visual_memory_textview_start_pattern));
             }
-        }, 3100 + ( squaresInPattern * 300 ));
+        }, 2000 + ( loopCount * 500 ));
     }
 
     /**
@@ -246,6 +252,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     private void disableButtons() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
+                gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
+                gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
                 gridButton[i][j].setOnClickListener(null);
                 gridButton[i][j].setText("");
             }
@@ -260,6 +268,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     private void gameOver() {
         //Sets the current pattern number to one to prepare for the next attempt.
         currentPatternNumber = 1;
+        revealPatternCount = 0;
         disableButtons();
 
         //Calculates the score by using the squaresInPattern number. This is reduced by one as the
@@ -317,7 +326,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             currentPatternNumber++;
             /*
              *    Iterate through all buttons, and sets the colour of all incorrect selections
-             *    to their original state
+             *    to their original state.
              */
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
@@ -334,8 +343,18 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                 currentPatternNumber = 1;
                 if (squaresInPattern >= 20)
                     gameOver();
-                else
-                    setUpPattern();
+                else {
+                    infoText.setText(getResources().getString(R.string.visual_memory_textview_round_complete));
+                    triesText.setText(null);
+                    Handler finishHandler = new Handler();
+                    finishHandler.postDelayed( new Runnable() {
+                        @Override
+                        public void run() {
+                            revealPatternCount = 0;
+                            setUpPattern();
+                        }
+                    }, 2500 );
+                }
             }
         } else {
             view.setBackgroundResource(R.drawable.button_visual_memory_incorrect);
