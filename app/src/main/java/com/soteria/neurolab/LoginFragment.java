@@ -1,5 +1,6 @@
 package com.soteria.neurolab;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,14 +9,16 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
+
+import java.security.InvalidParameterException;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -31,10 +34,10 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        
+
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        // Will enable / disable the sign in button when enough characters are entered.
+        // Will enable / disable the sign in button and error message.
         ((TextInputEditText) view.findViewById(R.id.login_password_edittext)).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -63,6 +66,12 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Attempts to sign the user into the application.
+     * Reads the text from the edit-text then compares it to the password hash in shared preferences.
+     * If they match, will launch the menu screen.
+     * Will throw an exception if there is no password stored in the preferences.
+     */
     private void signIn() {
         TextInputEditText passwordEditText = getView().findViewById(R.id.login_password_edittext);
         char[] password = passwordEditText.getText().toString().toCharArray();
@@ -73,20 +82,38 @@ public class LoginFragment extends Fragment {
         SharedPreferences.Editor editor = pref.edit();
         editor.apply();
         String storedHash = pref.getString("passwordHash", null);
+        if (storedHash == null)
+            throw new InvalidParameterException("No password has been set in the shared preferences");
 
         PasswordAuthentication authenticator = new PasswordAuthentication();
-        if (storedHash != null) {
-            if (authenticator.authenticate(password, storedHash)) {
-                new DisclaimerAlertDialog().showDisclaimerWithCancel(getContext(), getResources());
-                startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
-            } else {
-                ((TextInputLayout) getView().findViewById(R.id.login_password_inputLayout)).setError("Incorrect Password");
-            }
-        } else {
-            String hashedPassword = authenticator.hash(password);
-            editor.putString("passwordHash", hashedPassword);
-            editor.apply();
-            Toast.makeText(getContext(), "Password Set", Toast.LENGTH_SHORT).show(); //TODO: Remove with 016-create-password
-        }
+        // Androids being annoying so I'm just re-writing the DisclaimerAlertDialog function.
+        if (authenticator.authenticate(password, storedHash)) {
+            final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(getContext());
+
+            disclaimerBuilder.setTitle(getResources().getString(R.string.disclaimer));
+            disclaimerBuilder.setMessage(getResources().getString(R.string.disclaimer_body));
+
+            //If the confirm button is pressed, close the dialog
+            disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
+                }
+            });
+            final AlertDialog showDisclaimer = disclaimerBuilder.create();
+
+            //Change the button colour of the alert dialog to be the primary colour
+            showDisclaimer.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface arg0) {
+                    showDisclaimer.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
+                }
+            });
+            showDisclaimer.show();
+            TextView bodyText = showDisclaimer.findViewById(android.R.id.message);
+            bodyText.setTextSize(24);
+        } else
+            ((TextInputLayout) getView().findViewById(R.id.login_password_inputLayout)).setError("Incorrect Password");
     }
 }
