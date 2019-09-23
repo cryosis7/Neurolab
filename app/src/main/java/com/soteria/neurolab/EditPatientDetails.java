@@ -1,5 +1,6 @@
 package com.soteria.neurolab;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,9 +39,11 @@ public class EditPatientDetails extends AppCompatActivity {
         setContentView(R.layout.activity_edit_patient_details);
 
         //Setup action bar - title and back button
-        getSupportActionBar().setTitle(getString(R.string.edit_patient_details_title));
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null ) {
+            getSupportActionBar().setTitle(getString(R.string.edit_patient_details_title));
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         String patientReferenceOld = "";
         final DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
@@ -95,6 +99,7 @@ public class EditPatientDetails extends AppCompatActivity {
         }
 
         //Functionality for the seek bar
+        seekAttemptsBar.setProgress(db.getAssignments(patient.getPatientID()).get(0).getGameAttempts() - 1);
         seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
         seekAttemptsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -180,7 +185,7 @@ public class EditPatientDetails extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * Listener on the edit text field to clear the error upon changing the patientID
          */
         editPatientID.addTextChangedListener(new TextWatcher() {
@@ -212,10 +217,11 @@ public class EditPatientDetails extends AppCompatActivity {
 
     /**
      * Press the home button to go back home
-     * @param view
+     * @param view the home image button
      */
     public void launchMainScreen(View view) {
         startActivity(new Intent(view.getContext(), SearchCreateDeleteActivity.class));
+        finish();
     }
 
     /** Sets the actions bar to include an overflow menu with the disclaimer and log out options.
