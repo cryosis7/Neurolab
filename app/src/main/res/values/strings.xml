@@ -52,8 +52,8 @@
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
     <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
-    <string name="visual_memory_textview_game_complete">Game Complete! Great Job!</string>
-    <string name="visual_memory_textview_round_complete">Correct!</string>
+    <string name="visual_memory_textview_game_complete">Game Complete</string>
+    <string name="visual_memory_textview_round_complete">You are correct!</string>
     <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
     <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
     <string name="visual_memory_textview_attempts_plural">%1$s attempts remaining</string>

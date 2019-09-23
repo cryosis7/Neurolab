@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/visual_memory_game_info"
+        style="@style/TextSubHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/visual_memory_attempts_incorrect_info"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visual_memory_game_info" />
+
     <Button
         android:id="@+id/visual_memory_start_game"
         style="@style/TextButtonBlue"
@@ -53,56 +73,57 @@
         android:id="@+id/gameBoardRow0"
         android:layout_width="721dp"
         android:layout_height="157dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
         android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/visual_memory_attempts_incorrect_info">
 
         <Button
             android:id="@+id/gameButton00"
-            android:tag="gameButton00"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton00" />
 
         <Button
             android:id="@+id/gameButton01"
-            android:tag="gameButton01"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton01" />
 
         <Button
             android:id="@+id/gameButton02"
-            android:tag="gameButton02"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton02" />
 
         <Button
             android:id="@+id/gameButton03"
-            android:tag="gameButton03"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton03" />
 
         <Button
             android:id="@+id/gameButton04"
-            android:tag="gameButton04"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
-
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton04" />
 
 
     </LinearLayout>
@@ -119,48 +140,48 @@
 
         <Button
             android:id="@+id/gameButton10"
-            android:tag="gameButton10"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton10" />
 
         <Button
             android:id="@+id/gameButton11"
-            android:tag="gameButton11"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton11" />
 
         <Button
             android:id="@+id/gameButton12"
-            android:tag="gameButton12"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton12" />
 
         <Button
             android:id="@+id/gameButton13"
-            android:tag="gameButton13"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton13" />
 
         <Button
             android:id="@+id/gameButton14"
-            android:tag="gameButton14"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton14" />
 
     </LinearLayout>
 
@@ -177,48 +198,48 @@
 
         <Button
             android:id="@+id/gameButton20"
-            android:tag="gameButton20"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton20" />
 
         <Button
             android:id="@+id/gameButton21"
-            android:tag="gameButton21"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton21" />
 
         <Button
             android:id="@+id/gameButton22"
-            android:tag="gameButton22"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton22" />
 
         <Button
             android:id="@+id/gameButton23"
-            android:tag="gameButton23"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton23" />
 
         <Button
             android:id="@+id/gameButton24"
-            android:tag="gameButton24"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton24" />
 
     </LinearLayout>
 
@@ -235,48 +256,48 @@
 
         <Button
             android:id="@+id/gameButton30"
-            android:tag="gameButton30"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton30" />
 
         <Button
             android:id="@+id/gameButton31"
-            android:tag="gameButton31"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton31" />
 
         <Button
             android:id="@+id/gameButton32"
-            android:tag="gameButton32"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton32" />
 
         <Button
             android:id="@+id/gameButton33"
-            android:tag="gameButton33"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton33" />
 
         <Button
             android:id="@+id/gameButton34"
-            android:tag="gameButton34"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton34" />
 
     </LinearLayout>
 
@@ -293,74 +314,49 @@
 
         <Button
             android:id="@+id/gameButton40"
-            android:tag="gameButton40"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton40" />
 
         <Button
             android:id="@+id/gameButton41"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:tag="gameButton41" />
 
         <Button
             android:id="@+id/gameButton42"
-            android:tag="gameButton42"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton42" />
 
         <Button
             android:id="@+id/gameButton43"
-            android:tag="gameButton43"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton43" />
 
         <Button
             android:id="@+id/gameButton44"
-            android:tag="gameButton44"
             style="@style/VisualMemoryGameButtonUnselected"
-            android:layout_marginStart="5dp"
             android:layout_width="0dp"
             android:layout_height="153dp"
-            android:layout_weight="1" />
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:tag="gameButton44" />
 
     </LinearLayout>
-
-
-
-    <TextView
-        android:id="@+id/visual_memory_game_info"
-        style="@style/TextSubHead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/visual_memory_attempts_incorrect_info"
-        style="@style/TextBody"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visual_memory_game_info" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

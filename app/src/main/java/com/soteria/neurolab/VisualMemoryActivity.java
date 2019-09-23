@@ -80,7 +80,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             attemptsLeft = visualBundle.getInt("ATTEMPTS");
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),"ERROR - An error occurred during page transition : " + e,Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ViewuserDetails.class)); //TODO change viewuserDetails to select game once added
+            startActivity(new Intent(this, ViewuserDetails.class)); //TODO change viewUserDetails to select game once added
             finish();
         }
         */
@@ -243,6 +243,16 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * would like to go again.
      */
     private void gameOver() {
+        //Sets the infoText textview to show game completion
+        infoText.setText(getResources().getString(R.string.visual_memory_textview_game_complete));
+        //Sets the triesText textview to show the users attempts remaining
+        if (attemptsLeft > 1)
+            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_plural, Integer.toString(attemptsLeft)));
+        else if (attemptsLeft == 1)
+            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_singular, Integer.toString(attemptsLeft)));
+        else
+            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_none));
+
         //Sets the current pattern number to one to prepare for the next attempt.
         currentPatternNumber = 1;
         revealPatternCount = 0;
@@ -259,6 +269,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         //Calculates the score by using the squaresInPattern number. This is reduced by one as the
         //last pattern is a failure and is not counted towards the score.
         double score = Double.parseDouble(Integer.toString(squaresInPattern--));
+        if( score < 3 )
+            score = 0;
 
         //Creates a new game session in the database
         GameSession gameSession = new GameSession(patientID, 2, score, new Date());
@@ -274,7 +286,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
-     * Contains the logic associated with pressing a button. This method checks the current state of
+     * Contains the logic associated with pressing a game button. This method checks the current state of
      * the button through its tags or text value and passes it through a series of if statements to
      * determine the next course of action.
      *
@@ -351,13 +363,6 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             //Else, if they do not have any tries left, remove an attempt and display the number of attempts they have left
             else {
                 attemptsLeft--;
-                infoText.setText(getResources().getString(R.string.visual_memory_textview_game_complete));
-                if (attemptsLeft > 1)
-                    triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_plural, Integer.toString(attemptsLeft)));
-                else if (attemptsLeft == 1)
-                    triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_singular, Integer.toString(attemptsLeft)));
-                else
-                    triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_none));
                 //Run the game over function on no tries left.
                 gameOver();
             }
