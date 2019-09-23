@@ -531,11 +531,11 @@ public class DatabaseAccess {
      * @return List of game assignments
      * @throws SQLiteException
      */
-    public List<GameAssignment> getAssignments(String patientReference)throws SQLiteException{
+    public List<GameAssignment> getAssignments(int patientID)throws SQLiteException{
         open();
         List<GameAssignment> gameAssignments = new ArrayList<>();
-        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_reference = ?",
-                new String[]{patientReference});
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_id = ?",
+                new String[]{String.valueOf(patientID)});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             GameAssignment assignment = new GameAssignment();
