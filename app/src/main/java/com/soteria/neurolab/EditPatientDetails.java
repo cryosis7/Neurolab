@@ -164,6 +164,7 @@ public class EditPatientDetails extends AppCompatActivity {
                         Intent viewIntent = new Intent(EditPatientDetails.this, ViewPatientDetails.class);
                         viewIntent.putExtra("PATIENT_REFERENCE", patientReference);
                         startActivity(viewIntent);
+                        finish();
                     } else {
                         editPatientIDLayout.setErrorEnabled(true);
                         editPatientIDLayout.setError(getString(R.string.error_patient_id_in_use));
@@ -175,9 +176,7 @@ public class EditPatientDetails extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent viewIntent = new Intent(EditPatientDetails.this, ViewPatientDetails.class);
-                viewIntent.putExtra("PATIENT_REFERENCE", patient.getPatientReference());
-                startActivity(viewIntent);
+                finish();
             }
         });
 
