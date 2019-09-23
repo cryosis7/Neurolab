@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -76,6 +77,7 @@ public class LoginFragment extends Fragment {
         PasswordAuthentication authenticator = new PasswordAuthentication();
         if (storedHash != null) {
             if (authenticator.authenticate(password, storedHash)) {
+                new DisclaimerAlertDialog().showDisclaimerWithCancel(getContext(), getResources());
                 startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
             } else {
                 ((TextInputLayout) getView().findViewById(R.id.login_password_inputLayout)).setError("Incorrect Password");
