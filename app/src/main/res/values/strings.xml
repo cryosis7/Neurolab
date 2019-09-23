@@ -54,7 +54,8 @@
     <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
     <string name="visual_memory_textview_game_complete">Game Complete</string>
     <string name="visual_memory_textview_round_complete">Correct!</string>
-    <string name="visual_memory_textview_squares_remembered">You remembered %1$s squares</string>
+    <string name="visual_memory_textview_squares_remembered">You remembered a pattern of %1$s squares</string>
+    <string name="visual_memory_textview_well_done">You did a great job!</string>
     <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
     <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
     <string name="visual_memory_textview_attempts_plural">%1$s attempts remaining</string>
@@ -62,7 +63,9 @@
     <string name="visual_memory_button_start_game">Start Game</string>
     <string name="visual_memory_button_continue">Play Again</string>
     <string name="visual_memory_button_exit">Exit Game</string>
-    <string name="visual_memory_game_error_check">Error</string>
+    <string name="visual_memory_tag_error_check">Incorrect Guess</string>
+    <string name="visual_memory_tag_not_correct_button">Not Correct</string>
+    <string name="visual_memory_tag_pattern_check">Part of Pattern</string>
 
     <!-- View report page strings -->
     <string name="view_report_title">View Report</string>

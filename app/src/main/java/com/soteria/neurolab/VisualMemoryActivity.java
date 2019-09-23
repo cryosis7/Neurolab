@@ -33,10 +33,17 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * Global variables for use in multiple functions
      * //TODO make patientID empty once intent is ready to be passed through
      */
-    int squaresInPattern = 3, triesRemaining = 5, patientID = 0, attemptsLeft = 4, currentPatternNumber = 1;
-    int loopCount = 0;
-    int revealPatternCount = 0;
-    TextView triesText, infoText;
+    //These integers belong to the patient and are passed through at the beginning of the code.
+    int patientID = 0, attemptsLeft = 3;
+    //These integers determine how many square are in the pattern, the current pattern number the
+    //patient is up to, and how many errors they are allowed to make in the current pattern.
+    //triesRemaining is currently set to 5.
+    int squaresInPattern = 3, currentPatternNumber = 1, triesRemaining;
+    //These integers are used for the synchronized thread which displays the buttons in the pattern
+    //in order.
+    int loopCount = 0, revealPatternCount = 0;
+    //These textviews are used to store information messages at the top of the screen to the patient.
+    TextView infoText, triesText;
     //A multidimensional button array for holding all the visual memory game board buttons
     Button[][] gridButton = new Button[5][5];
     //An number array list used to store the numbers 1 through to 25.
@@ -96,7 +103,6 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             public void onClick(View v) {
                 // Sets the ID for each button and reduces the patients attempts at the game by one
                 setButtons();
-                attemptsLeft--;
 
                 //Makes the game board visible
                 findViewById(R.id.gameBoardRow0).setVisibility(View.VISIBLE);
@@ -167,7 +173,12 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
 
                 //Sets a second tag on each button for use in the game. Used to define if the
                 //button has been pressed incorrectly.
-                gridButton[i][j].setTag(R.string.visual_memory_game_error_check, "false");
+                gridButton[i][j].setTag(R.string.visual_memory_tag_error_check, "false");
+                //Sets a third and fourth tag to define whether the button is a part of the pattern,
+                //and whether it has been unselected or selected erroneously for the purpose of
+                //revealing the pattern when the patient loses a round.
+                gridButton[i][j].setTag(R.string.visual_memory_tag_pattern_check, "false");
+                gridButton[i][j].setTag(R.string.visual_memory_tag_not_correct_button, "true");
             }
         }
     }
@@ -185,7 +196,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
 
         //Calls functions to reset the board after each round and clear the array list to help
         //prevent errors
-        disableButtons();
+        disableAndRefreshButtons();
         randList.clear();
 
         // Sets the values for randList equal to the maximum number of buttons in the game board,
@@ -213,9 +224,10 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                     gridButton[x][y].setText(String.valueOf(revealPatternCount + 1));
                     gridButton[x][y].setBackgroundResource(R.drawable.button_visual_memory_correct);
                     gridButton[x][y].setTextColor(getResources().getColor(R.color.colorBlack));
+                    gridButton[x][y].setTag(R.string.visual_memory_tag_pattern_check, "true");
                     revealPatternCount++;
                 }
-            }, loopCount * 500 );
+            }, 500 + ( loopCount * 500 ) );
 
         }
 
@@ -241,6 +253,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                 gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
                 gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
                 gridButton[i][j].setOnClickListener(VisualMemoryActivity.this);
+
             }
         }
     }
@@ -249,13 +262,26 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * This function removes the onClickListener from all buttons and removes their text values
      * in preparation for the next round
      */
-    private void disableButtons() {
+    private void disableAndRefreshButtons() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
                 gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
                 gridButton[i][j].setOnClickListener(null);
                 gridButton[i][j].setText("");
+                gridButton[i][j].setTag(R.string.visual_memory_tag_pattern_check, "false");
+                gridButton[i][j].setTag(R.string.visual_memory_tag_not_correct_button, "true");
+            }
+        }
+    }
+
+    /**
+       Strips all buttons of their onClickListener
+     */
+    private void disableButtons() {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                gridButton[i][j].setOnClickListener(null);
             }
         }
     }
@@ -270,7 +296,15 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         currentPatternNumber = 1;
         revealPatternCount = 0;
         disableButtons();
-
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (gridButton[i][j].getTag(R.string.visual_memory_tag_not_correct_button) == "true" &&
+                        gridButton[i][j].getTag(R.string.visual_memory_tag_pattern_check) == "true") {
+                    gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_not_found);
+                    gridButton[i][j].setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+            }
+        }
         //Calculates the score by using the squaresInPattern number. This is reduced by one as the
         //last pattern is a failure and is not counted towards the score.
         double score = Double.parseDouble(Integer.toString(squaresInPattern--));
@@ -322,18 +356,20 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             view.setBackgroundResource(R.drawable.button_visual_memory_correct);
             ((Button) view).setTextColor(getResources().getColor(R.color.colorBlack));
             view.setOnClickListener(null);
-            view.setTag(R.string.visual_memory_game_error_check, "false");
+            view.setTag(R.string.visual_memory_tag_error_check, "false");
+            view.setTag(R.string.visual_memory_tag_not_correct_button, "false");
             currentPatternNumber++;
+
             /*
              *    Iterate through all buttons, and sets the colour of all incorrect selections
              *    to their original state.
              */
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
-                    if (gridButton[i][j].getTag(R.string.visual_memory_game_error_check).equals("true")) {
+                    if (gridButton[i][j].getTag(R.string.visual_memory_tag_error_check).equals("true")) {
                         gridButton[i][j].setBackgroundResource(R.drawable.button_visual_memory_unselected);
                         gridButton[i][j].setTextColor(getResources().getColor(R.color.colorPrimary));
-                        gridButton[i][j].setTag(R.string.visual_memory_game_error_check, "false");
+                        gridButton[i][j].setTag(R.string.visual_memory_tag_error_check, "false");
                         gridButton[i][j].setOnClickListener(VisualMemoryActivity.this);
                     }
                 }
@@ -341,33 +377,34 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             if (currentPatternNumber > squaresInPattern) {
                 squaresInPattern++;
                 currentPatternNumber = 1;
+                //Prevents overflow by ending the game early
                 if (squaresInPattern >= 20)
                     gameOver();
                 else {
                     infoText.setText(getResources().getString(R.string.visual_memory_textview_round_complete));
                     triesText.setText(null);
-                    Handler finishHandler = new Handler();
-                    finishHandler.postDelayed( new Runnable() {
+                    Handler finishRoundHandler = new Handler();
+                    finishRoundHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             revealPatternCount = 0;
                             setUpPattern();
                         }
-                    }, 2500 );
+                    }, 2000 );
                 }
             }
         } else {
             view.setBackgroundResource(R.drawable.button_visual_memory_incorrect);
             ((Button) view).setTextColor(getResources().getColor(R.color.colorWarning));
             view.setOnClickListener(null);
-            view.setTag(R.string.visual_memory_game_error_check, "true");
+            view.setTag(R.string.visual_memory_tag_error_check, "true");
             triesRemaining--;
             if(triesRemaining == 1)
                 triesText.setText(getResources().getString(R.string.visual_memory_textview_try_singular, Integer.toString(triesRemaining)));
 
             else if (triesRemaining == 0) {
                 infoText.setText(getResources().getString(R.string.visual_memory_textview_game_complete));
-                triesText.setText(getResources().getString(R.string.visual_memory_textview_squares_remembered, Integer.toString(squaresInPattern)));
+                triesText.setText(getResources().getString(R.string.visual_memory_textview_well_done));
                 gameOver();
             } else
                 triesText.setText(getResources().getString(R.string.visual_memory_textview_try_plural, Integer.toString(triesRemaining)));
