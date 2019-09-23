@@ -9,8 +9,8 @@
     <!-- Game titles -->
     <string name="title_motor_skills">Motor Skills</string>
     <string name="title_reaction_time">Reaction Time</string>
-    <string name="title_visual_short_term_memory">Visual Short Term Memory</string>
-    <string name="title_selective_attention">Selective Attention</string>
+    <string name="title_visual_short_term_memory">Short-term Visual Memory</string>
+    <string name="title_visual_attention">Visual Attention</string>
 
     <!-- Create patient fragment strings -->
     <string name="patient_id_title">Patient ID</string>
@@ -84,11 +84,15 @@
 
     <!--Generic Strings-->
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
+    <string name="shared_preferences_filename">neurolabPrefs</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
     <string-array name="settings">
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
-    <string name="shared_preferences_filename">neurolabPrefs</string>
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
+
+    <!-- Select Game Screen -->
+    <string name="select_game">Select Game</string>
+
 </resources>

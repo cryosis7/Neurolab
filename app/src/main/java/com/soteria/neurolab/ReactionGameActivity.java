@@ -30,7 +30,7 @@ public class ReactionGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle(R.string.title_reaction_time);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true); //TODO: Shouldn't this be false?
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_reaction_game);
 
@@ -38,7 +38,7 @@ public class ReactionGameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
         if (patientID == -1)
-            throw new IllegalArgumentException("Expected Extra 'PATIENT_ID' in Intent - Received none");
+            throw new IllegalArgumentException("Expected Int Extra 'PATIENT_ID' in Intent - Received none");
     }
 
     /**
@@ -98,9 +98,12 @@ public class ReactionGameActivity extends AppCompatActivity {
             avgResult += x;
         avgResult /= results.length;
 
-        int gameID = 1; //TODO: Change to actual game ID
-        GameSession gameSession = new GameSession(patientID, gameID, avgResult, new Date());
         DatabaseAccess db = new DatabaseAccess(this);
+        String gameName = getResources().getString(R.string.title_reaction_time);
+        int gameID = db.getGameId(gameName);
+        if (gameID == -1)
+            throw new IllegalArgumentException("Invalid Game Name: " + gameName);
+        GameSession gameSession = new GameSession(patientID, gameID, avgResult, new Date());
         db.createSession(gameSession);
 
         //TODO change view patient details to the score screen once implemented
@@ -109,8 +112,9 @@ public class ReactionGameActivity extends AppCompatActivity {
         launchGame.putExtra("GAME_SCORE", avgResult);
         startActivity(launchGame);
         */
-        onBackPressed();
-        finish();
+        Intent intent = new Intent(this, ViewPatientDetails.class);
+        intent.putExtra("PATIENT_ID", patientID);
+        startActivity(intent);
     }
 
     @Override
