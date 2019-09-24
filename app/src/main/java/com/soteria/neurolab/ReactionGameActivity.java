@@ -106,15 +106,8 @@ public class ReactionGameActivity extends AppCompatActivity {
         GameSession gameSession = new GameSession(patientID, gameID, avgResult, new Date());
         db.createSession(gameSession);
 
-        //TODO change view patient details to the score screen once implemented
-        /*Intent launchGame = new Intent(this, ViewPatientDetails.class);
-        launchGame.putExtra("PATIENT_ID", patientID);
-        launchGame.putExtra("GAME_SCORE", avgResult);
-        startActivity(launchGame);
-        */
-        Intent intent = new Intent(this, ViewPatientDetails.class);
-        intent.putExtra("PATIENT_ID", patientID);
-        startActivity(intent);
+        onBackPressed();
+        finish();
     }
 
     @Override

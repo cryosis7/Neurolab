@@ -17,12 +17,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.GameAssignment;
+import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SelectGameActivity extends AppCompatActivity {
     private RecyclerView gameListView;
@@ -43,7 +48,7 @@ public class SelectGameActivity extends AppCompatActivity {
             throw new IllegalArgumentException("Expected Int Extra 'PATIENT_ID' in Intent - Received none");
 
         gameClassMap = initMap();
-        dataSet = new ArrayList<>(gameClassMap.keySet()); //TODO: Replace with only their game assignments.
+        dataSet = new DatabaseAccess(this).getAssignmentNames(patientID);
 
         // Initialise Recycler View
         gameListView = findViewById(R.id.select_game_list);
@@ -55,13 +60,31 @@ public class SelectGameActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 String gameName = dataSet.get(position);
-                Intent intent = new Intent(view.getContext(), gameClassMap.get(gameName));
-                intent.putExtra("PATIENT_ID", patientID);
-                startActivity(intent);
+                int attemptsLeft = getAttemptsLeft(gameName);
+                if (attemptsLeft > 0) {
+                    Intent intent = new Intent(view.getContext(), gameClassMap.get(gameName));
+                    intent.putExtra("PATIENT_ID", patientID);
+                    intent.putExtra("ATTEMPTS", attemptsLeft);
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(SelectGameActivity.this, "There are no attempts remaining for this game.", Toast.LENGTH_LONG).show();
             }
         });
         gameListView.setAdapter(mAdapter);
-        Log.i("SelectGameActivity", "Recycler View Initialised.");
+    }
+
+    /**
+     * Calculates the amount of attempts the patient has left for a particular game.
+     * @param gameName the name of the game to lookup
+     * @return the number of attempts left the patient has left for a particular game.
+     */
+    private int getAttemptsLeft(String gameName) {
+        DatabaseAccess db = new DatabaseAccess(this);
+        int gameId = db.getGameId(gameName);
+        int maxAttempts = db.getAssignment(patientID, gameId).getGameAttempts();
+        int dailyAttempts = db.getTodaysSessions(patientID, gameId).size();
+        return maxAttempts - dailyAttempts;
     }
 
     /**
@@ -82,7 +105,7 @@ public class SelectGameActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.apply();
         final String storedHash = pref.getString("passwordHash", null);
-        if (storedHash == null) throw new RuntimeException("No password has been set");
+//        if (storedHash == null) throw new RuntimeException("No password has been set"); //TODO: Uncomment with 016 pushed to master
 
         // Build alert dialog
         final EditText input = new EditText(this);
@@ -98,11 +121,14 @@ public class SelectGameActivity extends AppCompatActivity {
                         String password = input.getText().toString();
 
                         PasswordAuthentication authenticator = new PasswordAuthentication();
-                        if (authenticator.authenticate(password.toCharArray(), storedHash))
+//                        if (authenticator.authenticate(password.toCharArray(), storedHash)) { //TODO: Uncomment with 016 pushed to master
+                        if (password.equals("password")) {
                             SelectGameActivity.super.onBackPressed(); // Triggers normal back button, skipping the rest of the function.
+                        }
+                        else
+                            Toast.makeText(SelectGameActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
 
                         dialog.dismiss();
-                        Toast.makeText(SelectGameActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

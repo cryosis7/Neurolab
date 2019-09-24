@@ -271,6 +271,13 @@ public class DatabaseAccess {
         return gameList;
     }
 
+    /**
+     * Gets a game object by it's id
+     *
+     * @param gameID
+     * @return
+     * @throws SQLiteException
+     */
     public Game getGame(String gameID) throws SQLiteException {
         open();
         Game game = new Game();
@@ -449,6 +456,32 @@ public class DatabaseAccess {
         return getSessionList(cursor);
     }
 
+    /**
+     * Returns the game sessions for a particular patient and game that were attempted today.
+     *
+     * @param patientID The patient to retrieve the session for
+     * @param gameID    The game to retrieve the session for
+     * @return List of GameSessions
+     * @throws SQLiteException
+     */
+    public List<GameSession> getTodaysSessions(int patientID, int gameID) throws SQLiteException {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        String dateString = DateManager.getDateString(cal.getTime());
+
+        open();
+        cursor = db.rawQuery(
+                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
+                new String[]{String.valueOf(patientID), String.valueOf(gameID), dateString, DateManager.getDateString(new Date())});
+        return getSessionList(cursor);
+    }
+
+    /**
+     * Converts a cursor into a list of game sessions
+     *
+     * @param cursor The cursor containing a query of GameSessions
+     * @return a List of GameSession objects.
+     */
     private List<GameSession> getSessionList(Cursor cursor) {
         List<GameSession> sessionList = new ArrayList<>();
         cursor.moveToFirst();
@@ -570,15 +603,15 @@ public class DatabaseAccess {
     /**
      * Returns all game assignments for a particular patient from the database
      *
-     * @param patientReference The reference of the patient to retrieve game assignments for
+     * @param patientId The id of the patient to retrieve game assignments for
      * @return List of game assignments
      * @throws SQLiteException
      */
-    public List<GameAssignment> getAssignments(String patientReference) throws SQLiteException {
+    public List<GameAssignment> getAssignments(int patientId) throws SQLiteException {
         open();
         List<GameAssignment> gameAssignments = new ArrayList<>();
-        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_reference = ?",
-                new String[]{patientReference});
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
+                new String[]{String.valueOf(patientId)});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             GameAssignment assignment = new GameAssignment();
@@ -591,6 +624,63 @@ public class DatabaseAccess {
         cursor.close();
         close();
         return gameAssignments;
+    }
+
+    /**
+     * Retrieves a Game Assignment object for a particular patient and game
+     *
+     * @param patientId
+     * @param gameId
+     * @return Object representing an assignment of a game to a patient containing a number of attempts allowed.
+     * @throws SQLiteException
+     */
+    public GameAssignment getAssignment(int patientId, int gameId) throws SQLiteException {
+        GameAssignment assignment = new GameAssignment();
+        open();
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ? AND game_ID = ?",
+                new String[]{String.valueOf(patientId), String.valueOf(gameId)});
+
+        if (cursor.getCount() > 1) {
+            cursor.close();
+            close();
+            throw new SQLiteException("Multiple Game Assignments for patient_id: " + patientId + " game_id: " + gameId);
+        } else if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return null;
+        } else {
+            cursor.moveToFirst();
+            assignment.setGameID(cursor.getInt(0));
+            assignment.setPatientID(cursor.getInt(1));
+            assignment.setGameAttempts(cursor.getInt(2));
+            cursor.close();
+            close();
+
+            return assignment;
+        }
+    }
+
+    /**
+     * Gets a list of the names of the games a patient is assigned to.
+     *
+     * @param patientId the ID of the patient to look up
+     * @return A list of Strings representing each game they are assigned to.
+     * @throws SQLiteException
+     */
+    public List<String> getAssignmentNames(int patientId) throws SQLiteException {
+        open();
+        List<String> gameAssignmentNames = new ArrayList<>();
+        cursor = db.rawQuery("SELECT game_name FROM Game WHERE game_ID IN" +
+                        "(SELECT Game_Assignment.game_ID FROM Game_Assignment WHERE patient_ID = ?)",
+                new String[]{String.valueOf(patientId)});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            gameAssignmentNames.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        close();
+        return gameAssignmentNames;
     }
 
     /**
