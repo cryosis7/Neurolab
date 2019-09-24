@@ -36,7 +36,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * Global variables for use in multiple functions
      */
     //These integers belong to the patient and are passed through at the beginning of the code.
-    int patientID = 0, attemptsLeft = 3;
+    int patientID, attemptsLeft;
     //These integers determine how many square are in the pattern, the current pattern number the
     //user is up to, and how many errors they are allowed to make in the current pattern.
     //triesRemaining is currently set to 5.
