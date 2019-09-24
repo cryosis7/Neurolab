@@ -121,6 +121,9 @@
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">36sp</item>
+        <item name="android:paddingLeft">6sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="SpinnerTheme">

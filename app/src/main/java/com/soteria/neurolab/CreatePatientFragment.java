@@ -69,7 +69,7 @@ public class CreatePatientFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
+        /* //TODO: What's this for? can we remove?
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -151,7 +151,6 @@ public class CreatePatientFragment extends Fragment {
                     editPatientIDLayout.setErrorEnabled(true);
                     editPatientIDLayout.setError(getString(R.string.error_patient_id_length));
                 } else {
-                    //TODO: Check database for duplicate PatientID
                     final String patientReference = editPatientID.getText().toString().toUpperCase();
                     DatabaseAccess db = DatabaseAccess.getInstance(getContext());
 

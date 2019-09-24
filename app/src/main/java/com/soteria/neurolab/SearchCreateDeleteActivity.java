@@ -2,19 +2,19 @@ package com.soteria.neurolab;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 public class SearchCreateDeleteActivity extends AppCompatActivity implements  CreatePatientFragment.OnFragmentInteractionListener,
         DeletePatientFragment.OnFragmentInteractionListener,
@@ -26,6 +26,8 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private Fragment active = searchPatientFragment;
 
+    public static DatabaseAccess db;
+
     private ActionBar toolbar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -35,7 +37,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_search_patient:
-                    fragmentManager.beginTransaction().hide(active).show(searchPatientFragment).commit();
+                    fragmentManager.beginTransaction().hide(active).detach(searchPatientFragment).attach(searchPatientFragment).show(searchPatientFragment).commit();
                     active = searchPatientFragment;
                     toolbar.setTitle("Search Patient");
                     return true;
@@ -45,7 +47,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
                     toolbar.setTitle("Create Patient");
                     return true;
                 case R.id.navigation_delete_patient:
-                    fragmentManager.beginTransaction().hide(active).show(deletePatientFragment).commit();
+                    fragmentManager.beginTransaction().hide(active).detach(deletePatientFragment).attach(deletePatientFragment).show(deletePatientFragment).commit();
                     active = deletePatientFragment;
                     toolbar.setTitle("Delete Patient");
                     return true;
@@ -61,6 +63,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         setContentView(R.layout.search_create_delete_page);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        db = DatabaseAccess.getInstance(getApplicationContext());
 
         toolbar = getSupportActionBar();
         toolbar.setTitle("Search Patient");
