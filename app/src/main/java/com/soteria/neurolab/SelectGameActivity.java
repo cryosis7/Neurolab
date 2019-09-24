@@ -1,38 +1,28 @@
 package com.soteria.neurolab;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.soteria.neurolab.database.DatabaseAccess;
-import com.soteria.neurolab.models.GameAssignment;
-import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SelectGameActivity extends AppCompatActivity {
-    private RecyclerView gameListView;
-    private SelectGameRecyclerAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     private int patientID;
     private Map<String, Class> gameClassMap;
@@ -41,6 +31,9 @@ public class SelectGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle(getString(R.string.select_game));
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_select_game);
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
@@ -51,11 +44,11 @@ public class SelectGameActivity extends AppCompatActivity {
         dataSet = new DatabaseAccess(this).getAssignmentNames(patientID);
 
         // Initialise Recycler View
-        gameListView = findViewById(R.id.select_game_list);
+        RecyclerView gameListView = findViewById(R.id.select_game_list);
         gameListView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         gameListView.setLayoutManager(layoutManager);
-        mAdapter = new SelectGameRecyclerAdapter(dataSet);
+        SelectGameRecyclerAdapter mAdapter = new SelectGameRecyclerAdapter(dataSet);
         mAdapter.setClickListener(new SelectGameRecyclerAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -104,8 +97,8 @@ public class SelectGameActivity extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.apply();
-        final String storedHash = pref.getString("passwordHash", null);
-//        if (storedHash == null) throw new RuntimeException("No password has been set"); //TODO: Uncomment with 016 pushed to master
+        final String storedHash = pref.getString("passwordHash", null); //TODO: Store string as preference not literal
+        if (storedHash == null) throw new RuntimeException("No password has been set"); //TODO: Uncomment with 016 pushed to master
 
         // Build alert dialog
         final EditText input = new EditText(this);
@@ -121,8 +114,7 @@ public class SelectGameActivity extends AppCompatActivity {
                         String password = input.getText().toString();
 
                         PasswordAuthentication authenticator = new PasswordAuthentication();
-//                        if (authenticator.authenticate(password.toCharArray(), storedHash)) { //TODO: Uncomment with 016 pushed to master
-                        if (password.equals("password")) {
+                        if (authenticator.authenticate(password.toCharArray(), storedHash)) { //TODO: Uncomment with 016 pushed to master
                             SelectGameActivity.super.onBackPressed(); // Triggers normal back button, skipping the rest of the function.
                         }
                         else
@@ -151,5 +143,16 @@ public class SelectGameActivity extends AppCompatActivity {
 //        map.put(getResources().getString(R.string.title_visual_short_term_memory), VisualMemoryActivity.class); //TODO: Uncomment as the games are made.
 //        map.put(getResources().getString(R.string.title_selective_attention), VisualAttentionActivity.class);
         return map;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                validate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
