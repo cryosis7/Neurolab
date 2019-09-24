@@ -1,11 +1,13 @@
 package com.soteria.neurolab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,10 +32,8 @@ import java.util.Random;
  *  @author Richard Dasan 
  */
 public class VisualMemoryActivity extends AppCompatActivity implements View.OnClickListener {
-
     /*
      * Global variables for use in multiple functions
-     * //TODO make patientID empty once intent is ready to be passed through
      */
     //These integers belong to the patient and are passed through at the beginning of the code.
     int patientID = 0, attemptsLeft = 3;
@@ -69,21 +69,19 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setContentView(R.layout.activity_visual_memory_game);
         }
-        /*
+
         // Grabs information from the select games pages intent. This will be used for determining
         // the number of times the patient can play the game and for using the users ID to
         // update the game session table in the database.
-
         try {
             Bundle visualBundle = getIntent().getExtras();
-            patientID = visualBundle.getInt("user_ID");
+            patientID = visualBundle.getInt("PATIENT_ID");
             attemptsLeft = visualBundle.getInt("ATTEMPTS");
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),"ERROR - An error occurred during page transition : " + e,Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ViewuserDetails.class)); //TODO change viewUserDetails to select game once added
+            startActivity(new Intent(this, ViewPatientDetails.class)); //TODO change ViewPatientDetails to SelectGameActivity once added
             finish();
         }
-        */
 
         // Declarations for the textviews and buttons for setting the text and on click actions
         // on them on page load.
