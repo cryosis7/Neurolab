@@ -53,6 +53,23 @@
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
+    <!--Visual Memory Game Strings-->
+    <string name="visual_memory_textview_remember">Remember this pattern</string>
+    <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
+    <string name="visual_memory_textview_game_complete">Game Complete</string>
+    <string name="visual_memory_textview_round_complete">You are correct!</string>
+    <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
+    <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
+    <string name="visual_memory_textview_attempts_plural">%1$s attempts remaining</string>
+    <string name="visual_memory_textview_attempts_singular">%1$s attempt remaining</string>
+    <string name="visual_memory_textview_attempts_none">No more attempts remaining</string>
+    <string name="visual_memory_button_start_game">Start Game</string>
+    <string name="visual_memory_button_continue">Play Again</string>
+    <string name="visual_memory_button_exit">Exit Game</string>
+    <string name="visual_memory_tag_error_check">Incorrect Guess</string>
+    <string name="visual_memory_tag_not_correct_button">Not Correct</string>
+    <string name="visual_memory_tag_pattern_check">Part of Pattern</string>
+
     <!-- View report page strings -->
     <string name="view_report_title">View Report</string>
     <string name="view_report_game_header">Game</string>
@@ -81,6 +98,12 @@
     <!--    Login Screen-->
     <string name="login_sign_in">Sign In</string>
     <string name="login_enter_password">Enter Password</string>
+
+    <!-- Edit Patient Details Strings -->
+    <string name="edit_patient_details_confirm">Confirm</string>
+    <string name="edit_patient_details_exit">Exit</string>
+    <string name="edit_patient_details_patient_updated">Patient details updated</string>
+    <string name="edit_patient_details_title">Manage Patient</string>
 
     <!--Generic Strings-->
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>

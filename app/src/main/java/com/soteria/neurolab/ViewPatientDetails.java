@@ -111,12 +111,11 @@ public class ViewPatientDetails extends AppCompatActivity {
           TODO add link to send users to the manage patient screen once created, remove toast and comment markers  once done. */
         manageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
-                /*
-               Intent manageIntent = new Intent(this, TODO add link to manage patient here)
+
+               Intent manageIntent = new Intent(ViewPatientDetails.this, EditPatientDetails.class);
                manageIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(manageIntent);
-                */
+
             }
         });
 
