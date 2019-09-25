@@ -10,6 +10,14 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.soteria.neurolab.R;
 
+/**
+ *  Holds the information for the alert dialog with displays the disclaimer to the user.
+ *  In order to call this in your class, use the following code:
+ *
+ *  DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
+ *  dad.showDisclaimer(this, getResources());
+ *
+ */
 public class DisclaimerAlertDialog {
     public void showDisclaimer(Context callingClass, Resources resources) {
         final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(callingClass);
@@ -24,6 +32,7 @@ public class DisclaimerAlertDialog {
                 dialogInterface.dismiss();
             }
         });
+        
         final AlertDialog showDisclaimer = disclaimerBuilder.create();
         //Change the button colour of the alert dialog to be the primary colour
         showDisclaimer.setOnShowListener(new DialogInterface.OnShowListener() {
