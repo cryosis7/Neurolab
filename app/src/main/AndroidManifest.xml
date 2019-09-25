@@ -25,6 +25,7 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ReactionGameActivity" />
+        <activity android:name=".VisualMemoryActivity"/>
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
         <activity android:name=".TestGraphActivity" />

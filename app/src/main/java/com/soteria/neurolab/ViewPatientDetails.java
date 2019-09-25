@@ -89,7 +89,7 @@ public class ViewPatientDetails extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if( db.checkAssignments(patient) ) {
-                    Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
+                    Intent gameIntent = new Intent(ViewPatientDetails.this, VisualMemoryActivity.class);
                     gameIntent.putExtra("PATIENT_ID", patient.getPatientID());
                     startActivity(gameIntent);
                 } else {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
     }
 
     @Override
+    @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = searchInflater.inflate(R.layout.search_patient_recycler_view_row, parent, false);
