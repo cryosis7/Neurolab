@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -25,6 +26,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Checks.checkNotNull;
 import static androidx.test.espresso.matcher.ViewMatchers.hasBackground;
@@ -149,64 +151,90 @@ public class CreatePasswordFragmentTest {
 
     @Test
     public void testCheckboxDisclaimerAppears() {
-        onView(withId(R.id.create_password_disclaimer_checkbox)).check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
-                .perform(click())
-                .check(matches(isChecked()));
+        onView(withId(R.id.create_password_disclaimer_checkbox))
+                .check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
+                .perform(click());
         onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testCheckboxYeet() {
-        onView(withId(R.id.create_password_disclaimer_checkbox)).check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
-                .perform(click())
-                .check(matches(isChecked()));
-        onView(allOf(withParent(withText(R.string.disclaimer_body)), withText("Decline"))).check(matches(allOf(isClickable(), isDisplayed())))
+        onView(withId(R.id.create_password_disclaimer_checkbox))
+                .check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
                 .perform(click());
-        assertTrue(rule.getActivity().isDestroyed());
+
+        onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
+        onView(allOf(isClickable(), withText("Decline")))
+                .check(matches(isDisplayed()))
+                .perform(click());
+
+        assertTrue(rule.getActivity().isFinishing());
     }
 
     @Test
     public void testCheckboxAccepted() {
-        onView(withId(R.id.create_password_disclaimer_checkbox)).check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
-                .perform(click())
-                .check(matches(isChecked()));
-        onView(allOf(withParent(withText(R.string.disclaimer_body)), withText("Confirm"))).check(matches(allOf(isClickable(), isDisplayed())))
+        onView(withId(R.id.create_password_disclaimer_checkbox))
+                .check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
                 .perform(click());
-        onView(withText(R.string.disclaimer_body)).check(matches(not(isDisplayed())));
+
+        onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
+        onView(allOf(isClickable(), withText("Confirm")))
+                .check(matches(isDisplayed()))
+                .perform(click());
+        onView(withText(R.string.disclaimer_body)).check(doesNotExist());
     }
 
     @Test
     public void testDisclaimerButton() {
         onView(withId(R.id.create_password_disclaimer))
                 .check(matches(allOf(withText("Disclaimer"), isClickable(), isDisplayed())))
-                .perform(click())
-                .check(matches(isSelected()));
-        onView(allOf(withParent(withText(R.string.disclaimer_body)), withText("Confirm"))).check(matches(allOf(isClickable(), isDisplayed())))
                 .perform(click());
-        onView(withText(R.string.disclaimer_body)).check(matches(not(isDisplayed())));
+
+        onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
+        onView(allOf(isClickable(), withText("Confirm")))
+                .check(matches(isDisplayed()))
+                .perform(click());
+        onView(withText(R.string.disclaimer_body)).check(doesNotExist());
+    }
+
+    @Test
+    public void testDisclaimerWithBackButton() {
+        onView(withId(R.id.create_password_disclaimer))
+                .check(matches(allOf(withText("Disclaimer"), isClickable(), isDisplayed())))
+                .perform(click());
+
+        onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
+        Espresso.pressBack();
+        onView(withText(R.string.disclaimer_body)).check(doesNotExist());
     }
 
     @Test public void testValidLogin() {
         String pass = "P@$$w0rd";
 
         // Enter the password into the two fields.
-        onView(withId(R.id.create_password_edit_text_1)).check(matches(allOf(withHint("Enter Password"), isFocusable(), isDisplayed(), not(isSelected()))))
+        onView(withId(R.id.create_password_edit_text_1))
+                .check(matches(allOf(withHint("Enter Password"), isFocusable(), isDisplayed(), not(isSelected()))))
                 .perform(clearText(), replaceText(pass))
                 .check(matches(withText(pass)));
-        onView(withId(R.id.create_password_edit_text_2)).check(matches(allOf(withHint("Re-Enter Password"), isFocusable(), isDisplayed(), not(isSelected()))))
+        onView(withId(R.id.create_password_edit_text_2))
+                .check(matches(allOf(withHint("Re-Enter Password"), isFocusable(), isDisplayed(), not(isSelected()))))
                 .perform(clearText(), replaceText(pass))
                 .check(matches(withText(pass)));
 
         // Accept disclaimer and close dialog.
-        onView(withId(R.id.create_password_disclaimer_checkbox)).check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
-                .perform(click())
-                .check(matches(isChecked()));
-        onView(allOf(withParent(withText(R.string.disclaimer_body)), withText("Confirm"))).check(matches(allOf(isClickable(), isDisplayed())))
+        onView(withId(R.id.create_password_disclaimer_checkbox))
+                .check(matches(allOf(not(isChecked()), isClickable(), withText("I agree to the disclaimer"), isDisplayed())))
                 .perform(click());
-        onView(withText(R.string.disclaimer_body)).check(matches(not(isDisplayed())));
+        onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
+        onView(allOf(isClickable(), withText("Confirm")))
+                .check(matches(isDisplayed()))
+                .perform(click());
+        onView(withText(R.string.disclaimer_body)).check(doesNotExist());
+        onView(withId(R.id.create_password_disclaimer_checkbox)).check(matches(isChecked()));
 
         // Press create password button + Verify password boxes are cleared.
-        onView(withId(R.id.create_password_button)).check(matches(allOf(withText("Create Password"), isClickable(), isDisplayed())))
+        onView(withId(R.id.create_password_button))
+                .check(matches(allOf(withText("Create Password"), isClickable(), isDisplayed())))
                 .perform(click());
         onView(withId(R.id.create_password_edit_text_1)).check(matches(withText("")));
         onView(withId(R.id.create_password_edit_text_2)).check(matches(withText("")));
