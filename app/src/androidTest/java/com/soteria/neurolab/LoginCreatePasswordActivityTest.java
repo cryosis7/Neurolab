@@ -42,10 +42,10 @@ import static org.junit.Assert.assertNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityTest {
+public class LoginCreatePasswordActivityTest {
 
     @Rule
-    public IntentsTestRule<LoginActivity> rule = new IntentsTestRule<>(LoginActivity.class);
+    public IntentsTestRule<LoginCreatePasswordActivity> rule = new IntentsTestRule<>(LoginCreatePasswordActivity.class);
 
     @Before
     public void setUp() throws Throwable {
