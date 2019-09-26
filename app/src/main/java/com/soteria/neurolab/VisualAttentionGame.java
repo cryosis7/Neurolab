@@ -8,23 +8,29 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Random;
 
 public class VisualAttentionGame extends AppCompatActivity {
 
     private int roundCount = 1;
     private int numOfTargets = 0;
-    private int numOfTaps = 0;
     private int targetsFound = 0;
-    private double RoundScore = 0;
+    private double roundScore = 0;
+    private int numOfTaps = 0;
     private double totalScore = 0;
     private int patientID;
     private int buttonsHorizontal;
     private int buttonsVertical;
-    ImageButton[][] buttons;
+    private ImageButton[][] buttons;
+    private int targetImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +53,22 @@ public class VisualAttentionGame extends AppCompatActivity {
             buttonsHorizontal = 5;
             buttonsVertical = 5;
             setContentView(R.layout.activity_visual_attention_game_grid5x5);
-        } else if(roundCount == 7 || roundCount == 8){
+        } else if(roundCount == 7 || roundCount == 8 || roundCount == 9
+                    || roundCount == 10){
             buttonsHorizontal = 6;
             buttonsVertical = 6;
-        } else if(roundCount == 9 || roundCount == 10){
-            buttonsHorizontal = 7;
-            buttonsVertical = 7;
+            setContentView(R.layout.activity_visual_attention_game_grid6x6);
         }
 
         buttons = new ImageButton[buttonsVertical][buttonsHorizontal];
 
         final TextView roundNumText = findViewById(R.id.visual_attention_round_text);
-        TextView targetsFoundText = findViewById(R.id.visual_attention_found_text);
+        Button submitAnswer = findViewById(R.id.visual_attention_score_button);
         final ImageView targetImage = findViewById(R.id.visual_attention_target_image);
 
         roundNumText.setText("Round " + roundCount);
         int[] imageSet = getImageSets(roundCount);
-        Integer randomTarget = getRandomImage(imageSet);
+        int randomTarget = getRandomImage(imageSet);
         targetImage.setImageDrawable(resizeImages(randomTarget));
         targetImage.setTag(randomTarget);
         int[] roundImages = imageArray(imageSet, randomTarget);
@@ -81,60 +86,79 @@ public class VisualAttentionGame extends AppCompatActivity {
                 if (buttons[i][j].getTag().equals(targetImage.getTag())) {
                     numOfTargets++;
                 }
-                setTargetsFound(targetsFoundText, targetsFound, numOfTargets);
                 buttons[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         numOfTaps++;
-                        TextView targetsFoundText = findViewById(R.id.visual_attention_found_text);
                         if (view.getTag().equals(targetImage.getTag())) {
                             targetsFound++;
                             view.setClickable(false);
                             view.setBackgroundResource(R.drawable.visual_attention_target_button);
-                            if (targetsFound == numOfTargets && roundCount != 10) {
-                                roundCount++;
-                                numOfTargets = 0; numOfTaps = 0; targetsFound = 0;
-                                resetButtons(buttonsVertical, buttonsHorizontal);
-                                setUpRounds();
-                            }
                         }
-                        setTargetsFound(targetsFoundText, targetsFound, numOfTargets);
+
                     }
                 });
             }
         }
+
+        submitAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                roundScore = calculateRoundScore();
+                totalScore += roundScore;
+                Log.i("round score", "onClick: " + roundScore);
+                Log.i("total score", "onClick: " + totalScore);
+                if(roundCount != 10) {
+                    roundCount++;
+                    numOfTargets = 0;
+                    numOfTaps = 0;
+                    targetsFound = 0;
+                    resetButtons();
+                    setUpRounds();
+                }
+            }
+        });
     }
 
     public int[] imageArray(int[] roundImages, int target){
-        Random rand = new Random();
-        int targetSymbols = 0;
+
         int[] images = null;
-
-        if(roundCount == 1 || roundCount == 2 || roundCount == 3){
-            targetSymbols = 4 + rand.nextInt((5 - 4) + 1);
-            images = new int[16];
-        } else if(roundCount == 4 || roundCount == 5 || roundCount == 6){
-            images = new int[25];
-            targetSymbols = 5 + rand.nextInt((6 - 5) + 1);
-        } else if(roundCount == 7 || roundCount == 8){
-            images = new int[36];
-            targetSymbols = 7 + rand.nextInt((8 - 7) + 1);
-        } else if(roundCount == 9 || roundCount == 10){
-            images = new int[49];
-            targetSymbols = 9 + rand.nextInt((10 - 9) + 1);
-        }
-
-        for(int i = 0; i < targetSymbols; i++){
-            images[i] = target;
-        }
-
-        for (int i = targetSymbols; i < images.length; i++){
-            int randImage = getRandomImage(roundImages);
-            while (randImage == target){
-                randImage = getRandomImage(roundImages);
+        int count = 0;
+        switch (roundCount){
+            case 1: case 2: case 3:
+                images = new int[16];
+                for(int i = 0; i < 4; i++){
+                    for(int j = 0; j < 4; j++){
+                        images[count] = roundImages[i];
+                        count++;
+                    }
+                }
+                break;
+            case 4: case 5: case 6:
+                images = new int[25];
+                for (int i = 0; i < 6; i++){
+                    for (int j = 0; j < 4; j++){
+                        images[count] = roundImages[j];
+                        count++;
+                        if(count == 24){
+                            images[count] = target;
+                        }
+                    }
+                }
+                break;
+            case 7: case 8: case 9: case 10:
+                images = new int[36];
+                for (int i = 0; i < 7; i++){
+                    for (int j = 0; j < 5; j++){
+                        images[count] = roundImages[j];
+                        count++;
+                        if(count == 35){
+                            images[count] = target;
+                        }
+                    }
+                }
+                break;
             }
-            images[i] = randImage;
-        }
 
         int[] firstShuffle = shuffleImages(images);
         return shuffleImages(firstShuffle);
@@ -152,7 +176,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         return images;
     }
 
-    public void resetButtons(int buttonsVertical, int buttonsHorizontal){
+    public void resetButtons(){
         buttons = new ImageButton[buttonsVertical][buttonsHorizontal];
         for (int i = 0; i < buttonsVertical; i++) {
             for (int j = 0; j < buttonsHorizontal; j++) {
@@ -165,14 +189,6 @@ public class VisualAttentionGame extends AppCompatActivity {
         }
     }
 
-    public void setTargetsFound(TextView text, int targetsFound, int numOfTargets){
-        text.setText("Found " + targetsFound + " / " + numOfTargets);
-    }
-
-    public double calculateRoundScore(int numOfTargets, int numOfTaps) {
-        return (numOfTargets * 100D) / numOfTaps;
-    }
-
     public Drawable resizeImages(int image){
         Drawable dr = getResources().getDrawable(image);
         Bitmap bm = ((BitmapDrawable) dr).getBitmap();
@@ -183,6 +199,12 @@ public class VisualAttentionGame extends AppCompatActivity {
     public Integer getRandomImage(int[] list){
         Random rand = new Random();
         return list[rand.nextInt(list.length)];
+    }
+
+    public double calculateRoundScore(){
+        roundScore = (((double) targetsFound / numOfTargets) * ((double) targetsFound / numOfTaps) * 100);
+        BigDecimal bdScore = new BigDecimal(roundScore).setScale(2, RoundingMode.HALF_UP);
+        return bdScore.doubleValue();
     }
 
     public int[] getImageSets(int roundCount){
@@ -260,10 +282,10 @@ public class VisualAttentionGame extends AppCompatActivity {
 
     public int[] roundFourSets(){
         int[] roundFourSetOne = {R.mipmap.bone, R.mipmap.check_box, R.mipmap.shining_sun, R.mipmap.star_and_crescent};
-        int[] roundFourSetTwo = {R.mipmap.key, R.mipmap.log_in_button, R.mipmap.setting, R.mipmap.weather};
+        int[] roundFourSetTwo = {R.mipmap.key, R.mipmap.mandala, R.mipmap.setting, R.mipmap.weather};
         int[] roundFourSetThree = {R.mipmap.crown4, R.mipmap.kite, R.mipmap.startup, R.mipmap.target2};
         int[] roundFourSetFour = {R.mipmap.flower1, R.mipmap.language, R.mipmap.mushroom, R.mipmap.puzzle};
-        int[] roundFourSetFive = {R.mipmap.ball, R.mipmap.butterfly2, R.mipmap.mailbox, R.mipmap.strawberry};
+        int[] roundFourSetFive = {R.mipmap.ball, R.mipmap.butterfly2, R.mipmap.sun3, R.mipmap.strawberry};
 
 
         Random random = new Random();
@@ -321,61 +343,74 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundSevenSetTwo = {R.mipmap.arrows, R.mipmap.down_arrow, R.mipmap.down_arrow2, R.mipmap.right_arrow2, R.mipmap.up_arrow};
         int[] roundSevenSetThree = {R.mipmap.chevron_down, R.mipmap.chevron_left, R.mipmap.chevron_right, R.mipmap.double_arrow_left, R.mipmap.double_arrow_right};
         int[] roundSevenSetFour = {R.mipmap.expand, R.mipmap.expand2, R.mipmap.shrink, R.mipmap.shrink2, R.mipmap.shrink3};
+        int[] roundSevenSetFive = {R.mipmap.diamond3, R.mipmap.diamond4, R.mipmap.diamond5, R.mipmap.diamond6, R.mipmap.diamond7};
 
         Random random = new Random();
-        int setNum = random.nextInt(4) + 1;
+        int setNum = random.nextInt(5) + 1;
         switch (setNum){
             case 1: return roundSevenSetOne;
             case 2: return roundSevenSetTwo;
             case 3: return roundSevenSetThree;
             case 4: return roundSevenSetFour;
+            case 5: return roundSevenSetFive;
         }
         return null;
     }
 
     public int[] roundEightSets(){
-        int[] roundEightSetOne = {R.mipmap.floral_design, R.mipmap.floral_design2, R.mipmap.floral_design3, R.mipmap.floral_design4, R.mipmap.floral_design5};
-        int[] roundEightSetTwo = {R.mipmap.gear, R.mipmap.gear2, R.mipmap.gear3, R.mipmap.gear4, R.mipmap.gear5};
-        int[] roundEightSetThree = {R.mipmap.amaryllis, R.mipmap.anemone, R.mipmap.daffodil, R.mipmap.flower3, R.mipmap.narcissus};
+
+        int[] roundEightSetOne = {R.mipmap.square, R.mipmap.square2, R.mipmap.square3, R.mipmap.trapezium, R.mipmap.trapezium2};
+        int[] roundEightSetTwo = {R.mipmap.hexagon_dark, R.mipmap.circle2, R.mipmap.octagon, R.mipmap.octagon2, R.mipmap.pentagon2};
+        int[] roundEightSetThree = {R.mipmap.chart, R.mipmap.chart2, R.mipmap.chart3, R.mipmap.chart4, R.mipmap.chart5};
+        int[] roundEightSetFour = {R.mipmap.sun4, R.mipmap.sun5, R.mipmap.sun6, R.mipmap.sun7, R.mipmap.sun8};
+
 
         Random random = new Random();
-        int setNum = random.nextInt(3) + 1;
+        int setNum = random.nextInt(4) + 1;
         switch (setNum){
             case 1: return roundEightSetOne;
             case 2: return roundEightSetTwo;
             case 3: return roundEightSetThree;
+            case 4: return roundEightSetFour;
+            //case 5: return roundEightSetFive;
         }
         return null;
     }
 
     public int[] roundNineSets(){
         int[] roundNineSetOne = {R.mipmap.hexagon3, R.mipmap.hexagon4, R.mipmap.rhombus, R.mipmap.hexagon5, R.mipmap.hexagon6};
-        int[] roundNineSetTwo = {R.mipmap.triangle3, R.mipmap.triangle4, R.mipmap.triangle5, R.mipmap.triangles};
-        int[] roundNineSetThree = {R.mipmap.distribute, R.mipmap.distribute2, R.mipmap.horizontal, R.mipmap.horizontal2, R.mipmap.horizontal3};
+        int[] roundNineSetTwo = {R.mipmap.triangle3, R.mipmap.triangle4, R.mipmap.triangle5, R.mipmap.triangles, R.mipmap.triangle6};
+        int[] roundNineSetThree = {R.mipmap.gear, R.mipmap.gear2, R.mipmap.gear3, R.mipmap.gear4, R.mipmap.gear5};
+        int[] roundNineSetFour = {R.mipmap.circle_angle_left, R.mipmap.circle_angle_right, R.mipmap.circles_four, R.mipmap.circles_three_left, R.mipmap.circles_three_right};
+        int[] roundNineSetFive = {R.mipmap.night, R.mipmap.night2, R.mipmap.night3, R.mipmap.night4, R.mipmap.night5};
 
         Random random = new Random();
-        int setNum = random.nextInt(3) + 1;
+        int setNum = random.nextInt(5) + 1;
         switch (setNum){
             case 1: return roundNineSetOne;
             case 2: return roundNineSetTwo;
             case 3: return roundNineSetThree;
+            case 4: return roundNineSetFour;
+            case 5: return roundNineSetFive;
         }
         return null;
     }
 
     public int[] roundTenSets(){
-        int[] roundTenSetOne = {R.mipmap.circle_angle_left, R.mipmap.circle_angle_right, R.mipmap.circles_four, R.mipmap.circles_three_left, R.mipmap.circles_three_right};
-        int[] roundTenSetTwo = {R.mipmap.square, R.mipmap.square2, R.mipmap.square3, R.mipmap.trapezium, R.mipmap.trapezium2};
-        int[] roundTenSetThree = {R.mipmap.x, R.mipmap.x2, R.mipmap.x3, R.mipmap.x4};
-        int[] roundTenSetFour = {R.mipmap.hexagon_dark, R.mipmap.hexagon_dark2, R.mipmap.octagon, R.mipmap.octagon2, R.mipmap.octagon3};
+        int[] roundTenSetOne = {R.mipmap.floral_design, R.mipmap.floral_design2, R.mipmap.floral_design3, R.mipmap.floral_design4, R.mipmap.floral_design5};
+        int[] roundTenSetTwo = {R.mipmap.sun_design, R.mipmap.sun_design2, R.mipmap.sun_design3, R.mipmap.sun_design4, R.mipmap.sun_design5};
+        int[] roundTenSetThree = {R.mipmap.amaryllis, R.mipmap.anemone, R.mipmap.daffodil, R.mipmap.flower3, R.mipmap.narcissus};
+        int[] roundTenSetFour = {R.mipmap.tree1, R.mipmap.tree2, R.mipmap.tree3, R.mipmap.tree4, R.mipmap.tree5};
+        int[] roundTenSetFive = {R.mipmap.snowflake3, R.mipmap.snowflake4, R.mipmap.snowflake5, R.mipmap.snowflake6, R.mipmap.snowflake7};
 
         Random random = new Random();
-        int setNum = random.nextInt(4) + 1;
+        int setNum = random.nextInt(5) + 1;
         switch (setNum){
             case 1: return roundTenSetOne;
             case 2: return roundTenSetTwo;
             case 3: return roundTenSetThree;
             case 4: return roundTenSetFour;
+            case 5: return roundTenSetFive;
         }
         return null;
     }

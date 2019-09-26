@@ -49,16 +49,17 @@
             android:text="Tap Every "
             android:textSize="50sp" />
 
-        <TextView
-            android:id="@+id/visual_attention_found_text"
-            android:text="Found 0 / 0"
+
+
+        <Button
+            android:id="@+id/visual_attention_score_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="7dp"
-            android:layout_marginBottom="5dp"
-            android:textSize="50sp" />
+            android:layout_alignEnd="@+id/visual_attention_target_image"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="-356dp"
+            android:text="Submit" />
     </RelativeLayout>
 
     <LinearLayout
