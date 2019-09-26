@@ -1,5 +1,6 @@
 package com.soteria.neurolab;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -23,8 +24,13 @@ public class LoginCreatePasswordActivity extends AppCompatActivity {
         switchFragment();
     }
 
-    // TODO: Handle back button pressed. Check when logged out from main screen.
-    // Try inserting this into the intent: intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
     void switchFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
