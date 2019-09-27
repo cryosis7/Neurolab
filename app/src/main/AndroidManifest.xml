@@ -28,6 +28,7 @@
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
         <activity android:name=".TestGraphActivity" />
+        <activity android:name=".SettingsActivity" android:exported="true"/>
     </application>
 
 </manifest>
