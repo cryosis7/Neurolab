@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Random;
 
 public class VisualAttentionGame extends AppCompatActivity {
@@ -106,8 +105,6 @@ public class VisualAttentionGame extends AppCompatActivity {
             public void onClick(View view) {
                 roundScore = calculateRoundScore();
                 totalScore += roundScore;
-                Log.i("round score", "onClick: " + roundScore);
-                Log.i("total score", "onClick: " + totalScore);
                 if(roundCount != 10) {
                     roundCount++;
                     numOfTargets = 0;
@@ -115,6 +112,13 @@ public class VisualAttentionGame extends AppCompatActivity {
                     targetsFound = 0;
                     resetButtons();
                     setUpRounds();
+                } else if(roundCount == 10){
+                    totalScore = totalScore / 10;
+                    BigDecimal decimalScore = new BigDecimal(totalScore).setScale(2, RoundingMode.HALF_UP);
+                    double finalScore = decimalScore.doubleValue();
+                    setContentView(R.layout.activity_visual_attention_game_score_screen);
+                    TextView scoreText = findViewById(R.id.visual_attention_score_text);
+                    scoreText.setText(finalScore + "%");
                 }
             }
         });
