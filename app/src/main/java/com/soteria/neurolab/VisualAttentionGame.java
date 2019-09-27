@@ -19,17 +19,17 @@ import java.util.Random;
 
 public class VisualAttentionGame extends AppCompatActivity {
 
+    private int attemptsLeft = 3;
+    private int patientID;
     private int roundCount = 1;
     private int numOfTargets = 0;
     private int targetsFound = 0;
     private double roundScore = 0;
     private int numOfTaps = 0;
     private double totalScore = 0;
-    private int patientID;
     private int buttonsHorizontal;
     private int buttonsVertical;
     private ImageButton[][] buttons;
-    private int targetImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,6 @@ public class VisualAttentionGame extends AppCompatActivity {
     }
 
     public void setUpRounds(){
-
         if(roundCount == 1 || roundCount == 2 || roundCount == 3){
             buttonsHorizontal = 4;
             buttonsVertical = 4;
@@ -60,7 +59,6 @@ public class VisualAttentionGame extends AppCompatActivity {
         }
 
         buttons = new ImageButton[buttonsVertical][buttonsHorizontal];
-
         final TextView roundNumText = findViewById(R.id.visual_attention_round_text);
         Button submitAnswer = findViewById(R.id.visual_attention_score_button);
         final ImageView targetImage = findViewById(R.id.visual_attention_target_image);
@@ -94,7 +92,6 @@ public class VisualAttentionGame extends AppCompatActivity {
                             view.setClickable(false);
                             view.setBackgroundResource(R.drawable.visual_attention_target_button);
                         }
-
                     }
                 });
             }
@@ -105,11 +102,9 @@ public class VisualAttentionGame extends AppCompatActivity {
             public void onClick(View view) {
                 roundScore = calculateRoundScore();
                 totalScore += roundScore;
-                if(roundCount != 10) {
+                if(roundCount != 10 && numOfTaps != 0) {
                     roundCount++;
-                    numOfTargets = 0;
-                    numOfTaps = 0;
-                    targetsFound = 0;
+                    numOfTargets = 0; numOfTaps = 0; targetsFound = 0;
                     resetButtons();
                     setUpRounds();
                 } else if(roundCount == 10){
@@ -125,7 +120,6 @@ public class VisualAttentionGame extends AppCompatActivity {
     }
 
     public int[] imageArray(int[] roundImages, int target){
-
         int[] images = null;
         int count = 0;
         switch (roundCount){
