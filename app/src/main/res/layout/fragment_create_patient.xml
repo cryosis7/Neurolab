@@ -139,7 +139,7 @@
 
     <TextView
         android:id="@+id/idDisclaimer"
-        style="@style/TextSmall"
+        style="@style/TextSmallGrey"
         android:textColor="@color/colorPrimary"
         android:layout_width="447dp"
         android:layout_height="108dp"
