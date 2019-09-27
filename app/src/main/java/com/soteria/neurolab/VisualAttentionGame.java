@@ -2,6 +2,7 @@ package com.soteria.neurolab;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,37 +13,59 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.GameSession;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.Random;
 
 public class VisualAttentionGame extends AppCompatActivity {
 
-    private int attemptsLeft = 3;
-    private int patientID;
-    private int roundCount = 1;
-    private int numOfTargets = 0;
-    private int targetsFound = 0;
-    private double roundScore = 0;
-    private int numOfTaps = 0;
-    private double totalScore = 0;
-    private int buttonsHorizontal;
-    private int buttonsVertical;
+    //Values from patient to be passed through as intents
+    private int attemptsLeft = 3; private int patientID = 1;
+    //These fields are used by multiple methods and are initialised
+    private int roundCount = 1; private int numOfTargets = 0; private int targetsFound = 0;
+    private double roundScore = 0; private int numOfTaps = 0; private double totalScore = 0;
+    private int buttonsHorizontal; private int buttonsVertical; private int randomTarget;
+
     private ImageButton[][] buttons;
+    private Button exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUpRounds();
 
-        /*Intent intent = getIntent();
-        patientID = intent.getIntExtra("PATIENT_ID", -1);
-        if (patientID == -1)
-            throw new IllegalArgumentException("Expected Extra 'PATIENT_ID' in Intent - Received none");*/
+        if(getSupportActionBar() != null ) {
+            getSupportActionBar().setTitle("Visual Attention");
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Grabs information from the select games pages intent. This will be used for determining
+        // the number of times the patient can play the game and for using the users ID to
+        // update the game session table in the database.
+        /*try {
+            Bundle visualBundle = getIntent().getExtras();
+            patientID = visualBundle.getInt("PATIENT_ID");
+            attemptsLeft = visualBundle.getInt("ATTEMPTS");
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(),"ERROR - An error occurred during page transition : " + e,Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ViewPatientDetails.class)); //TODO change ViewPatientDetails to SelectGameActivity once added
+            finish();
+        }*/
+
+        setUpRounds();
     }
 
+    /**
+     * This method sets up each game round
+     */
     public void setUpRounds(){
+        //The grid size and size of the button array are both determined by the current round number
         if(roundCount == 1 || roundCount == 2 || roundCount == 3){
             buttonsHorizontal = 4;
             buttonsVertical = 4;
@@ -60,33 +83,49 @@ public class VisualAttentionGame extends AppCompatActivity {
 
         buttons = new ImageButton[buttonsVertical][buttonsHorizontal];
         final TextView roundNumText = findViewById(R.id.visual_attention_round_text);
-        Button submitAnswer = findViewById(R.id.visual_attention_score_button);
+        Button submitAnswer = findViewById(R.id.visual_attention_submit_button);
         final ImageView targetImage = findViewById(R.id.visual_attention_target_image);
 
-        roundNumText.setText("Round " + roundCount);
-        int[] imageSet = getImageSets(roundCount);
-        int randomTarget = getRandomImage(imageSet);
-        targetImage.setImageDrawable(resizeImages(randomTarget));
+        //Sets text to display the round number
+        roundNumText.setText(getResources().getString(R.string.visualAttention_round) + " " + roundCount);
+        //Sets a tag for the target image
         targetImage.setTag(randomTarget);
-        int[] roundImages = imageArray(imageSet, randomTarget);
+        //Gets an array of images that will be placed in the grid
+        int[] roundImages = imageArray();
+        //Assigns a random image from the array to be the target image
+        randomTarget = getRandomImage(roundImages);
+        //Displays the target image to the patient
+        targetImage.setImageDrawable(resizeImages(randomTarget));
+        //Sets a tag for the target image
+        targetImage.setTag(randomTarget);
         int count = 0;
 
+        //Loops through and assigns an image to each button
         for (int i = 0; i < buttonsVertical; i++) {
             for (int j = 0; j < buttonsHorizontal; j++) {
+                //Gets the id for each button
                 String buttonID = "button_" + i + j;
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 buttons[i][j] = findViewById(resID);
+                //Sets an image to the current button
                 buttons[i][j].setImageDrawable(resizeImages(roundImages[count]));
+                //Sets a tag to the button
                 buttons[i][j].setTag(roundImages[count]);
                 count++;
 
+                //Checks to see if the image for the current button is the same as the target image,
+                //if it is then the number of targets is incremented
                 if (buttons[i][j].getTag().equals(targetImage.getTag())) {
                     numOfTargets++;
                 }
                 buttons[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //Increments the number of taps if a button is tapped
                         numOfTaps++;
+                        //If the tapped image is the same as the target image, then the number of
+                        //targets found increments, the button is no longer clickable and the
+                        //background colour changes to let the patient know it has been tapped
                         if (view.getTag().equals(targetImage.getTag())) {
                             targetsFound++;
                             view.setClickable(false);
@@ -96,33 +135,96 @@ public class VisualAttentionGame extends AppCompatActivity {
                 });
             }
         }
-
+        //When the user thinks they have found all images for the current round they click the
+        //submit button to submit their answers
         submitAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                roundScore = calculateRoundScore();
-                totalScore += roundScore;
+                //If the current round isn't 10 and the user has tapped at least one button then the
+                //round score is calculated and added to the total score. The number of targets,
+                //number of taps and number of targets found are all reset to zero, and the round
+                //count is incremented. The buttons are reset and next round is set up
                 if(roundCount != 10 && numOfTaps != 0) {
-                    roundCount++;
+                    roundScore = calculateRoundScore();
+                    totalScore += roundScore;
                     numOfTargets = 0; numOfTaps = 0; targetsFound = 0;
+                    roundCount++;
                     resetButtons();
                     setUpRounds();
                 } else if(roundCount == 10){
-                    totalScore = totalScore / 10;
-                    BigDecimal decimalScore = new BigDecimal(totalScore).setScale(2, RoundingMode.HALF_UP);
-                    double finalScore = decimalScore.doubleValue();
-                    setContentView(R.layout.activity_visual_attention_game_score_screen);
-                    TextView scoreText = findViewById(R.id.visual_attention_score_text);
-                    scoreText.setText(finalScore + "%");
+                    //Game over method is called when round 10 is complete
+                    gameOver();
                 }
             }
         });
     }
 
-    public int[] imageArray(int[] roundImages, int target){
+    /**
+     * Displays the final score and remaining attempts to the patient. If the patient has any
+     * attempts remaining they have the option to play again or exit the game
+     */
+    public void gameOver(){
+        //Decrements remaining attempts
+        attemptsLeft--;
+        //Calculates the final score
+        totalScore = totalScore / 10;
+        BigDecimal decimalScore = new BigDecimal(totalScore).setScale(2, RoundingMode.HALF_UP);
+        double finalScore = decimalScore.doubleValue();
+
+        //Displays the score screen
+        setContentView(R.layout.activity_visual_attention_game_score_screen);
+        TextView scoreText = findViewById(R.id.visual_attention_score_text);
+        scoreText.setText(finalScore + "%");
+
+        TextView attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
+        Button playAgainBtn = findViewById(R.id.visual_attention_play_again_btn);
+
+        //Creates a new game session in the database
+        GameSession gameSession = new GameSession(patientID, 4, finalScore, new Date());
+        DatabaseAccess db = new DatabaseAccess(this);
+        db.createSession(gameSession);
+
+        //Displays the remaining attempts, hides the play again button if no remaining attempts
+        if(attemptsLeft >= 1){
+            attemptsRemaining.setText("Attempts Remaining: " + attemptsLeft);
+        } else{
+            attemptsRemaining.setText("No more attempts");
+            playAgainBtn.setVisibility(View.INVISIBLE);
+        }
+
+        //If the patient plays again, round count, round score and total score are reset.
+        //Game restarts from round 1
+        playAgainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                roundCount = 1; roundScore = 0; totalScore = 0;
+                setUpRounds();
+            }
+        });
+
+        //TODO implement functionality to return to select game screen once implemented
+       /* exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                finish();
+            }
+        });*/
+
+    }
+
+    /**
+     * Creates an array of images depending on the round number and size of the grid
+     * @return the array of images after being shuffled
+     */
+    public int[] imageArray(){
+        //Gets a set of images depending on the round number
+        int[] roundImages = getImageSets(roundCount);
         int[] images = null;
         int count = 0;
         switch (roundCount){
+            //If the round number is 1, 2 or 3 then 16 images are added for a 4x4 grid. Adds 4 of
+            //each image to the array
             case 1: case 2: case 3:
                 images = new int[16];
                 for(int i = 0; i < 4; i++){
@@ -132,6 +234,8 @@ public class VisualAttentionGame extends AppCompatActivity {
                     }
                 }
                 break;
+            //If the round number is 4, 5 or 6 then 25 images are added for a 5x5 grid. 6 of each
+            //image is added to the array, and an additional target image
             case 4: case 5: case 6:
                 images = new int[25];
                 for (int i = 0; i < 6; i++){
@@ -139,11 +243,13 @@ public class VisualAttentionGame extends AppCompatActivity {
                         images[count] = roundImages[j];
                         count++;
                         if(count == 24){
-                            images[count] = target;
+                            images[count] = randomTarget;
                         }
                     }
                 }
                 break;
+            //If the round number is 7, 8, 9 or 10 then 36 images are added for a 6x6 grid.
+            //7 of each image is added to the array, and an additional target image
             case 7: case 8: case 9: case 10:
                 images = new int[36];
                 for (int i = 0; i < 7; i++){
@@ -151,13 +257,13 @@ public class VisualAttentionGame extends AppCompatActivity {
                         images[count] = roundImages[j];
                         count++;
                         if(count == 35){
-                            images[count] = target;
+                            images[count] = randomTarget;
                         }
                     }
                 }
                 break;
             }
-
+        //Images are shuffled
         int[] firstShuffle = shuffleImages(images);
         return shuffleImages(firstShuffle);
     }

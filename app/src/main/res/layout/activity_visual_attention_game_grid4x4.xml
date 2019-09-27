@@ -50,14 +50,15 @@
             android:textSize="50sp" />
 
         <Button
-            android:id="@+id/visual_attention_score_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/visual_attention_submit_button"
+            android:layout_width="197dp"
+            android:layout_height="91dp"
             android:layout_alignEnd="@+id/visual_attention_target_image"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="46dp"
-            android:layout_marginEnd="-356dp"
-            android:text="Submit" />
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="-364dp"
+            android:text="Submit"
+            android:textSize="36dp" />
     </RelativeLayout>
 
     <LinearLayout
