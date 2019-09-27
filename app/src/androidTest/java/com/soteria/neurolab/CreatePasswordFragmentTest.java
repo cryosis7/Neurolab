@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
@@ -29,21 +28,19 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Checks.checkNotNull;
-import static androidx.test.espresso.matcher.ViewMatchers.hasBackground;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isFocusable;
 import static androidx.test.espresso.matcher.ViewMatchers.isSelected;
-import static androidx.test.espresso.matcher.ViewMatchers.withChild;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
@@ -54,6 +51,9 @@ public class CreatePasswordFragmentTest {
     @Rule
     public ActivityTestRule<LoginCreatePasswordActivity> rule = new ActivityTestRule<>(LoginCreatePasswordActivity.class, false, false);
 
+    /**
+     * Clears the password before testing to ensure the CreatePassword fragment is loaded.
+     */
     @Before
     public void setUp() {
         SharedPreferences pref = context.getSharedPreferences(context.getResources().getString(R.string.shared_preferences_filename), MODE_PRIVATE);
@@ -63,6 +63,9 @@ public class CreatePasswordFragmentTest {
         rule.launchActivity(new Intent());
     }
 
+    /**
+     * After starting the class, the screen shuold load and all the elements should be initialised correctly.
+     */
     @Test
     public void testAllElementsLoad() {
         // Is everything displayed on the screen. (Fails on phones because it's not displayed)
@@ -76,6 +79,10 @@ public class CreatePasswordFragmentTest {
         onView(withId(R.id.create_password_disclaimer)).check(matches(allOf(withText("Disclaimer"), isClickable(), isDisplayed())));
     }
 
+    /**
+     * The test will input two different passwords then try to create the password.
+     * An error message should be displayed telling the user that the passwords do not match
+     */
     @Test
     public void testPasswordsDontMatch() {
         String pass1 = "Password1!";
@@ -95,6 +102,10 @@ public class CreatePasswordFragmentTest {
         onView(withId(R.id.create_password_input_layout_1)).check(matches(withErrorInInputLayout("Passwords do not match")));
     }
 
+    /**
+     * The test will input a password that contains letters and a symbol but does not contain a number.
+     * An error should be displayed to the user informing them that a number is required.
+     */
     @Test
     public void testPasswordNoNumber() {
         String pass = "P@$$word";
@@ -113,6 +124,10 @@ public class CreatePasswordFragmentTest {
         onView(withId(R.id.create_password_input_layout_1)).check(matches(withErrorInInputLayout("Password must be at least 6 characters long and contain a letter, number and symbol")));
     }
 
+    /**
+     * The test will input a password that contains letters and a number but does not contain a symbol.
+     * An error should be displayed to the user informing them of the valid password criteria.
+     */
     @Test
     public void testPasswordNoSymbol() {
         String pass = "P4ssw0rd";
@@ -131,6 +146,10 @@ public class CreatePasswordFragmentTest {
         onView(withId(R.id.create_password_input_layout_1)).check(matches(withErrorInInputLayout("Password must be at least 6 characters long and contain a letter, number and symbol")));
     }
 
+    /**
+     * The test will input a password that contains numbers and a symbol but does not contain any letters.
+     * An error should be displayed to the user informing them of the valid password criteria.
+     */
     @Test
     public void testPasswordNoLetters() {
         String pass = "8008135!";
@@ -149,6 +168,9 @@ public class CreatePasswordFragmentTest {
         onView(withId(R.id.create_password_input_layout_1)).check(matches(withErrorInInputLayout("Password must be at least 6 characters long and contain a letter, number and symbol")));
     }
 
+    /**
+     * Test whether a disclaimer dialog appears when the checkbox is checked
+     */
     @Test
     public void testCheckboxDisclaimerAppears() {
         onView(withId(R.id.create_password_disclaimer_checkbox))
@@ -157,6 +179,9 @@ public class CreatePasswordFragmentTest {
         onView(withText(R.string.disclaimer_body)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Test whether the app is closed when the user declines the disclaimer.
+     */
     @Test
     public void testCheckboxYeet() {
         onView(withId(R.id.create_password_disclaimer_checkbox))
@@ -171,6 +196,9 @@ public class CreatePasswordFragmentTest {
         assertTrue(rule.getActivity().isFinishing());
     }
 
+    /**
+     * Test whether the dialog is successfully minimised when the user accepts the disclaimer
+     */
     @Test
     public void testCheckboxAccepted() {
         onView(withId(R.id.create_password_disclaimer_checkbox))
@@ -184,6 +212,10 @@ public class CreatePasswordFragmentTest {
         onView(withText(R.string.disclaimer_body)).check(doesNotExist());
     }
 
+    /**
+     * Test whether the disclaimer dialog is successfully loaded when the disclaimer button is pressed,
+     * and minimised when the user accepts the disclaimer.
+     */
     @Test
     public void testDisclaimerButton() {
         onView(withId(R.id.create_password_disclaimer))
@@ -197,6 +229,10 @@ public class CreatePasswordFragmentTest {
         onView(withText(R.string.disclaimer_body)).check(doesNotExist());
     }
 
+    /**
+     * Test whether the disclaimer dialog is successfully loaded when the disclaimer button is pressed,
+     * and minimised when the user presses the back button.
+     */
     @Test
     public void testDisclaimerWithBackButton() {
         onView(withId(R.id.create_password_disclaimer))
@@ -208,7 +244,11 @@ public class CreatePasswordFragmentTest {
         onView(withText(R.string.disclaimer_body)).check(doesNotExist());
     }
 
-    @Test public void testValidLogin() {
+    /**
+     * The test will input a password that contains all the correct criteria.
+     * The disclaimer will be accepted and the password will be created. The test should successfully create the password.
+     */
+    @Test public void testValidPassword() {
         String pass = "P@$$w0rd";
 
         // Enter the password into the two fields.
@@ -241,6 +281,12 @@ public class CreatePasswordFragmentTest {
 
         // Confirm login screen is loaded.
         onView(withId(R.id.fragment_login_root)).check(matches(isDisplayed()));
+
+        // Confirm new password is set.
+        SharedPreferences pref = context.getSharedPreferences(context.getResources().getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        assertNotNull(pref.getString("passwordHash", null));
+        editor.apply();
     }
 
 
@@ -275,6 +321,11 @@ public class CreatePasswordFragmentTest {
         };
     }
 
+    /**
+     * Custom Matcher to check for an error in an input layout.
+     * @param string The error message to check for
+     * @return
+     */
     private static Matcher<View> withErrorInInputLayout(final String string) {
         return withErrorInInputLayout(is(string));
     }

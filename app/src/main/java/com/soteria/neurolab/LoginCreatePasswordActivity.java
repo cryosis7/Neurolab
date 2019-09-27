@@ -24,6 +24,10 @@ public class LoginCreatePasswordActivity extends AppCompatActivity {
         switchFragment();
     }
 
+    /**
+     * Overrides the default back button action to exit the application instead of returning
+     * to the previous screen.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -32,6 +36,10 @@ public class LoginCreatePasswordActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Will switch the currently displayed fragment.
+     * When no password exists in the beginning, it will load the create password fragment.
+     */
     void switchFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 

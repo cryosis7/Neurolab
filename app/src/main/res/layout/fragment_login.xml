@@ -50,7 +50,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.7"
                 android:layout_height="wrap_content"
-                style="@style/TextInputLayoutAppearance">
+                style="@style/TextInputLayoutAppearance"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_password_edittext"
