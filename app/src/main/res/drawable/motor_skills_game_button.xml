@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/motor_skills_button_shape">
+        <shape android:shape="oval">
 
-    <solid
-        android:color="@color/colorYellow"/>
+            <solid android:color="@color/colorYellow"/>
 
-    <size
-        android:width="30dp"
-        android:height="30dp"/>
+            <size android:width="30dp"
+                android:height="30dp"/>
 
-    <stroke android:width="5sp"
-        android:color="@color/colorBlack" />
-</shape>
+            <stroke android:width="5sp"
+                android:color="@color/colorBlack" />
+        </shape>
+
+    </item>
+</layer-list>

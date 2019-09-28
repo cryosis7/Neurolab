@@ -2,7 +2,10 @@ package com.soteria.neurolab;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.GameAssignment;
@@ -50,11 +54,12 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
     //An array of an ArrayList - This is because you can't loop through a two dimensional array if
     //  any of the values are not initialized, however if there is one item in the first dimension
     //  of this array then it is assured that there will be one in the second. - See setupGameRound()
-    private List<Button> gameButtonArray[] = new ArrayList[2];
+    final private List<Button> gameButtonArray[] = new ArrayList[2];
 
     private int round;
+    private int current;
 
-    private ShapeDrawable buttonDrawable;
+    private LayerDrawable buttonDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +67,11 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
 
         //Initializing some global variables
         db = DatabaseAccess.getInstance(getApplicationContext());
-        round = 1;
+        round = 10;
 
         // Sets the top bar title, and back button to reflect that the user is on the visual
         // memory game.
-        if(getSupportActionBar() != null ) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_motor_skills);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,7 +103,7 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
     /**
      * Initialize UI elements on startup
      */
-    private void setupUI(){
+    private void setupUI() {
         gameTitleTextView = findViewById(R.id.motor_skills_game_title);
         gameAttemptsTextView = findViewById(R.id.motor_skills_game_incorrect_info);
         startGameButton = findViewById(R.id.motor_skills_game_start_game);
@@ -115,6 +120,8 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setupGameRound();
+                startGameButton.setEnabled(false);
+                startGameButton.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -123,10 +130,12 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
      * Uses the game round to determine the buttons to display, their sizes, and renders them then
      * starts the round
      */
-    private void setupGameRound(){
-        startGameButton.setEnabled(false);
-        startGameButton.setVisibility(View.INVISIBLE);
+    private void setupGameRound() {
+        current = 0;
 
+        //Reset the button arrays
+        // - 0 will be the array of buttons with numbers
+        // - 1 will be the array of buttons with letters
         gameButtonArray[0] = new ArrayList<>();
         gameButtonArray[1] = new ArrayList<>();
         setGameButtons(0);
@@ -135,86 +144,114 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
 
     /**
      * Will generate random x and y coordinates, if there would be no overlap of buttons by placing
-     *  a button at x/y then it will place the button, set the text and the onClickListener
+     * a button at x/y then it will place the button, set the text and the onClickListener
+     *
      * @param arrayListIndex - The index of the gameButtonArrayListArray
      */
-    private void setGameButtons(int arrayListIndex){
-        buttonDrawable = (ShapeDrawable) getResources().getDrawable(R.drawable.motor_skills_game_button);
-        buttonDrawable.getShape().resize(120 % round, 120 % round);
+    private void setGameButtons(final int arrayListIndex) {
+        final int DEFAULT_BUTTON_SIZE = 250;
+        int buttonSize = (int) Math.round(DEFAULT_BUTTON_SIZE/((0.1 * round) + 1));
+        buttonDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.motor_skills_game_button);
+        GradientDrawable gdYellow = (GradientDrawable) buttonDrawable.findDrawableByLayerId(R.id.motor_skills_button_shape);
+        gdYellow.setSize(buttonSize, buttonSize);
+        final GradientDrawable gdGreen = (GradientDrawable) gdYellow.getConstantState().newDrawable();
+        gdGreen.mutate();
+        gdGreen.setColor(getResources().getColor(R.color.colorGreen));
         Random rand = new Random();
-        int x = rand.nextInt(721);
-        int y = rand.nextInt(785);
 
-        for(int i = 0; i < round; i++){
+        //Create one button per round
+        for (int i = 0; i < round; i++) {
+            int x = 0;
+            int y = 0;
             gameButtonArray[arrayListIndex].add(new Button(this));
             gameLayout.addView(gameButtonArray[arrayListIndex].get(i));
-            gameButtonArray[arrayListIndex].get(i).setCompoundDrawables(buttonDrawable, null, null, null);
+            gameButtonArray[arrayListIndex].get(i).setBackground(gdYellow);
             gameButtonArray[arrayListIndex].get(i).setText(numberAlphabet[i][arrayListIndex]);
-            gameButtonArray[arrayListIndex].get(i).setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
+            gameButtonArray[arrayListIndex].get(i).setTextSize(48 - round);
+
+            //The OnClickListener for the number buttons are different from the alphabet buttons
+            switch (arrayListIndex){
+                case 0:
+                    gameButtonArray[arrayListIndex].get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Button button = (Button) view;
+                            if(button.getText().equals(numberAlphabet[current][0])){
+                                gameButtonArray[arrayListIndex].get(current).setBackground(gdGreen);
+                            }
+                        }
+                    });
+                    break;
+
+                case 1:
+                    gameButtonArray[arrayListIndex].get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Button button = (Button) view;
+                            if(button.getText().equals(numberAlphabet[current][1])){
+                                gameButtonArray[0].get(current).setEnabled(false);
+                                gameButtonArray[0].get(current).setVisibility(View.INVISIBLE);
+                                gameButtonArray[1].get(current).setEnabled(false);
+                                gameButtonArray[1].get(current).setVisibility(View.INVISIBLE);
+                                current++;
+                            }
+                        }
+                    });
+                    break;
+            }
+
 
             //Set random x/y coordinates for the button, if the new coordinates would put the button
             //  behind another button then set x/y coordinates again
             boolean shorterDistance = true;
-            while(shorterDistance){
-                for (Button tempButton : gameButtonArray[0]){
+            while (shorterDistance) {
+                System.out.println("Setting x and y");
+                x = rand.nextInt(721);
+                y = rand.nextInt(785);
+                //If adding the size of the button would put x/y out of bounds (unseeable)
+                //  then generate a new x/y coordinate.
+                while (x + buttonSize > 721) {
+                    x = rand.nextInt(721);
+                }
+                while (y + buttonSize > 785) {
+                    y = rand.nextInt(785);
+                }
+
+                //Checking that the button doesn't overlap with another
+                for (Button tempButton : gameButtonArray[0]) {
+                    //Need to subtract smallerX from largerX but don't know which is which yet
                     float largerX = x > tempButton.getX() ? x : tempButton.getX();
                     float smallerX = x < tempButton.getX() ? x : tempButton.getX();
                     float largerY = y > tempButton.getY() ? y : tempButton.getY();
                     float smallerY = y < tempButton.getY() ? y : tempButton.getY();
+                    //Using pythagoras' theorem to calc the distance between 2 points
                     double distance = Math.sqrt(Math.pow(largerX - smallerX, 2) + Math.pow(largerY - smallerY, 2) * 1.0);
-                    shorterDistance = distance < 30 % round ? true : false;
-                    if(shorterDistance)
+                    shorterDistance = distance < buttonSize ? true : false;
+                    System.out.println("Distance = " + distance + ", Button Size = " + buttonSize + ", shorterDistance = " + shorterDistance);
+                    if (shorterDistance)
+                        //No need to keep on looping if the x/ coordinates already clash with another button
                         break;
                 }
-                if(shorterDistance){
-                    for (Button tempButton : gameButtonArray[1]){
+                //The same as above but for the other button array
+                if (!shorterDistance) {
+                    for (Button tempButton : gameButtonArray[1]) {
                         float largerX = x > tempButton.getX() ? x : tempButton.getX();
                         float smallerX = x < tempButton.getX() ? x : tempButton.getX();
                         float largerY = y > tempButton.getY() ? y : tempButton.getY();
                         float smallerY = y < tempButton.getY() ? y : tempButton.getY();
                         double distance = Math.sqrt(Math.pow(largerX - smallerX, 2) + Math.pow(largerY - smallerY, 2) * 1.0);
-                        shorterDistance = distance < 30 % round ? false : true;
-                        if(!shorterDistance)
+                        shorterDistance = distance < buttonSize ? true : false;
+                        System.out.println("Distance = " + distance + ", Button Size = " + buttonSize + ", shorterDistance = " + shorterDistance);
+                        if (shorterDistance)
                             break;
                     }
                 }
-                if(shorterDistance) {
-                    x = rand.nextInt(721);
-                    y = rand.nextInt(785);
-                }
             }
+            //Set x/y coordinates of the button now that we are sure they aren't out of bounds or
+            //  behind another button
             gameButtonArray[arrayListIndex].get(i).setX(x);
-            gameButtonArray[arrayListIndex].get(i).setX(y);
-
-        }
-    }
-
-
-    /**
-     * Class to dynamically create a drawable
-     */
-    public class buttonDrawable extends Drawable{
-
-        public buttonDrawable(int color, int strokeWidth, )
-
-        @Override
-        public void draw(@NonNull Canvas canvas) {
-
-        }
-
-        @Override
-        public void setAlpha(int i) {
-
-        }
-
-        @Override
-        public void setColorFilter(@Nullable ColorFilter colorFilter) {
-
-        }
-
-        @Override
-        public int getOpacity() {
-            return 0;
+            gameButtonArray[arrayListIndex].get(i).setY(y);
         }
     }
 }
+
