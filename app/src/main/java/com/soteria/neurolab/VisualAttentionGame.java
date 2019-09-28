@@ -146,12 +146,16 @@ public class VisualAttentionGame extends AppCompatActivity {
                 if(roundCount != 10 && numOfTaps != 0) {
                     roundScore = calculateRoundScore();
                     totalScore += roundScore;
+                    Log.i("score", "round score: " + roundScore);
+                    Log.i("score", "total score " + totalScore);
                     numOfTargets = 0; numOfTaps = 0; targetsFound = 0;
                     roundCount++;
                     resetButtons();
                     setUpRounds();
                 } else if(roundCount == 10){
                     //Game over method is called when round 10 is complete
+                    roundScore = calculateRoundScore();
+                    totalScore += roundScore;
                     gameOver();
                 }
             }
