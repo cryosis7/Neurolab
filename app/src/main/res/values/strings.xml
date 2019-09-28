@@ -106,7 +106,7 @@
     <string name="edit_patient_details_title">Manage Patient</string>
 
     <!-- Motor Skills Game -->
-
+    <string name="motor_skills_game_instruction">Tap %1$s then %2$s</string>
 
     <!--Generic Strings-->
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>

@@ -67,7 +67,7 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
 
         //Initializing some global variables
         db = DatabaseAccess.getInstance(getApplicationContext());
-        round = 10;
+        round = 1;
 
         // Sets the top bar title, and back button to reflect that the user is on the visual
         // memory game.
@@ -132,6 +132,7 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
      */
     private void setupGameRound() {
         current = 0;
+        gameLayout.removeAllViews();
 
         //Reset the button arrays
         // - 0 will be the array of buttons with numbers
@@ -140,6 +141,10 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
         gameButtonArray[1] = new ArrayList<>();
         setGameButtons(0);
         setGameButtons(1);
+
+        //Set help text
+        gameTitleTextView.setText(getResources().getString(R.string.motor_skills_game_instruction,
+                numberAlphabet[current][0], numberAlphabet[current][1]));
     }
 
     /**
@@ -150,13 +155,17 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
      */
     private void setGameButtons(final int arrayListIndex) {
         final int DEFAULT_BUTTON_SIZE = 250;
-        int buttonSize = (int) Math.round(DEFAULT_BUTTON_SIZE/((0.1 * round) + 1));
+        int buttonSize = (int) Math.round(DEFAULT_BUTTON_SIZE/((0.12 * round) + 1));
         buttonDrawable = (LayerDrawable) getResources().getDrawable(R.drawable.motor_skills_game_button);
         GradientDrawable gdYellow = (GradientDrawable) buttonDrawable.findDrawableByLayerId(R.id.motor_skills_button_shape);
         gdYellow.setSize(buttonSize, buttonSize);
         final GradientDrawable gdGreen = (GradientDrawable) gdYellow.getConstantState().newDrawable();
+        final GradientDrawable gdNext = (GradientDrawable) gdYellow.getConstantState().newDrawable();
         gdGreen.mutate();
+        gdGreen.setStroke(5, getResources().getColor(R.color.colorPrimary));
         gdGreen.setColor(getResources().getColor(R.color.colorGreen));
+        gdNext.mutate();
+        gdNext.setStroke(5, getResources().getColor(R.color.colorPrimary));
         Random rand = new Random();
 
         //Create one button per round
@@ -165,9 +174,9 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
             int y = 0;
             gameButtonArray[arrayListIndex].add(new Button(this));
             gameLayout.addView(gameButtonArray[arrayListIndex].get(i));
-            gameButtonArray[arrayListIndex].get(i).setBackground(gdYellow);
+            gameButtonArray[arrayListIndex].get(i).setBackground(i == current ? gdNext : gdYellow);
             gameButtonArray[arrayListIndex].get(i).setText(numberAlphabet[i][arrayListIndex]);
-            gameButtonArray[arrayListIndex].get(i).setTextSize(48 - round);
+            gameButtonArray[arrayListIndex].get(i).setTextSize(buttonSize / 3);
 
             //The OnClickListener for the number buttons are different from the alphabet buttons
             switch (arrayListIndex){
@@ -194,12 +203,20 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
                                 gameButtonArray[1].get(current).setEnabled(false);
                                 gameButtonArray[1].get(current).setVisibility(View.INVISIBLE);
                                 current++;
+                                gameTitleTextView.setText(getResources().getString(R.string.motor_skills_game_instruction,
+                                        numberAlphabet[current][0], numberAlphabet[current][1]));
+                                if(current == round){
+                                    round++;
+                                    setupGameRound();
+                                } else {
+                                    gameButtonArray[0].get(current).setBackground(gdNext);
+                                    gameButtonArray[1].get(current).setBackground(gdNext);
+                                }
                             }
                         }
                     });
                     break;
             }
-
 
             //Set random x/y coordinates for the button, if the new coordinates would put the button
             //  behind another button then set x/y coordinates again
