@@ -30,10 +30,9 @@ public class VisualAttentionGame extends AppCompatActivity {
     //These fields are used by multiple methods and are initialised
     private int roundCount = 1; private int numOfTargets = 0; private int targetsFound = 0;
     private double roundScore = 0; private int numOfTaps = 0; private double totalScore = 0;
-    private int buttonsHorizontal; private int buttonsVertical; private int randomTarget;
 
-    private ImageButton[][] buttons;
-    private Button exitButton;
+    private int buttonsHorizontal; private int buttonsVertical; private int[] imageSet;
+    private ImageButton[][] buttons; private Button exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,9 @@ public class VisualAttentionGame extends AppCompatActivity {
     }
 
     /**
-     * This method sets up each game round
+     * This method sets up each game round by retrieving the target image and images to be used for
+     * the round and assigning an image to each button. It also includes the onClickListeners for
+     * the grid buttons and submit button
      */
     public void setUpRounds(){
         //The grid size and size of the button array are both determined by the current round number
@@ -88,16 +89,14 @@ public class VisualAttentionGame extends AppCompatActivity {
 
         //Sets text to display the round number
         roundNumText.setText(getResources().getString(R.string.visualAttention_round) + " " + roundCount);
-        //Sets a tag for the target image
-        targetImage.setTag(randomTarget);
-        //Gets an array of images that will be placed in the grid
-        int[] roundImages = imageArray();
-        //Assigns a random image from the array to be the target image
-        randomTarget = getRandomImage(roundImages);
+        //Gets a set of images depending on the round number
+        imageSet = getImageSets();
+        //Sets a random target image from the image set
+        int randomTarget = getRandomImage();
         //Displays the target image to the patient
         targetImage.setImageDrawable(resizeImages(randomTarget));
-        //Sets a tag for the target image
         targetImage.setTag(randomTarget);
+        int[] roundImages = imageArray(imageSet, randomTarget);
         int count = 0;
 
         //Loops through and assigns an image to each button
@@ -210,21 +209,18 @@ public class VisualAttentionGame extends AppCompatActivity {
                 finish();
             }
         });*/
-
     }
 
     /**
      * Creates an array of images depending on the round number and size of the grid
      * @return the array of images after being shuffled
      */
-    public int[] imageArray(){
-        //Gets a set of images depending on the round number
-        int[] roundImages = getImageSets(roundCount);
+    public int[] imageArray(int[] roundImages, int target){
         int[] images = null;
         int count = 0;
         switch (roundCount){
-            //If the round number is 1, 2 or 3 then 16 images are added for a 4x4 grid. Adds 4 of
-            //each image to the array
+            //If the round number is 1, 2 or 3 then 16 images are added for a 4x4 grid. 4 of each
+            //image is added to the array
             case 1: case 2: case 3:
                 images = new int[16];
                 for(int i = 0; i < 4; i++){
@@ -243,7 +239,7 @@ public class VisualAttentionGame extends AppCompatActivity {
                         images[count] = roundImages[j];
                         count++;
                         if(count == 24){
-                            images[count] = randomTarget;
+                            images[count] = target;
                         }
                     }
                 }
@@ -257,17 +253,22 @@ public class VisualAttentionGame extends AppCompatActivity {
                         images[count] = roundImages[j];
                         count++;
                         if(count == 35){
-                            images[count] = randomTarget;
+                            images[count] = target;
                         }
                     }
                 }
                 break;
             }
-        //Images are shuffled
+        //Images are shuffled twice
         int[] firstShuffle = shuffleImages(images);
         return shuffleImages(firstShuffle);
     }
 
+    /**
+     * Shuffles the images that will be placed into the grid
+     * @param images
+     * @return an array of shuffled images
+     */
     public int[] shuffleImages(int[] images){
         int tmp, index;
         Random rand = new Random();
@@ -280,6 +281,9 @@ public class VisualAttentionGame extends AppCompatActivity {
         return images;
     }
 
+    /**
+     * Resets all of the grid buttons to their original state for the next round
+     */
     public void resetButtons(){
         buttons = new ImageButton[buttonsVertical][buttonsHorizontal];
         for (int i = 0; i < buttonsVertical; i++) {
@@ -287,12 +291,19 @@ public class VisualAttentionGame extends AppCompatActivity {
                 String buttonID = "button_" + i + j;
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 buttons[i][j] = findViewById(resID);
+                //Makes all of the buttons clickable again
                 buttons[i][j].setClickable(true);
+                //Sets the button background to default unpressed button
                 buttons[i][j].setBackgroundResource(R.drawable.visual_attention_button);
             }
         }
     }
 
+    /**
+     * Resizes the image passed to it
+     * @param image
+     * @return the resized image
+     */
     public Drawable resizeImages(int image){
         Drawable dr = getResources().getDrawable(image);
         Bitmap bm = ((BitmapDrawable) dr).getBitmap();
@@ -300,18 +311,31 @@ public class VisualAttentionGame extends AppCompatActivity {
         return drawable;
     }
 
-    public Integer getRandomImage(int[] list){
+    /**
+     * Returns a random image from the image set which will be set as the target image
+     * @return a random image
+     */
+    public Integer getRandomImage(){
         Random rand = new Random();
-        return list[rand.nextInt(list.length)];
+        return imageSet[rand.nextInt(imageSet.length)];
     }
 
+    /**
+     * Calculates the score for the round based on the total number of target images in the grid,
+     * the number of target images found, and the number of taps made by the patient
+     * @return the round score rounded to two decimal places
+     */
     public double calculateRoundScore(){
         roundScore = (((double) targetsFound / numOfTargets) * ((double) targetsFound / numOfTaps) * 100);
         BigDecimal bdScore = new BigDecimal(roundScore).setScale(2, RoundingMode.HALF_UP);
         return bdScore.doubleValue();
     }
 
-    public int[] getImageSets(int roundCount){
+    /**
+     * Returns a random set of images based on the current round number
+     * @return a random set of images
+     */
+    public int[] getImageSets(){
         switch (roundCount){
             case 1: return roundOneSets();
             case 2: return roundTwoSets();
@@ -327,6 +351,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round one and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round one
+     */
     public int[] roundOneSets(){
         int[] roundOneSetOne = {R.mipmap.circle, R.mipmap.diamond, R.mipmap.plus1, R.mipmap.star};
         int[] roundOneSetTwo = {R.mipmap.checked, R.mipmap.heart, R.mipmap.moon, R.mipmap.star2};
@@ -334,6 +363,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundOneSetFour = {R.mipmap.carrot, R.mipmap.leaf, R.mipmap.flower, R.mipmap.notification};
         int[] roundOneSetFive = {R.mipmap.butterfly, R.mipmap.clover, R.mipmap.like, R.mipmap.sun};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -346,6 +376,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round two and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round two
+     */
     public int[] roundTwoSets(){
         int[] roundTwoSetOne = {R.mipmap.crown, R.mipmap.clock, R.mipmap.circle_green, R.mipmap.rainbow};
         int[] roundTwoSetTwo = {R.mipmap.apple, R.mipmap.crown2, R.mipmap.trophy, R.mipmap.unchecked};
@@ -353,6 +388,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundTwoSetFour = {R.mipmap.driving, R.mipmap.hourglass, R.mipmap.rocket, R.mipmap.smiley};
         int[] roundTwoSetFive = {R.mipmap.light_bulb, R.mipmap.star4, R.mipmap.target, R.mipmap.tulip};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -365,6 +401,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round three and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round three
+     */
     public int[] roundThreeSets(){
         int[] roundThreeSetOne = {R.mipmap.christian_cross, R.mipmap.pentagon, R.mipmap.plain_circle, R.mipmap.six_pointed_star};
         int[] roundThreeSetTwo = {R.mipmap.cancel, R.mipmap.check, R.mipmap.padlock, R.mipmap.tumble_dry};
@@ -372,6 +413,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundThreeSetFour = {R.mipmap.no_entry_sign, R.mipmap.plain_heart, R.mipmap.plain_triangle, R.mipmap.plus_sign};
         int[] roundThreeSetFive = {R.mipmap.casino, R.mipmap.right_arrow, R.mipmap.stop, R.mipmap.yield};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -384,6 +426,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round four and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round four
+     */
     public int[] roundFourSets(){
         int[] roundFourSetOne = {R.mipmap.bone, R.mipmap.check_box, R.mipmap.shining_sun, R.mipmap.star_and_crescent};
         int[] roundFourSetTwo = {R.mipmap.key, R.mipmap.mandala, R.mipmap.setting, R.mipmap.weather};
@@ -391,7 +438,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundFourSetFour = {R.mipmap.flower1, R.mipmap.language, R.mipmap.mushroom, R.mipmap.puzzle};
         int[] roundFourSetFive = {R.mipmap.ball, R.mipmap.butterfly2, R.mipmap.sun3, R.mipmap.strawberry};
 
-
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -404,6 +451,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round five and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round five
+     */
     public int[] roundFiveSets(){
         int[] roundFiveSetOne = {R.mipmap.abstract2, R.mipmap.abstract3, R.mipmap.abstract4, R.mipmap.abstract5};
         int[] roundFiveSetTwo = {R.mipmap.native_arrows, R.mipmap.native_peace, R.mipmap.native_camp, R.mipmap.teepee2};
@@ -411,6 +463,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundFiveSetFour = {R.mipmap.dice, R.mipmap.dice2, R.mipmap.dice3, R.mipmap.dice4};
         int[] roundFiveSetFive = {R.mipmap.back, R.mipmap.download, R.mipmap.next, R.mipmap.up_arrow2};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -423,6 +476,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round six and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round six
+     */
     public int[] roundSixSets(){
         int[] roundSixSetOne = {R.mipmap.aztec_calendar, R.mipmap.sharing, R.mipmap.sharing2, R.mipmap.sun2};
         int[] roundSixSetTwo = {R.mipmap.pentagram, R.mipmap.pentagram2, R.mipmap.trinity, R.mipmap.trinity2};
@@ -430,6 +488,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundSixSetFour = {R.mipmap.rose, R.mipmap.sakura, R.mipmap.sakura2, R.mipmap.tulip2};
         int[] roundSixSetFive = {R.mipmap.share, R.mipmap.sharing3, R.mipmap.sunrise, R.mipmap.sunset};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -442,6 +501,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round seven and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round seven
+     */
     public int[] roundSevenSets(){
         int[] roundSevenSetOne = {R.mipmap.add, R.mipmap.attention, R.mipmap.check_mark, R.mipmap.check_mark2, R.mipmap.error};
         int[] roundSevenSetTwo = {R.mipmap.arrows, R.mipmap.down_arrow, R.mipmap.down_arrow2, R.mipmap.right_arrow2, R.mipmap.up_arrow};
@@ -449,6 +513,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundSevenSetFour = {R.mipmap.expand, R.mipmap.expand2, R.mipmap.shrink, R.mipmap.shrink2, R.mipmap.shrink3};
         int[] roundSevenSetFive = {R.mipmap.diamond3, R.mipmap.diamond4, R.mipmap.diamond5, R.mipmap.diamond6, R.mipmap.diamond7};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -461,33 +526,45 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round eight and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round eight
+     */
     public int[] roundEightSets(){
 
-        int[] roundEightSetOne = {R.mipmap.square, R.mipmap.square2, R.mipmap.square3, R.mipmap.trapezium, R.mipmap.trapezium2};
+        int[] roundEightSetOne = {R.mipmap.daisy, R.mipmap.daisy2, R.mipmap.flower_heart_petals, R.mipmap.flower_round_petals, R.mipmap.flower_round_petals2};
         int[] roundEightSetTwo = {R.mipmap.hexagon_dark, R.mipmap.circle2, R.mipmap.octagon, R.mipmap.octagon2, R.mipmap.pentagon2};
-        int[] roundEightSetThree = {R.mipmap.chart, R.mipmap.chart2, R.mipmap.chart3, R.mipmap.chart4, R.mipmap.chart5};
+        int[] roundEightSetThree = {R.mipmap.house, R.mipmap.home, R.mipmap.home_door, R.mipmap.home_door_window, R.mipmap.home_heart};
         int[] roundEightSetFour = {R.mipmap.sun4, R.mipmap.sun5, R.mipmap.sun6, R.mipmap.sun7, R.mipmap.sun8};
+        int[] roundEightSetFive = {R.mipmap.car, R.mipmap.garbage_truck, R.mipmap.pickup_truck, R.mipmap.truck, R.mipmap.van};
 
-
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
-        int setNum = random.nextInt(4) + 1;
+        int setNum = random.nextInt(5) + 1;
         switch (setNum){
             case 1: return roundEightSetOne;
             case 2: return roundEightSetTwo;
             case 3: return roundEightSetThree;
             case 4: return roundEightSetFour;
-            //case 5: return roundEightSetFive;
+            case 5: return roundEightSetFive;
         }
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round nine and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round nine
+     */
     public int[] roundNineSets(){
         int[] roundNineSetOne = {R.mipmap.hexagon3, R.mipmap.hexagon4, R.mipmap.rhombus, R.mipmap.hexagon5, R.mipmap.hexagon6};
-        int[] roundNineSetTwo = {R.mipmap.triangle3, R.mipmap.triangle4, R.mipmap.triangle5, R.mipmap.triangles, R.mipmap.triangle6};
+        int[] roundNineSetTwo = {R.mipmap.triangle7, R.mipmap.triangle4, R.mipmap.triangle5, R.mipmap.triangles, R.mipmap.triangle6};
         int[] roundNineSetThree = {R.mipmap.gear, R.mipmap.gear2, R.mipmap.gear3, R.mipmap.gear4, R.mipmap.gear5};
         int[] roundNineSetFour = {R.mipmap.circle_angle_left, R.mipmap.circle_angle_right, R.mipmap.circles_four, R.mipmap.circles_three_left, R.mipmap.circles_three_right};
         int[] roundNineSetFive = {R.mipmap.night, R.mipmap.night2, R.mipmap.night3, R.mipmap.night4, R.mipmap.night5};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
@@ -500,6 +577,11 @@ public class VisualAttentionGame extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Instantiates five different image sets for round ten and returns a random set of images to
+     * be used for the round
+     * @return a random set of images for round ten8
+     */
     public int[] roundTenSets(){
         int[] roundTenSetOne = {R.mipmap.floral_design, R.mipmap.floral_design2, R.mipmap.floral_design3, R.mipmap.floral_design4, R.mipmap.floral_design5};
         int[] roundTenSetTwo = {R.mipmap.sun_design, R.mipmap.sun_design2, R.mipmap.sun_design3, R.mipmap.sun_design4, R.mipmap.sun_design5};
@@ -507,6 +589,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         int[] roundTenSetFour = {R.mipmap.tree1, R.mipmap.tree2, R.mipmap.tree3, R.mipmap.tree4, R.mipmap.tree5};
         int[] roundTenSetFive = {R.mipmap.snowflake3, R.mipmap.snowflake4, R.mipmap.snowflake5, R.mipmap.snowflake6, R.mipmap.snowflake7};
 
+        //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
         int setNum = random.nextInt(5) + 1;
         switch (setNum){
