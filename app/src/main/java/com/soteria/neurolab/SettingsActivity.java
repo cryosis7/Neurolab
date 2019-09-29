@@ -13,7 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements SettingsResetPasswordFragment.OnFragmentInteractionListener,
+                                                                   SettingsSecurityQuestionsFragment.OnFragmentInteractionListener{
 
     final Fragment passwordFragment = new SettingsResetPasswordFragment();
     final Fragment questionsFragment = new SettingsSecurityQuestionsFragment();
@@ -25,13 +26,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+        setContentView(R.layout.activity_settings);
+        BottomNavigationView navView = findViewById(R.id.settings_nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if(getSupportActionBar() != null ) {
             toolbar = getSupportActionBar();
-            toolbar.setTitle("Search Patient");
+            toolbar.setTitle("Reset Password");
             toolbar.setHomeButtonEnabled(true);
             toolbar.setDisplayHomeAsUpEnabled(true);
 
@@ -54,10 +55,21 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.settings_reset_option:
                     fragmentManager.beginTransaction().hide(active).show(passwordFragment).commit();
                     active = passwordFragment;
-                    toolbar.setTitle(getString(R.string.settings_security_title));
+                    toolbar.setTitle(getString(R.string.settings_textview_security_title));
                     return true;
             }
             return false;
         }
     };
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

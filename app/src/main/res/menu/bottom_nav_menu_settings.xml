@@ -6,8 +6,7 @@
         android:title="@string/settings_password_reset_title" />
 
     <item
-        android:icon=""
         android:id="@+id/settings_questions_option"
-        android:title="@string/settings_security_title" />
+        android:title="@string/settings_textview_security_title" />
 
 </menu>
