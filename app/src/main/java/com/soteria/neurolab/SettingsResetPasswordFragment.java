@@ -1,7 +1,6 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
@@ -42,7 +40,7 @@ public class SettingsResetPasswordFragment extends Fragment {
         final View passwordView =  inflater.inflate(R.layout.settings_reset_fragment, container, false);
 
         //UI element declarations
-        final Button submitButton = passwordView.findViewById(R.id.settings_submit);
+        final Button submitButton = passwordView.findViewById(R.id.settings_submit_reset);
         final EditText passwordCurrent = passwordView.findViewById(R.id.settings_current_password);
         final EditText passwordNew = passwordView.findViewById(R.id.settings_password_new);
         final EditText passwordConfirm = passwordView.findViewById(R.id.settings_password_confirm);
@@ -51,12 +49,11 @@ public class SettingsResetPasswordFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!passwordCurrent.equals("") && passwordNew.equals(passwordConfirm)) {
-                    passwordChange(passwordNew.getText().toString());
-                } else if(passwordCurrent.equals("")) {
+                if (passwordCurrent.getText().toString().equals("")) {
                     ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setError("Current Password is blank");
-                } else {
-                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("New passwords do not match"); }
+                } else if (!passwordNew.getText().toString().equals(passwordConfirm.getText().toString())){
+                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("New passwords do not match");
+                } else { passwordChange(passwordNew.getText().toString()); }
             }
         });
         return passwordView;

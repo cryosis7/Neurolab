@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 public class SettingsActivity extends AppCompatActivity implements SettingsResetPasswordFragment.OnFragmentInteractionListener,
                                                                    SettingsSecurityQuestionsFragment.OnFragmentInteractionListener{
@@ -36,8 +35,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
             toolbar.setHomeButtonEnabled(true);
             toolbar.setDisplayHomeAsUpEnabled(true);
 
-            fragmentManager.beginTransaction().add(R.id.fragment_layout, questionsFragment, "2").hide(passwordFragment).commit();
-            fragmentManager.beginTransaction().add(R.id.fragment_layout, passwordFragment, "1").commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_layout_settings, passwordFragment, "2").hide(questionsFragment).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_layout_settings, questionsFragment, "1").commit();
         }
     }
 
@@ -47,14 +46,14 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.settings_reset_option:
+                    fragmentManager.beginTransaction().hide(active).attach(passwordFragment).show(passwordFragment).commit();
+                    active = passwordFragment;
+                    toolbar.setTitle(getString(R.string.settings_password_reset_title));
+                    return true;
                 case R.id.settings_questions_option:
                     fragmentManager.beginTransaction().hide(active).detach(passwordFragment).attach(questionsFragment).show(questionsFragment).commit();
                     active = questionsFragment;
-                    toolbar.setTitle(getString(R.string.settings_password_reset_title));
-                    return true;
-                case R.id.settings_reset_option:
-                    fragmentManager.beginTransaction().hide(active).show(passwordFragment).commit();
-                    active = passwordFragment;
                     toolbar.setTitle(getString(R.string.settings_textview_security_title));
                     return true;
             }
