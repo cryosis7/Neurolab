@@ -245,7 +245,6 @@ public class EditPatientDetails extends AppCompatActivity {
 
     /** Determines the behaviour of options selected from the action bar. Options include displaying
      *  the disclaimer and sending the user back to the main menu.
-     *  TODO insert link for logout
      *
      *  @param menuItem - The identifier of the item selected from the top bar.
      *  @return true if an option was able to be selected and false if an exception occurred.
@@ -258,6 +257,9 @@ public class EditPatientDetails extends AppCompatActivity {
                 case android.R.id.home:
                     super.onBackPressed();
                     return true;
+                //If the settings button is pressed, direct the user to the settings page
+                case R.id.action_settings:
+                    startActivity(new Intent(this, SettingsActivity.class));
                 //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                 case R.id.action_disclaimer:
                     DisclaimerAlertDialog dad = new DisclaimerAlertDialog();

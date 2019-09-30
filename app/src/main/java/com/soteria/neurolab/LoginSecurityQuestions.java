@@ -44,7 +44,7 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if(answerOne.getText().toString().equals(prefs.getString("ANSWER_ONE", null)) ||
-                       answerOne.getText().toString().equals(prefs.getString("ANSWER_TWO", null))) {
+                       answerTwo.getText().toString().equals(prefs.getString("ANSWER_TWO", null))) {
                         //Commence Reset here
                     } else {
 
