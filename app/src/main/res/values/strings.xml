@@ -49,7 +49,13 @@
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!--Visual Attention Game-->
-    <string name="visualAttention_round">Round</string>
+    <string name="visualAttention_round">Round</string>\
+    <string name="visualAttention_attempts_left">Attempts Remaining:</string>
+    <string name="visualAttention_no_attempts">No More Attempts</string>
+    <string name="visualAttention_display_score">YOUR SCORE</string>
+    <string name="visualAttention_play_again">Play Again</string>
+    <string name="visualAttention_exit">Exit</string>
+    <string name="visualAttention_tap_text">Tap Every</string>
 
     <!-- View report page strings -->
     <string name="view_report_title">View Report</string>

@@ -359,7 +359,7 @@ public class DatabaseAccess {
         open();
         cursor = db.rawQuery(
                 "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
-                new String[] {patientID, gameID});
+                new String[] {(patientID), (gameID)});
         return getSessionList(cursor);
     }
 
@@ -443,7 +443,8 @@ public class DatabaseAccess {
      */
     public void deleteAllSessions(String patientID, String gameID) {
         open();
-        db.delete("Game_Session", "patient_ID=? AND game_ID=?", new String[] {patientID, gameID});
+        db.delete("Game_Session", "patient_ID=? AND game_ID=?", new String[] {
+                patientID, gameID});
         close();
     }
 

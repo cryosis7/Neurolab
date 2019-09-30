@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/visual_attention_grid3"
     android:layout_height="match_parent"
     android:paddingLeft="50dp"
     android:paddingRight="50dp"
@@ -22,7 +23,7 @@
             android:layout_marginEnd="267dp"
             android:paddingBottom="20dp"
             android:text="Round 1"
-            android:textSize="50sp" />
+            android:textSize="55sp" />
 
     </RelativeLayout>
 
@@ -37,32 +38,33 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="365dp"
-            android:background="@color/cardview_light_background"/>
+            android:layout_marginEnd="335dp"
+            android:background="@color/cardview_light_background" />
 
         <TextView
             android:id="@+id/visual_attention_target_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="15dp"
             android:text="Tap Every "
-            android:textSize="50sp" />
+            android:textSize="55sp" />
 
         <Button
             android:id="@+id/visual_attention_submit_button"
             android:layout_width="197dp"
             android:layout_height="91dp"
-            android:textSize="36dp"
-            android:layout_alignEnd="@+id/visual_attention_target_image"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="46dp"
-            android:layout_marginEnd="-356dp"
-            android:text="Submit" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="0dp"
+            android:text="Submit"
+            android:textSize="36dp" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/gridRow0"
         android:layout_height="0dp"
         android:layout_weight="1">
 
@@ -123,6 +125,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/gridRow1"
         android:layout_height="0dp"
         android:layout_weight="1">
 
@@ -183,6 +186,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/gridRow2"
         android:layout_height="0dp"
         android:layout_weight="1">
 
@@ -243,6 +247,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/gridRow3"
         android:layout_height="0dp"
         android:layout_weight="1">
 
@@ -303,6 +308,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/gridRow4"
         android:layout_height="0dp"
         android:layout_weight="1">
 
@@ -363,6 +369,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/gridRow5"
         android:layout_height="0dp"
         android:layout_weight="1">
 

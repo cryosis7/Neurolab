@@ -23,6 +23,10 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Random;
 
+/**
+ * @author 
+ */
+
 public class VisualAttentionGame extends AppCompatActivity {
 
     //Values from patient to be passed through as intents
@@ -146,8 +150,6 @@ public class VisualAttentionGame extends AppCompatActivity {
                 if(roundCount != 10 && numOfTaps != 0) {
                     roundScore = calculateRoundScore();
                     totalScore += roundScore;
-                    Log.i("score", "round score: " + roundScore);
-                    Log.i("score", "total score " + totalScore);
                     numOfTargets = 0; numOfTaps = 0; targetsFound = 0;
                     roundCount++;
                     resetButtons();
@@ -183,15 +185,15 @@ public class VisualAttentionGame extends AppCompatActivity {
         Button playAgainBtn = findViewById(R.id.visual_attention_play_again_btn);
 
         //Creates a new game session in the database
-        GameSession gameSession = new GameSession(patientID, 4, finalScore, new Date());
+        GameSession gameSession = new GameSession(patientID,  4, finalScore, new Date());
         DatabaseAccess db = new DatabaseAccess(this);
         db.createSession(gameSession);
 
         //Displays the remaining attempts, hides the play again button if no remaining attempts
         if(attemptsLeft >= 1){
-            attemptsRemaining.setText("Attempts Remaining: " + attemptsLeft);
+            attemptsRemaining.setText(getResources().getString(R.string.visualAttention_attempts_left) + " " + attemptsLeft);
         } else{
-            attemptsRemaining.setText("No more attempts");
+            attemptsRemaining.setText(getResources().getString(R.string.visualAttention_no_attempts));
             playAgainBtn.setVisibility(View.INVISIBLE);
         }
 
@@ -461,11 +463,11 @@ public class VisualAttentionGame extends AppCompatActivity {
      * @return a random set of images for round five
      */
     public int[] roundFiveSets(){
-        int[] roundFiveSetOne = {R.mipmap.abstract2, R.mipmap.abstract3, R.mipmap.abstract4, R.mipmap.abstract5};
-        int[] roundFiveSetTwo = {R.mipmap.native_arrows, R.mipmap.native_peace, R.mipmap.native_camp, R.mipmap.teepee2};
-        int[] roundFiveSetThree = {R.mipmap.blobs, R.mipmap.blobs2, R.mipmap.blobs3, R.mipmap.blobs4};
-        int[] roundFiveSetFour = {R.mipmap.dice, R.mipmap.dice2, R.mipmap.dice3, R.mipmap.dice4};
-        int[] roundFiveSetFive = {R.mipmap.back, R.mipmap.download, R.mipmap.next, R.mipmap.up_arrow2};
+        int[] roundFiveSetOne = {R.mipmap.aztec_calendar, R.mipmap.sharing, R.mipmap.sharing2, R.mipmap.sun2};
+        int[] roundFiveSetTwo = {R.mipmap.pentagram, R.mipmap.pentagram2, R.mipmap.trinity, R.mipmap.trinity2};
+        int[] roundFiveSetThree = {R.mipmap.snowflake, R.mipmap.snowflake2, R.mipmap.arrow, R.mipmap.arrows2};
+        int[] roundFiveSetFour = {R.mipmap.rose, R.mipmap.sakura, R.mipmap.sakura2, R.mipmap.tulip2};
+        int[] roundFiveSetFive = {R.mipmap.share, R.mipmap.sharing3, R.mipmap.sunrise, R.mipmap.sunset};
 
         //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
@@ -486,11 +488,11 @@ public class VisualAttentionGame extends AppCompatActivity {
      * @return a random set of images for round six
      */
     public int[] roundSixSets(){
-        int[] roundSixSetOne = {R.mipmap.aztec_calendar, R.mipmap.sharing, R.mipmap.sharing2, R.mipmap.sun2};
-        int[] roundSixSetTwo = {R.mipmap.pentagram, R.mipmap.pentagram2, R.mipmap.trinity, R.mipmap.trinity2};
-        int[] roundSixSetThree = {R.mipmap.snowflake, R.mipmap.snowflake2, R.mipmap.arrow, R.mipmap.arrows2};
-        int[] roundSixSetFour = {R.mipmap.rose, R.mipmap.sakura, R.mipmap.sakura2, R.mipmap.tulip2};
-        int[] roundSixSetFive = {R.mipmap.share, R.mipmap.sharing3, R.mipmap.sunrise, R.mipmap.sunset};
+        int[] roundSixSetOne = {R.mipmap.abstract2, R.mipmap.abstract3, R.mipmap.abstract4, R.mipmap.abstract5};
+        int[] roundSixSetTwo = {R.mipmap.native_arrows, R.mipmap.native_peace, R.mipmap.native_camp, R.mipmap.teepee2};
+        int[] roundSixSetThree = {R.mipmap.blobs, R.mipmap.blobs2, R.mipmap.blobs3, R.mipmap.blobs4};
+        int[] roundSixSetFour = {R.mipmap.dice, R.mipmap.dice2, R.mipmap.dice3, R.mipmap.dice4};
+        int[] roundSixSetFive = {R.mipmap.back, R.mipmap.download, R.mipmap.next, R.mipmap.up_arrow2};
 
         //Gets a random number between one and five, returns an image set based on the random number
         Random random = new Random();
