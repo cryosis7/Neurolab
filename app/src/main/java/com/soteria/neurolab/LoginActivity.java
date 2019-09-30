@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
 public class LoginActivity extends AppCompatActivity {
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    //Call database purge here
+                    purge();
                 }
             });
             eraseBuilder.setNegativeButton("Decline", new DialogInterface.OnClickListener()  {
@@ -125,5 +126,10 @@ public class LoginActivity extends AppCompatActivity {
             //page
             startActivity(new Intent(this, LoginSecurityQuestions.class));
         }
+    }
+
+    private void purge() {
+        DatabaseAccess db = new DatabaseAccess(LoginActivity.this);
+        db.purgeDatabase();
     }
 }

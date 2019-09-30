@@ -527,7 +527,7 @@ public class DatabaseAccess {
 
     /**
      * Returns all game assignments for a particular patient from the database
-     * @param patientReference The reference of the patient to retrieve game assignments for
+     * @param patientID The ID of the patient to retrieve game assignments for
      * @return List of game assignments
      * @throws SQLiteException
      */
@@ -616,5 +616,17 @@ public class DatabaseAccess {
             close();
             return latestDate;
         }
+    }
+
+    /**
+     * This function is called whenever the main user of the app forgets both their password and
+     * their security questions, or forgets their password and has no security questions put in
+     * place. This function will call all the other functions that focus on deleting all patient
+     * data from the application, allowing for the password to be reset.
+     */
+    public void purgeDatabase() {
+        deleteAllPatients();
+        deleteAllAssignments();
+        deleteAllSessions();
     }
 }
