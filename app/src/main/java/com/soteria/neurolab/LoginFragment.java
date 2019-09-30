@@ -136,7 +136,6 @@ public class LoginFragment extends Fragment {
         SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
 
         //Checks to see whether the SharedPreferences file has the security questions inside of them
-        //TODO FIND ERROR
         if(!pref.contains("QUESTION_ONE") && !pref.contains("QUESTION_TWO")) {
             //If the security questions do not exist, call an alertDialog to ask if user wants to
             //wipe their password and the database in order to get back into the app

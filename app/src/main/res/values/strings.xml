@@ -109,7 +109,7 @@
     <string name="enter_password">Enter Password</string>
 
     <!--    Recover Password Screen-->
-    <string name="login_recover_textview_recover_title">Recover Password</string>
+    <string name="login_recover_textview_recover_title">Reset Password</string>
     <string name="login_recover_button_forgot">I forgot my answers</string>
     <string name="login_recover_question_one_title">Security Question One</string>
     <string name="login_recover_question_two_title">Security Question Two</string>
@@ -122,6 +122,7 @@
     <string name="edit_patient_details_title">Manage Patient</string>
 
     <!-- Settings Strings -->
+    <string name="settings_title">Settings</string>
     <string name="settings_password_reset_title">Reset Password</string>
     <string name="settings_password_old">Confirm Current Password</string>
     <string name="settings_password_new">New Password</string>

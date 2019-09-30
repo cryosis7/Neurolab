@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +52,24 @@ public class SettingsResetPasswordFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (passwordCurrent.getText().toString().equals("")) {
+                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setErrorEnabled(true);
                     ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setError("Current Password is blank");
                 } else if (!passwordNew.getText().toString().equals(passwordConfirm.getText().toString())){
                     ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("New passwords do not match");
-                } else { passwordChange(passwordNew.getText().toString()); }
+                } else {
+                    passwordChange(passwordNew.getText().toString()); }
             }
+        });
+
+        passwordCurrent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+             //   editPatientIDLayout.setErrorEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
         });
         return passwordView;
     }
@@ -81,23 +96,34 @@ public class SettingsResetPasswordFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void passwordChange(String oldPassword) {
-        char[] password = oldPassword.toCharArray();
-        // Lookup the preferences file to access the stored password (If exists)
-        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.apply();
-        String storedHash = pref.getString("passwordHash", null);
+    private void passwordChange(String newPassword) {
+        if( passwordCheck( newPassword ) ) {
+            char[] password = newPassword.toCharArray();
+            // Lookup the preferences file to access the stored password (If exists)
+            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.apply();
+            String storedHash = pref.getString("passwordHash", null);
 
-        PasswordAuthentication authenticator = new PasswordAuthentication();
-        if (authenticator.authenticate(password, storedHash)) {
-            String hashedPassword = authenticator.hash(password);
-            editor.putString("passwordHash", hashedPassword);
-            editor.commit();
-            Toast.makeText(getActivity(), "Password has been successfully reset", Toast.LENGTH_SHORT).show();
+            PasswordAuthentication authenticator = new PasswordAuthentication();
+            if (authenticator.authenticate(password, storedHash)) {
+                String hashedPassword = authenticator.hash(password);
+                editor.putString("passwordHash", hashedPassword);
+                editor.commit();
+                Toast.makeText(getActivity(), "Password has been successfully reset", Toast.LENGTH_SHORT).show();
+            } else {
+                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setErrorEnabled(true);
+                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("Incorrect Password");
+            }
+        } else {
+            ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError(getResources().getString(R.string.create_password_criteria));
         }
-        else {
-            ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("Incorrect Password");
-        }
+    }
+
+    private boolean passwordCheck( String newPassword )
+    {
+        if(newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|])[A-Za-z\\d!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|]{6,}$"))
+            return true;
+        return false;
     }
 }
