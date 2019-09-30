@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,10 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
     }
 
     @Override
+    @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = searchInflater.inflate(R.layout.search_patient_recycler_view_row, parent, false);
+        View view = searchInflater.inflate(R.layout.recycler_view_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,7 +61,7 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
         ViewHolder(View itemView)
         {
             super(itemView);
-            patientInfo=itemView.findViewById(R.id.patientIdentifierOption);
+            patientInfo=itemView.findViewById(R.id.recycler_view_row_item);
             itemView.setOnClickListener(this);
         }
 

@@ -34,7 +34,7 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         /* Variable declarations
          */
-        String patientIdentifier = "";
+        String patientRef = null;
         final DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
         String lastTimePlayed;
 
@@ -43,7 +43,15 @@ public class ViewPatientDetails extends AppCompatActivity {
          */
         try {
             Bundle viewBundle = getIntent().getExtras();
-            patientIdentifier = viewBundle.getString("PATIENT_REFERENCE");
+            patientRef = viewBundle.getString("PATIENT_REFERENCE");
+            int patientID = viewBundle.getInt("PATIENT_ID", -1);
+            
+            if (patientRef == null) {
+                if (patientID != -1)
+                    patientRef = new DatabaseAccess(this).getPatient(patientID).getPatientReference();
+                else throw new IllegalArgumentException("Expected intent extra 'PATIENT_ID' or 'PATIENT_REFERENCE' - Received none");
+            }
+                
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, SearchPatientFragment.class));
@@ -54,7 +62,7 @@ public class ViewPatientDetails extends AppCompatActivity {
            to display the date in an appropriate format but if unable to due to a syntax error will
            display the date as is.
          */
-        final String patientReference = patientIdentifier;
+        final String patientReference = patientRef;
         final Patient patient = db.getPatient(patientReference);
         try {
             lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
@@ -89,11 +97,11 @@ public class ViewPatientDetails extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if( db.checkAssignments(patient) ) {
-                    Intent gameIntent = new Intent(ViewPatientDetails.this, ReactionGameActivity.class);
-                    gameIntent.putExtra("PATIENT_ID", patient.getPatientID());
-                    startActivity(gameIntent);
+                    Intent intent = new Intent(v.getContext(), SelectGameActivity.class);
+                    intent.putExtra("PATIENT_ID", patient.getPatientID());
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(),"ERROR - No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -103,12 +111,11 @@ public class ViewPatientDetails extends AppCompatActivity {
           TODO add link to send users to the manage patient screen once created, remove toast and comment markers  once done. */
         manageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"MANAGE PATIENT PRESSED: Sending to manage patient screen",Toast.LENGTH_SHORT).show();
-                /*
-               Intent manageIntent = new Intent(this, TODO add link to manage patient here)
+
+               Intent manageIntent = new Intent(ViewPatientDetails.this, EditPatientDetails.class);
                manageIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(manageIntent);
-                */
+
             }
         });
 
@@ -130,10 +137,10 @@ public class ViewPatientDetails extends AppCompatActivity {
             public void onClick(View v) {
                 //Build the alert dialog warning the user of their action.
                 AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(ViewPatientDetails.this);
-                deleteBuilder.setTitle("Deleting Patient");
+                deleteBuilder.setTitle(getResources().getString(R.string.title_delete_patient));
                 deleteBuilder.setMessage(getString(R.string.view_patient_details_delete_patient_dialog));
                 //If delete is pressed, delete the patient and send the user to the search patients screen
-                deleteBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                deleteBuilder.setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DatabaseAccess dbDelete = DatabaseAccess.getInstance(getApplicationContext());
@@ -145,7 +152,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                     }
                 });
                 //If cancel is pressed, close the alert dialog.
-                deleteBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                deleteBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();

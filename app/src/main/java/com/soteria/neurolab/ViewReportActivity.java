@@ -211,7 +211,7 @@ public class ViewReportActivity extends AppCompatActivity {
      */
     private String getGameName(int gameID){
         DatabaseAccess db = new DatabaseAccess(this);
-        Game game = db.getGame(String.valueOf(gameID));
+        Game game = db.getGame(gameID);
         return game.getGameName();
     }
 

@@ -29,6 +29,8 @@ import java.util.Locale;
 /**
  * Class used for drawing a graph.
  * Documentation for library: https://weeklycoding.com/mpandroidchart-documentation/
+ *
+ * @Author Scott Curtis
  */
 public class ReportGraph {
     private final String TAG = "@ReportGraph";

@@ -14,7 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
+
 import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.Patient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,18 +75,23 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
         DividerItemDecoration divider = new DividerItemDecoration(searchRecycler.getContext(), layout.getOrientation());
         searchRecycler.addItemDecoration(divider);
         searchRecycler.setAdapter(adapter);
-
         return view;
     }
 
 
     //Opens ViewPatientDetails page when a patient is clicked
+    //Added an if/else clause to check if the patient still exists, else it removes it from the list
     @Override
     public void onItemClick(View view, int position)
     {
-        Intent viewPatient = new Intent(getActivity(), ViewPatientDetails.class);
-        viewPatient.putExtra("PATIENT_REFERENCE", adapter.getItem(position));
-        startActivity(viewPatient);
+        if(SearchCreateDeleteActivity.db.getPatient(adapter.getItem(position)) != null){
+            Intent viewPatient = new Intent(getActivity(), ViewPatientDetails.class);
+            viewPatient.putExtra("PATIENT_REFERENCE", adapter.getItem(position));
+            startActivity(viewPatient);
+        } else {
+            adapter.updateList(getPatientList());
+            Toast.makeText(getActivity(), getResources().getString(R.string.search_patient_error_toast_text),Toast.LENGTH_LONG).show();
+        }
     }
 
 

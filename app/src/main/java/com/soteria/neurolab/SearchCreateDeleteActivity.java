@@ -1,20 +1,21 @@
 package com.soteria.neurolab;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 public class SearchCreateDeleteActivity extends AppCompatActivity implements  CreatePatientFragment.OnFragmentInteractionListener,
         DeletePatientFragment.OnFragmentInteractionListener,
@@ -26,6 +27,8 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private Fragment active = searchPatientFragment;
 
+    public static DatabaseAccess db;
+
     private ActionBar toolbar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -35,7 +38,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_search_patient:
-                    fragmentManager.beginTransaction().hide(active).show(searchPatientFragment).commit();
+                    fragmentManager.beginTransaction().hide(active).detach(searchPatientFragment).attach(searchPatientFragment).show(searchPatientFragment).commit();
                     active = searchPatientFragment;
                     toolbar.setTitle("Search Patient");
                     return true;
@@ -45,7 +48,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
                     toolbar.setTitle("Create Patient");
                     return true;
                 case R.id.navigation_delete_patient:
-                    fragmentManager.beginTransaction().hide(active).show(deletePatientFragment).commit();
+                    fragmentManager.beginTransaction().hide(active).detach(deletePatientFragment).attach(deletePatientFragment).show(deletePatientFragment).commit();
                     active = deletePatientFragment;
                     toolbar.setTitle("Delete Patient");
                     return true;
@@ -61,6 +64,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         setContentView(R.layout.search_create_delete_page);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        db = DatabaseAccess.getInstance(getApplicationContext());
 
         toolbar = getSupportActionBar();
         toolbar.setTitle("Search Patient");
@@ -101,11 +105,8 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
                 return true;
             //If the log out button is pressed, send the user to the log in screen
             case R.id.action_logout:
-                //TODO link to logout, remove toast afterwards
-                Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
-                     /*startActivity(new Intent(this, //TODO add link to log in here));
-                       finish();
-                     */
+                 startActivity(new Intent(this, LoginCreatePasswordActivity.class));
+                 finish();
                 return true;
             //If an unknown option is selected, display an error to the user
             default:
@@ -114,16 +115,15 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         }
     }
 
-    /* Action that occurs when the back button on the device or app is pressed on search, create or
+    /** Action that occurs when the back button on the device or app is pressed on search, create or
     delete fragments. Hardcoded to prevent erroneous data from being selected if going back to the
     view patients screen after a patient has been deleted.
-
-    TODO replace with link to log in screen when created
-     */
-
+    */
     @Override
+
     public void onBackPressed()
     {
+        startActivity(new Intent(this, LoginCreatePasswordActivity.class));
         finish();
     }
 }
