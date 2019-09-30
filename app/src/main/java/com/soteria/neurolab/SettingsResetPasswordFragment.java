@@ -46,31 +46,67 @@ public class SettingsResetPasswordFragment extends Fragment {
         final EditText passwordCurrent = passwordView.findViewById(R.id.settings_current_password);
         final EditText passwordNew = passwordView.findViewById(R.id.settings_password_new);
         final EditText passwordConfirm = passwordView.findViewById(R.id.settings_password_confirm);
+        final TextInputLayout passwordCurrentLayout = passwordView.findViewById(R.id.settings_password_current_inputLayout);
+        final TextInputLayout passwordNewLayout = passwordView.findViewById(R.id.settings_password_new_inputLayout);
+        final TextInputLayout passwordConfirmLayout = passwordView.findViewById(R.id.settings_password_repeat_inputLayout);
 
         //Code to run when the submit button is pressed
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (passwordCurrent.getText().toString().equals("")) {
-                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setErrorEnabled(true);
-                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setError("Current Password is blank");
-                } else if (!passwordNew.getText().toString().equals(passwordConfirm.getText().toString())){
-                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("New passwords do not match");
+                String getPasswordCurrent = passwordCurrent.getText().toString();
+                String getPasswordNew = passwordNew.getText().toString();
+                String getPasswordConfirm = passwordConfirm.getText().toString();
+
+                if (getPasswordCurrent.equals("")) {
+                    passwordCurrentLayout.setErrorEnabled(true);
+                    passwordCurrentLayout.setError("Current password field is blank");
+                } else if (!getPasswordNew.equals(getPasswordConfirm)){
+                    passwordNewLayout.setError("New passwords do not match");
                 } else {
-                    passwordChange(passwordNew.getText().toString()); }
+                    passwordChange(passwordCurrent.getText().toString() ,passwordNew.getText().toString());
+                    passwordCurrent.setText(null);
+                    passwordNew.setText(null);
+                    passwordConfirm.setText(null);
+                }
             }
         });
 
+        //Set the TextChangeListener to clear the errors once text has been put in them
         passwordCurrent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-             //   editPatientIDLayout.setErrorEnabled(false);
+                passwordCurrentLayout.setErrorEnabled(false);
             }
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+
+        passwordNew.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                passwordNewLayout.setErrorEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        passwordConfirm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                passwordConfirmLayout.setErrorEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+
         return passwordView;
     }
 
@@ -96,9 +132,10 @@ public class SettingsResetPasswordFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void passwordChange(String newPassword) {
+    private void passwordChange(String oldPassword, String newPassword) {
         if( passwordCheck( newPassword ) ) {
-            char[] password = newPassword.toCharArray();
+            char[] passwordToCheck = oldPassword.toCharArray();
+            char[] passwordToSave = newPassword.toCharArray();
             // Lookup the preferences file to access the stored password (If exists)
             SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
@@ -106,14 +143,14 @@ public class SettingsResetPasswordFragment extends Fragment {
             String storedHash = pref.getString("passwordHash", null);
 
             PasswordAuthentication authenticator = new PasswordAuthentication();
-            if (authenticator.authenticate(password, storedHash)) {
-                String hashedPassword = authenticator.hash(password);
+            if (authenticator.authenticate(passwordToCheck, storedHash)) {
+                String hashedPassword = authenticator.hash(passwordToSave);
                 editor.putString("passwordHash", hashedPassword);
                 editor.commit();
                 Toast.makeText(getActivity(), "Password has been successfully reset", Toast.LENGTH_SHORT).show();
             } else {
-                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setErrorEnabled(true);
-                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError("Incorrect Password");
+                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setErrorEnabled(true);
+                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setError("Incorrect Password");
             }
         } else {
             ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError(getResources().getString(R.string.create_password_criteria));
