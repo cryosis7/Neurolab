@@ -94,7 +94,7 @@ public class SelectGameActivityTest {
     }
 
     /**
-     * Validates that 'Reaction Time' is launched when it is tapped when it has attempts left
+     * Validates that 'Reaction Time' is launched when it is tapped when the patient has attempts left
      */
     @Test
     public void testSelectGameAttemptsLeft() {
@@ -153,7 +153,8 @@ public class SelectGameActivityTest {
     }
 
     /**
-     * Tests pressing the back button and entering the password.
+     * Tests that when pressing the back button a password prompt is displayed and entering
+     * the correct password will take the user back to the view patient screen.
      */
     @Test
     public void testExitWithPassword() {

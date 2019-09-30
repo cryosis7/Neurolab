@@ -36,6 +36,7 @@ public class SelectGameActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_select_game);
 
+        // Handling intents 'PATIENT_ID' or 'PATIENT_REFERENCE'
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
         String patientRef = intent.getStringExtra("PATIENT_REFERENCE");
