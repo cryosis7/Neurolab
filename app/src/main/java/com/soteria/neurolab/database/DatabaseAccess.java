@@ -278,10 +278,10 @@ public class DatabaseAccess {
      * @return
      * @throws SQLiteException
      */
-    public Game getGame(String gameID) throws SQLiteException {
+    public Game getGame(int gameID) throws SQLiteException {
         open();
         Game game = new Game();
-        cursor = db.rawQuery("SELECT * FROM Game WHERE game_ID = ?", new String[]{gameID});
+        cursor = db.rawQuery("SELECT * FROM Game WHERE game_ID = ?", new String[]{String.valueOf(gameID)});
 
         if (cursor.getCount() > 1) {
             cursor.close();

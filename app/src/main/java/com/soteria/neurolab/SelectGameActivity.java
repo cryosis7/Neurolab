@@ -35,10 +35,15 @@ public class SelectGameActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_select_game);
+
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
-        if (patientID == -1)
-            throw new IllegalArgumentException("Expected Int Extra 'PATIENT_ID' in Intent - Received none");
+        String patientRef = intent.getStringExtra("PATIENT_REFERENCE");
+        if (patientID == -1) {
+            if (patientRef != null)
+                patientID = new DatabaseAccess(this).getPatient(patientRef).getPatientID();
+            else throw new IllegalArgumentException("Expected intent extra 'PATIENT_ID' or 'PATIENT_REFERENCE' - Received none");
+        }
 
         gameClassMap = initMap();
         dataSet = new DatabaseAccess(this).getAssignmentNames(patientID);
@@ -114,11 +119,11 @@ public class SelectGameActivity extends AppCompatActivity {
                         String password = input.getText().toString();
 
                         PasswordAuthentication authenticator = new PasswordAuthentication();
-                        if (authenticator.authenticate(password.toCharArray(), storedHash)) { //TODO: Uncomment with 016 pushed to master
+                        if (authenticator.authenticate(password.toCharArray(), storedHash)) {
                             SelectGameActivity.super.onBackPressed(); // Triggers normal back button, skipping the rest of the function.
                         }
                         else
-                            Toast.makeText(SelectGameActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SelectGameActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
 
                         dialog.dismiss();
                     }
