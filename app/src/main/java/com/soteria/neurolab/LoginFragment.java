@@ -133,14 +133,14 @@ public class LoginFragment extends Fragment {
      */
     private void forgotPassword() {
         //Grabs the SharedPreferences file
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+        SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
 
         //Checks to see whether the SharedPreferences file has the security questions inside of them
         //TODO FIND ERROR
         if(!pref.contains("QUESTION_ONE") && !pref.contains("QUESTION_TWO")) {
             //If the security questions do not exist, call an alertDialog to ask if user wants to
             //wipe their password and the database in order to get back into the app
-            final AlertDialog.Builder eraseBuilder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder eraseBuilder = new AlertDialog.Builder(getContext());
             eraseBuilder.setTitle("Warning");
             eraseBuilder.setMessage(getString(R.string.login_erase_database_warning));
             eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
@@ -170,12 +170,12 @@ public class LoginFragment extends Fragment {
         } else {
             //If the security questions do exist, direct the user to the LoginSecurityQuestions
             //page
-            startActivity(new Intent(this, LoginSecurityQuestions.class));
+            startActivity(new Intent(getContext(), LoginSecurityQuestions.class));
         }
     }
 
     private void purge() {
-        DatabaseAccess db = new DatabaseAccess(LoginActivity.this);
+        DatabaseAccess db = new DatabaseAccess(getContext());
         db.purgeDatabase();
     }
 }
