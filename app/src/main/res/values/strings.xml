@@ -131,8 +131,10 @@
     <string name="settings_password_reset_successful">Password reset successfully</string>
     <string name="settings_textview_security_title">Security Questions</string>
     <string name="settings_editText_security_question_one">Question One</string>
+    <string name="settings_editText_hint_one">Your mothers maiden name</string>
     <string name="settings_editText_security_answer_one">Answer One</string>
     <string name="settings_editText_security_question_two">Question Two</string>
+    <string name="settings_editText_hint_two">Your first pets name</string>
     <string name="settings_editText_security_answer_two">Answer Two</string>
     <string name="settings_button_submit">Submit</string>
     <string name="settings_toast_security_reset_successful">Security Questions set successfully</string>

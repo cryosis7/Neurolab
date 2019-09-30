@@ -1,6 +1,7 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -119,7 +120,10 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
                     Toast.makeText(getActivity(), "Please make sure both questions and answers are filled out",
                             Toast.LENGTH_LONG).show();
                 //Else take them to the function that sets the questions in Shared Preferences
-                }  else { setQuestions(prefs); }
+                }  else {
+                    setQuestions(prefs);
+                    startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
+                }
             }
         });
 
