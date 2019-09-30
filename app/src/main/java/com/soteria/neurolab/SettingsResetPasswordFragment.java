@@ -37,7 +37,7 @@ public class SettingsResetPasswordFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View passwordView =  inflater.inflate(R.layout.settings_reset_fragment, container, false);
+        final View passwordView =  inflater.inflate(R.layout.fragment_settings_reset, container, false);
 
         //UI element declarations
         final Button submitButton = passwordView.findViewById(R.id.settings_submit_reset);

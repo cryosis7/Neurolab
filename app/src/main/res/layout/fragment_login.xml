@@ -79,9 +79,11 @@
         <Button
             android:id="@+id/login_reset_password_button"
             style="@style/TextButtonRed"
+            android:textSize="@dimen/text_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
             android:text="@string/login_reset_password" />
     </LinearLayout>
 

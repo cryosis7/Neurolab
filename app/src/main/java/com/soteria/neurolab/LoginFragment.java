@@ -129,11 +129,11 @@ public class LoginFragment extends Fragment {
      * This function is called whenever the "I forgot my Password" button is pressed. It will
      * check to see whether they have any security questions set and if they do, will redirect
      * them to the LoginSecurityQuestions page. If they do not, they will be prompted to do a database
-     * purge and a password reset at the same time. Otherwise they can keep attempting to log in.
+     * dbPurge and a password reset at the same time. Otherwise they can keep attempting to log in.
      */
     private void forgotPassword() {
         //Grabs the SharedPreferences file
-        SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+        final SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
 
         //Checks to see whether the SharedPreferences file has the security questions inside of them
         //TODO FIND ERROR
@@ -146,7 +146,26 @@ public class LoginFragment extends Fragment {
             eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    purge();
+                    dbPurge();
+
+                    final SharedPreferences.Editor editor = pref.edit();
+                    editor.remove("passwordHash");
+                    editor.apply();
+
+                    // TODO: Remove security questions
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Memory Cleared")
+                            .setMessage("The password, security questions and all other data stored within Neurolab has been cleared")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .show();
+
+                    ((LoginCreatePasswordActivity) getActivity()).switchFragment();
                 }
             });
             eraseBuilder.setNegativeButton("Decline", new DialogInterface.OnClickListener()  {
@@ -174,7 +193,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void purge() {
+    private void dbPurge() {
         DatabaseAccess db = new DatabaseAccess(getContext());
         db.purgeDatabase();
     }

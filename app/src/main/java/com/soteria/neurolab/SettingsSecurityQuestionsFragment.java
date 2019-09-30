@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,7 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Sets up the view
-        final View questionsView =  inflater.inflate(R.layout.settings_questions_fragment, container, false);
+        final View questionsView =  inflater.inflate(R.layout.fragment_settings_questions, container, false);
 
         //Retrieve the shared preferences
         final SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
