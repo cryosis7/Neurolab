@@ -27,7 +27,7 @@
         <activity android:name=".VisualMemoryActivity"/>
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
-        <activity android:name=".TestGraphActivity" />
+        <activity android:name=".SelectGameActivity"/>
     </application>
 
 </manifest>

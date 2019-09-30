@@ -9,8 +9,8 @@
     <!-- Game titles -->
     <string name="title_motor_skills">Motor Skills</string>
     <string name="title_reaction_time">Reaction Time</string>
-    <string name="title_visual_short_term_memory">Visual Short Term Memory</string>
-    <string name="title_selective_attention">Selective Attention</string>
+    <string name="title_visual_short_term_memory">Short-term Visual Memory</string>
+    <string name="title_visual_attention">Visual Attention</string>
 
     <!-- Create patient fragment strings -->
     <string name="patient_id_title">Patient ID</string>
@@ -119,5 +119,8 @@
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
+
+    <!-- Select Game Screen -->
+    <string name="select_game">Select Game</string>
 
 </resources>
