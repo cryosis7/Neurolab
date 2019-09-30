@@ -24,7 +24,16 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * @author 
+ * This class contains the code for the Visual Attention game. A grid of images is displayed along
+ * with a target image, the user must select all of the images in the grid that match the target
+ * image. There are ten rounds per game session, and the user is measured on their accuracy in
+ * selecting the correct symbols.
+ *
+ * The patientID and attempts are passed through as intents from the select games screen, a game
+ * session is created in the database using the patientID and gameID, it also stores the metrics
+ * and date played.
+ *
+ * @author Brianna Winkels
  */
 
 public class VisualAttentionGame extends AppCompatActivity {
@@ -586,7 +595,7 @@ public class VisualAttentionGame extends AppCompatActivity {
     /**
      * Instantiates five different image sets for round ten and returns a random set of images to
      * be used for the round
-     * @return a random set of images for round ten8
+     * @return a random set of images for round ten
      */
     public int[] roundTenSets(){
         int[] roundTenSetOne = {R.mipmap.floral_design, R.mipmap.floral_design2, R.mipmap.floral_design3, R.mipmap.floral_design4, R.mipmap.floral_design5};

@@ -13,6 +13,10 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Brianna Winkels
+ */
+
 public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPatientRecyclerAdapter.ViewHolder> {
     private List<String> searchData;
     private LayoutInflater searchInflater;
