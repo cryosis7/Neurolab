@@ -1,8 +1,10 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SettingsSecurityQuestionsFragment extends Fragment {
 
@@ -36,6 +40,9 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View questionsView =  inflater.inflate(R.layout.settings_questions_fragment, container, false);
 
+        //Retrieve the shared preferences
+        SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+
         //UI element declarations
         final EditText confirmPassword = getActivity().findViewById(R.id.settings_editText_current_password);
         final EditText questionOne = getActivity().findViewById(R.id.settings_security_question_one_input);
@@ -44,14 +51,15 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
         final EditText answerTwo = getActivity().findViewById(R.id.settings_security_answer_two_input);
         final Button submitButton = getActivity().findViewById(R.id.settings_submit_questions);
 
-        questionOneString = questionOne.getText().toString();
-        answerOneString = answerOne.getText().toString();
-        questionTwoString = questionTwo.getText().toString();
-        answerTwoString = answerTwo.getText().toString();
+        
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                questionOneString = questionOne.getText().toString();
+                answerOneString = answerOne.getText().toString();
+                questionTwoString = questionTwo.getText().toString();
+                answerTwoString = answerTwo.getText().toString();
                 if(confirmPassword.getText().toString().equals(""))
                     ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout))
                             .setError("Password field is empty, please enter the account password to continue");

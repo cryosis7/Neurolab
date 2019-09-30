@@ -68,4 +68,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Password Set", Toast.LENGTH_SHORT).show(); //TODO: Remove with 016-create-password
         }
     }
+
+    private void forgotPassword() {
+
+    }
 }
