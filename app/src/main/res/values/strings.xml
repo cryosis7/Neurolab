@@ -100,6 +100,8 @@
     <!--    Login Screen-->
     <string name="login_sign_in">Sign In</string>
     <string name="login_enter_password">Enter Password</string>
+    <string name="login_reset_password">Reset Password</string>
+    <string name="login_erase_database_warning">There are no security questions set for this account.\nIf you wish to reset your password, you must erase all data in the database. Information deleted this way will not be recovered.\n Are you sure you want to proceed?</string>
 
     <!--    Recover Password Screen-->
     <string name="login_recover_textview_recover_title">Recover Password</string>
