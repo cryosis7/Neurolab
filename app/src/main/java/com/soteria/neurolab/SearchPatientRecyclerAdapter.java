@@ -27,7 +27,7 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
     @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = searchInflater.inflate(R.layout.search_patient_recycler_view_row, parent, false);
+        View view = searchInflater.inflate(R.layout.recycler_view_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -57,7 +57,7 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
         ViewHolder(View itemView)
         {
             super(itemView);
-            patientInfo=itemView.findViewById(R.id.patientIdentifierOption);
+            patientInfo=itemView.findViewById(R.id.recycler_view_row_item);
             itemView.setOnClickListener(this);
         }
 

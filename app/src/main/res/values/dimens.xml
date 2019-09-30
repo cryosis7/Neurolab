@@ -7,8 +7,8 @@
 
     <!--    Text Sizes      -->
     <dimen name="text_very_small">12sp</dimen>
-    <dimen name="text_small">18sp</dimen>
-    <dimen name="text_body">22sp</dimen>
+    <dimen name="text_small">28sp</dimen>
+    <dimen name="text_body">36sp</dimen>
     <dimen name="text_sub_heading">48sp</dimen>
 
     <!--    Margin Sizes    -->

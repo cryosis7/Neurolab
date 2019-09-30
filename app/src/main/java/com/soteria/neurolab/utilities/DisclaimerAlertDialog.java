@@ -1,5 +1,6 @@
 package com.soteria.neurolab.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -18,34 +19,64 @@ import com.soteria.neurolab.R;
  *
  */
 public class DisclaimerAlertDialog {
-    public void showDisclaimer(Context callingClass, Resources calledResource) {
+    public void showDisclaimer(Context callingClass, Resources resources) {
         final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(callingClass);
-        //Sets the alertDialog title
-        disclaimerBuilder.setTitle("Disclaimer");
-        //Inserts the disclaimer into the alertDialog
-        disclaimerBuilder.setMessage(calledResource.getString(R.string.disclaimer_body));
 
-        //Sets the positive button name to "confirm" and if pressed closes the dialog
-        disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()  {
-        @Override
+        disclaimerBuilder.setTitle(resources.getString(R.string.disclaimer));
+        disclaimerBuilder.setMessage(resources.getString(R.string.disclaimer_body));
+
+        //If the confirm button is pressed, close the dialog
+        disclaimerBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
+                dialogInterface.dismiss();
             }
-         });
-
-        //Create the alertDialog
+        });
+        
         final AlertDialog showDisclaimer = disclaimerBuilder.create();
-        //Change the button colour of the alert dialogs positive button to be the primary colour
-        showDisclaimer.setOnShowListener( new DialogInterface.OnShowListener() {
-        @Override
+        //Change the button colour of the alert dialog to be the primary colour
+        showDisclaimer.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
             public void onShow(DialogInterface arg0) {
                 showDisclaimer.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
             }
         });
-    //Displays the alertDialog
-    showDisclaimer.show();
-    //Sets the text size of the disclaimer message to be 24dp
-    TextView bodyText = showDisclaimer.findViewById(android.R.id.message);
-    bodyText.setTextSize(24);
+        showDisclaimer.show();
+        TextView bodyText = showDisclaimer.findViewById(android.R.id.message);
+        bodyText.setTextSize(24);
+    }
+
+    public void showDisclaimerWithCancel(final Context callingClass, final Resources resources) {
+        final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(callingClass);
+
+        disclaimerBuilder.setTitle(resources.getString(R.string.disclaimer))
+                .setMessage(resources.getString(R.string.disclaimer_body))
+                .setCancelable(false)
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ((Activity) callingClass).finish();
+                    }
+                });
+
+        final AlertDialog showDisclaimer = disclaimerBuilder.create();
+
+        //Change the button colour of the alert dialog to be the primary colour
+        showDisclaimer.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                showDisclaimer.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
+                showDisclaimer.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
+            }
+        });
+        showDisclaimer.show();
+        TextView bodyText = showDisclaimer.findViewById(android.R.id.message);
+        bodyText.setTextSize(24);
     }
 }
