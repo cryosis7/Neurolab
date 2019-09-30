@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.soteria.neurolab.database.DatabaseAccess;
+
 /**
  * This class focuses on retrieving the security questions in the Shared Preferences folder and
  * displays them to the user. If the user can answer the questions correctly the password will reset,
@@ -62,7 +64,17 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                     eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            //Call database purge here
+                            DatabaseAccess db = new DatabaseAccess(LoginSecurityQuestions.this);
+                            db.purgeDatabase();
+
+                            SharedPreferences pref = LoginSecurityQuestions.this.getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.remove("passwordHash");
+                            editor.remove("QUESTION_ONE");
+                            editor.remove("QUESTION_TWO");
+                            editor.remove("ANSWER_ONE");
+                            editor.remove("ANSWER_TWO");
+                            editor.apply();
                         }
                     });
                     eraseBuilder.setNegativeButton("Decline", new DialogInterface.OnClickListener()  {
