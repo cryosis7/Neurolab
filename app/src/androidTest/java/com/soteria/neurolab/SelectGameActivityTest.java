@@ -1,15 +1,10 @@
 package com.soteria.neurolab;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.text.InputType;
-import android.util.Log;
-import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.Espresso;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -19,10 +14,6 @@ import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,12 +23,20 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
-import static org.hamcrest.CoreMatchers.*;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static androidx.test.espresso.action.ViewActions.*;
-import static org.junit.Assert.assertEquals;
+import static androidx.test.espresso.matcher.ViewMatchers.hasChildCount;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withInputType;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -53,7 +52,7 @@ public class SelectGameActivityTest {
     @Before
     public void init() {
         Intent intent = new Intent();
-        intent.putExtra( "PATIENT_REFERENCE", patientReference);
+        intent.putExtra("PATIENT_REFERENCE", patientReference);
         rule.launchActivity(intent);
 
         onView(withId(R.id.runGamesButton))
