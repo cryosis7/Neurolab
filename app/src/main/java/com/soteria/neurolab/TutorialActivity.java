@@ -3,16 +3,19 @@ package com.soteria.neurolab;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.Game;
-import com.soteria.neurolab.models.Patient;
 
 public class TutorialActivity extends AppCompatActivity {
 
+    private static final String TEST_VIDEO_NAME = "test_tutorial";
     private int patientID;
     private Game game;
 
@@ -45,6 +48,20 @@ public class TutorialActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tutorial_header)).setText(game.getGameName());
         ((TextView) findViewById(R.id.tutorial_description)).setText(game.getGameDesc());
 
+        // Set The Video
+        final VideoView video = findViewById(R.id.videoView);
+        video.setVideoURI(getVideo(TEST_VIDEO_NAME));
+        video.requestFocus();
+        video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                video.start();
+            }
+        });
+    }
+
+    private Uri getVideo(String videoName) {
+        return Uri.parse("android.resource://" + getPackageName() + "/raw/" + videoName);
     }
 
     @Override
