@@ -115,12 +115,10 @@
     <string name="shared_preferences_filename">neurolabPrefs</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string-array name="settings">
-        <item>Disclaimer</item>
-        <item>Log Out</item>
-    </string-array>
-
-    <!-- Select Game Screen -->
     <string name="select_game">Select Game</string>
+
+    <!-- Tutorial Activity -->
+    <string name="game_instructions">Game Instructions</string>
+
 
 </resources>
