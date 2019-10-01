@@ -25,7 +25,6 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
     private Cursor cursor = null;
 
-
     //enum with game titles
     public enum GAME_ENUM {
         REACTION(1), MEMORY(2), MOTOR(3), Attention(4);
@@ -40,8 +39,7 @@ public class DatabaseAccess {
         }
     }
 
-    public DatabaseAccess(Context context) {
-
+    public DatabaseAccess(Context context){
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -601,7 +599,6 @@ public class DatabaseAccess {
         return gameAssignments;
     }
 
-
     /**
      * Gets a specific game assignment wih patientID and gameID
      * @param patientID - ID of the patient
@@ -623,7 +620,7 @@ public class DatabaseAccess {
         return ga;
     }
 
-    public boolean checkAssignments(Patient patient) throws SQLiteException {
+    public boolean checkAssignments(Patient patient)throws SQLiteException{
         open();
         cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
                 new String[]{Integer.toString(patient.getPatientID())});
@@ -640,7 +637,7 @@ public class DatabaseAccess {
 
     /**
      * Returns all game assignments for a particular patient from the database
-     * @param patientId The id of the patient to retrieve game assignments for
+     * @param patientID The reference of the patient to retrieve game assignments for
      * @return List of game assignments
      * @throws SQLiteException
      */
