@@ -9,8 +9,8 @@
     <!-- Game titles -->
     <string name="title_motor_skills">Motor Skills</string>
     <string name="title_reaction_time">Reaction Time</string>
-    <string name="title_visual_short_term_memory">Visual Short Term Memory</string>
-    <string name="title_selective_attention">Selective Attention</string>
+    <string name="title_visual_short_term_memory">Short-term Visual Memory</string>
+    <string name="title_visual_attention">Visual Attention</string>
 
     <!-- Create patient fragment strings -->
     <string name="patient_id_title">Patient ID</string>
@@ -86,7 +86,6 @@
     <string name="view_patient_details_view_report">VIEW REPORT</string>
     <string name="view_patient_details_manage_patient">MANAGE PATIENT</string>
     <string name="view_patient_details_run_games">RUN GAMES</string>
-    <string name="view_patient_details_disclaimer">Disclaimer</string>
     <string name="view_patient_details_logout">Log Out</string>
     <string name="view_patient_details_patient_identifier">Patient: %1$s</string>
     <string name="view_patient_details_last_date_played">Games last run: %1$s</string>
@@ -95,9 +94,14 @@
     <string name="view_patient_details_action_bar_title">Patient Details</string>
     <string name="view_patient_details_delete_patient_dialog">You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?</string>
 
-    <!--    Login Screen-->
+    <!--    Login And Create Password Screens-->
     <string name="login_sign_in">Sign In</string>
-    <string name="login_enter_password">Enter Password</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="create_password">Create Password</string>
+    <string name="create_a_new_password">Create A New Password</string>
+    <string name="retype_password">Re-Enter Password</string>
+    <string name="create_password_criteria">Password must be at least 6 characters long and contain a letter, number and symbol</string>
+    <string name="create_password_not_equal">Passwords do not match</string>
 
     <!-- Edit Patient Details Strings -->
     <string name="edit_patient_details_confirm">Confirm</string>
@@ -106,9 +110,11 @@
     <string name="edit_patient_details_title">Manage Patient</string>
 
     <!-- Motor Skills Game -->
-    <string name="motor_skills_game_instruction">Tap %1$s then %2$s</string>
+    <string name="motor_skills_game_score_one">Score: %1$s Round</string>
+    <string name="motor_skills_game_score_multiple">Score: %1$s Rounds</string>
 
     <!--Generic Strings-->
+    <string name="disclaimer">Disclaimer</string>
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
     <string name="shared_preferences_filename">neurolabPrefs</string>
     <string name="delete">Delete</string>
@@ -117,5 +123,8 @@
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>
+
+    <!-- Select Game Screen -->
+    <string name="select_game">Select Game</string>
 
 </resources>
