@@ -34,7 +34,7 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         /* Variable declarations
          */
-        String patientIdentifier = "";
+        String patientRef = null;
         final DatabaseAccess db = DatabaseAccess.getInstance(getApplicationContext());
         String lastTimePlayed;
 
@@ -43,7 +43,15 @@ public class ViewPatientDetails extends AppCompatActivity {
          */
         try {
             Bundle viewBundle = getIntent().getExtras();
-            patientIdentifier = viewBundle.getString("PATIENT_REFERENCE");
+            patientRef = viewBundle.getString("PATIENT_REFERENCE");
+            int patientID = viewBundle.getInt("PATIENT_ID", -1);
+            
+            if (patientRef == null) {
+                if (patientID != -1)
+                    patientRef = new DatabaseAccess(this).getPatient(patientID).getPatientReference();
+                else throw new IllegalArgumentException("Expected intent extra 'PATIENT_ID' or 'PATIENT_REFERENCE' - Received none");
+            }
+                
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, SearchCreateDeleteActivity.class));
@@ -54,7 +62,7 @@ public class ViewPatientDetails extends AppCompatActivity {
            to display the date in an appropriate format but if unable to due to a syntax error will
            display the date as is.
          */
-        final String patientReference = patientIdentifier;
+        final String patientReference = patientRef;
         final Patient patient = db.getPatient(patientReference);
         try {
             lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
@@ -89,11 +97,11 @@ public class ViewPatientDetails extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if( db.checkAssignments(patient) ) {
-                    Intent gameIntent = new Intent(ViewPatientDetails.this, VisualMemoryActivity.class);
-                    gameIntent.putExtra("PATIENT_ID", patient.getPatientID());
-                    startActivity(gameIntent);
+                    Intent intent = new Intent(v.getContext(), SelectGameActivity.class);
+                    intent.putExtra("PATIENT_ID", patient.getPatientID());
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(),"ERROR - No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -15,6 +15,6 @@
 
     <TextView
         style="@style/TextBody"
-        android:id="@+id/patientIdentifierOption"/>
+        android:id="@+id/recycler_view_row_item"/>
 
 </LinearLayout>
