@@ -3,6 +3,7 @@ package com.soteria.neurolab;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -70,5 +71,22 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        try {
+            switch (menuItem.getItemId()) {
+                //If the back button is pressed, return the user to the last visited page
+                case android.R.id.home:
+                    super.onBackPressed();
+                    return true;
+                default:
+                    Toast.makeText(getApplicationContext(), "INVALID - Option not valid or completed", Toast.LENGTH_SHORT).show();
+                    return false;
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "EXCEPTION " + e + " occurred!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }
