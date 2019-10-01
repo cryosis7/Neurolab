@@ -96,17 +96,24 @@
     <string name="view_patient_details_action_bar_title">Patient Details</string>
     <string name="view_patient_details_delete_patient_dialog">You are about to delete this patient and all data associated with them.\n\nThis action cannot be undone.\n\nDo you wish to continue?</string>
 
-    <!--    Login And Create Password Screens-->
+    <!--    Login, Create Password & Security Questions Screens-->
     <string name="login_sign_in">Sign In</string>
     <string name="login_enter_password">Enter Password</string>
     <string name="login_reset_password">Reset Password</string>
-    <string name="login_erase_database_warning">There are no security questions set for this account.\nIf you wish to reset your password, you must erase all data in the database. Information deleted this way will not be recovered.\n Are you sure you want to proceed?</string>
+    <string name="login_erase_database_warning">There are no security questions set for this account.\n\nIf you wish to reset your password, you must erase all data in the database. Information deleted this way will not be recovered.\n\n Are you sure you want to proceed?</string>
     <string name="create_password">Create Password</string>
     <string name="create_a_new_password">Create A New Password</string>
     <string name="retype_password">Re-Enter Password</string>
     <string name="create_password_criteria">Password must be at least 6 characters long and contain a letter, number and symbol</string>
     <string name="create_password_not_equal">Passwords do not match</string>
     <string name="enter_password">Enter Password</string>
+    <string name="security_erase_database_warning">If you wish to reset your password and security questions, you must erase all data in the database. Information deleted this way will not be recovered.\n\n Are you sure you want to proceed?</string>
+    <string name="security_code_blank">Security code is blank, please try again</string>
+    <string name="security_incorrect_security_code">Incorrect security code, please try again</string>
+    <string name="security_correct_security_code">Security code correct, wiping database information and login information</string>
+    <string name="security_reset_information">Please enter in the security code to wipe the database information. This code can be found inside the user manual.\n\nOnce you confirm the security code, the reset will happen immediately.\n\n</string>
+    <string name="security_question_answers_incorrect">The answers to the security questions are incorrect, please try again</string>
+
 
     <!--    Recover Password Screen-->
     <string name="login_recover_textview_recover_title">Reset Password</string>

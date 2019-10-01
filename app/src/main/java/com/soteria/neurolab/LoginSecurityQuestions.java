@@ -1,13 +1,16 @@
 package com.soteria.neurolab;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,8 @@ import com.soteria.neurolab.database.DatabaseAccess;
  * @author Richard Dasan
  */
 public class LoginSecurityQuestions extends AppCompatActivity {
+
+    final int securityCode = 3579753;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                        answerTwo.getText().toString().equals(prefs.getString("ANSWER_TWO", null))) {
                         //Commence Reset here
                     } else {
-
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_question_answers_incorrect), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -60,23 +65,62 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                 public void onClick(View view) {
                     final AlertDialog.Builder eraseBuilder = new AlertDialog.Builder(LoginSecurityQuestions.this);
                     eraseBuilder.setTitle("Warning");
-                    eraseBuilder.setMessage(getString(R.string.login_erase_database_warning));
+                    eraseBuilder.setMessage(getString(R.string.security_erase_database_warning));
                     eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
+
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            DatabaseAccess db = new DatabaseAccess(LoginSecurityQuestions.this);
-                            db.purgeDatabase();
+                            final AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(LoginSecurityQuestions.this);
+                            final EditText codeInput = new EditText(LoginSecurityQuestions.this);
+                            codeInput.setHint("Security Code");
+                            codeInput.setHintTextColor(getResources().getColor(R.color.colorDarkGrey));
+                            codeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-                            SharedPreferences pref = LoginSecurityQuestions.this.getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.remove("passwordHash");
-                            editor.remove("QUESTION_ONE");
-                            editor.remove("QUESTION_TWO");
-                            editor.remove("ANSWER_ONE");
-                            editor.remove("ANSWER_TWO");
-                            editor.apply();
+                            confirmBuilder.setTitle("Confirm Code");
+                            confirmBuilder.setMessage(getString(R.string.security_reset_information));
+                            confirmBuilder.setView( codeInput );
+                            confirmBuilder.setPositiveButton("Confirm", null );
+                            confirmBuilder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                            dialogInterface.cancel();
+                            final AlertDialog showConfirm = confirmBuilder.create();
+                            showConfirm.show();
+                            Button showConfirmPositiveButton = showConfirm.getButton(AlertDialog.BUTTON_POSITIVE);
+                            showConfirmPositiveButton.setOnClickListener( new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if( codeInput.getText().toString().equals(""))
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_code_blank), Toast.LENGTH_SHORT).show();
+                                    else if( Integer.parseInt(codeInput.getText().toString() ) == securityCode) {
+                                        DatabaseAccess db = new DatabaseAccess(LoginSecurityQuestions.this);
+
+                                        db.purgeDatabase();
+                                        SharedPreferences pref = LoginSecurityQuestions.this.getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = pref.edit();
+                                        editor.remove("passwordHash");
+                                        editor.remove("QUESTION_ONE");
+                                        editor.remove("QUESTION_TWO");
+                                        editor.remove("ANSWER_ONE");
+                                        editor.remove("ANSWER_TWO");
+                                        editor.apply();
+
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_correct_security_code), Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(LoginSecurityQuestions.this, LoginCreatePasswordActivity.class));
+                                        finish();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_incorrect_security_code), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            TextView bodyText = showConfirm.findViewById(android.R.id.message);
+                            bodyText.setTextSize(24);
                         }
                     });
+
                     eraseBuilder.setNegativeButton("Decline", new DialogInterface.OnClickListener()  {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

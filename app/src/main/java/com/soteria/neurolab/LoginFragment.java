@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -26,6 +31,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginFragment extends Fragment {
 
     private static final int PASSWORD_LENGTH_MINIMUM = 6;
+    final private int securityCode = 3579753;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,32 +151,54 @@ public class LoginFragment extends Fragment {
             eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    dbPurge();
+                    final AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(getContext());
+                    final EditText codeInput = new EditText(getContext());
+                    codeInput.setHint("Security Code");
+                    codeInput.setHintTextColor(getResources().getColor(R.color.colorDarkGrey));
+                    codeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    codeInput.setFilters(new InputFilter[] {new InputFilter.LengthFilter(9)});
 
-                    final SharedPreferences.Editor editor = pref.edit();
-                    editor.remove("passwordHash");
-                    editor.apply();
-
-                    // TODO: Remove security questions
-
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Memory Cleared")
-                            .setMessage("The password, security questions and all other data stored within Neurolab has been cleared")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .show();
-
-                    ((LoginCreatePasswordActivity) getActivity()).switchFragment();
-                }
-            });
-            eraseBuilder.setNegativeButton("Decline", new DialogInterface.OnClickListener()  {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+                    confirmBuilder.setTitle("Confirm Code");
+                    confirmBuilder.setMessage(getString(R.string.security_reset_information));
+                    confirmBuilder.setView( codeInput );
+                    confirmBuilder.setPositiveButton("Confirm", null );
+                    confirmBuilder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
                     dialogInterface.cancel();
+                    final AlertDialog showConfirm = confirmBuilder.create();
+                    showConfirm.show();
+                    Button showConfirmPositiveButton = showConfirm.getButton(AlertDialog.BUTTON_POSITIVE);
+                    showConfirmPositiveButton.setOnClickListener( new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if( codeInput.getText().toString().equals(""))
+                                Toast.makeText(getContext(), getResources().getString(R.string.security_code_blank), Toast.LENGTH_SHORT).show();
+                            else if( Integer.parseInt(codeInput.getText().toString() ) == securityCode) {
+                                DatabaseAccess db = new DatabaseAccess(getContext());
+
+                                db.purgeDatabase();
+                                SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.remove("passwordHash");
+                                editor.remove("QUESTION_ONE");
+                                editor.remove("QUESTION_TWO");
+                                editor.remove("ANSWER_ONE");
+                                editor.remove("ANSWER_TWO");
+                                editor.apply();
+
+                                Toast.makeText(getContext(), getResources().getString(R.string.security_correct_security_code), Toast.LENGTH_SHORT).show();
+                                showConfirm.dismiss();
+                            } else {
+                                Toast.makeText(getContext(), getResources().getString(R.string.security_incorrect_security_code), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    TextView bodyText = showConfirm.findViewById(android.R.id.message);
+                    bodyText.setTextSize(24);
                 }
             });
             final AlertDialog showErase = eraseBuilder.create();
@@ -190,10 +218,5 @@ public class LoginFragment extends Fragment {
             //page
             startActivity(new Intent(getContext(), LoginSecurityQuestions.class));
         }
-    }
-
-    private void dbPurge() {
-        DatabaseAccess db = new DatabaseAccess(getContext());
-        db.purgeDatabase();
     }
 }
