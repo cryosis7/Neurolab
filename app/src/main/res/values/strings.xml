@@ -112,6 +112,7 @@
     <!-- Motor Skills Game -->
     <string name="motor_skills_game_score_one">Score: %1$s Round</string>
     <string name="motor_skills_game_score_multiple">Score: %1$s Rounds</string>
+    <string name="motor_skills_game_round">Round %1$s</string>
 
     <!--Generic Strings-->
     <string name="disclaimer">Disclaimer</string>

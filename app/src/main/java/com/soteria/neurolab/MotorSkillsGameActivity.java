@@ -179,7 +179,11 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
         gameTitleTextView.setText(getResources().getString(R.string.title_motor_skills));
         score = 0;
         round = 2;
+        fails = 5;
         lettersInRound = 2;
+        gameAttemptsTextView.setText(fails == 1 ?
+                getResources().getString(R.string.visual_memory_textview_try_singular, String.valueOf(fails)) :
+                getResources().getString(R.string.visual_memory_textview_try_plural, String.valueOf(fails)));
     }
 
     private void finishGame(){
@@ -209,11 +213,8 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
            finishGame();
         //Else start a new round
         } else {
+            gameTitleTextView.setText(getResources().getString(R.string.motor_skills_game_round, String.valueOf(score + 1)));
             current = 0;
-            fails = 5;
-            gameAttemptsTextView.setText(fails == 1 ?
-                    getResources().getString(R.string.visual_memory_textview_try_singular, String.valueOf(fails)) :
-                    getResources().getString(R.string.visual_memory_textview_try_plural, String.valueOf(fails)));
             gameLayout.removeAllViews();
             //Reset the button array
             gameButtonArray = new ArrayList<>();
@@ -241,7 +242,7 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
         gdGreen.setStroke(5, getResources().getColor(R.color.colorPrimary));
         gdGreen.setColor(getResources().getColor(R.color.colorGreen));
         gdNext.mutate();
-        gdNext.setStroke(5, getResources().getColor(R.color.colorPrimary));
+        gdNext.setColor(getResources().getColor(R.color.colorPrimary));
         gdRed.mutate();
         gdRed.setColor(getResources().getColor(R.color.colorWarning));
         Random rand = new Random();
@@ -255,7 +256,7 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
             gameButtonArray.get(i).setBackground(i == current ? gdNext : gdYellow);
             gameButtonArray.get(i).setText(alphabetArray[i]);
             gameButtonArray.get(i).setTag(alphabetArray[i]);
-            gameButtonArray.get(i).setTextSize(buttonSize / 2);
+            gameButtonArray.get(i).setTextSize((float) (buttonSize / 2));
 
             //OnTouchListener handles more than just click, it can handle press and release as well
             gameButtonArray.get(i).setOnTouchListener(new View.OnTouchListener() {
