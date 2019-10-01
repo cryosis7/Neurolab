@@ -53,6 +53,14 @@
     <string name="reactionGame_tap_to_early">Try not to tap the screen until the blue circle appears</string>
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
+    <!--Visual Attention Game-->
+    <string name="visualAttention_round">Round</string>\
+    <string name="visualAttention_attempts_left">Attempts Remaining:</string>
+    <string name="visualAttention_no_attempts">No More Attempts</string>
+    <string name="visualAttention_display_score">YOUR SCORE</string>
+    <string name="visualAttention_play_again">Play Again</string>
+    <string name="visualAttention_exit">Exit</string>
+    <string name="visualAttention_tap_text">Tap Every</string>
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
     <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
@@ -113,6 +121,7 @@
     <string name="disclaimer">Disclaimer</string>
     <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
     <string name="shared_preferences_filename">neurolabPrefs</string>
+
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string-array name="settings">
@@ -120,7 +129,7 @@
         <item>Log Out</item>
     </string-array>
 
+
     <!-- Select Game Screen -->
     <string name="select_game">Select Game</string>
-
 </resources>
