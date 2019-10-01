@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditPatientDetails"></activity>
+        <activity android:name=".EditPatientDetails" />
         <activity
             android:name=".LoginCreatePasswordActivity"
             android:label="@string/app_name">
@@ -22,12 +22,13 @@
         <activity
             android:name=".SearchCreateDeleteActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ReactionGameActivity" />
-        <activity android:name=".VisualMemoryActivity"/>
+        <activity android:name=".VisualMemoryActivity" />
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
-        <activity android:name=".SelectGameActivity"/>
+        <activity android:name=".SelectGameActivity" />
+        <activity android:name=".TutorialActivity" android:exported="true"/>
     </application>
 
 </manifest>
