@@ -16,6 +16,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGreen">#00FF00</color>
     <color name="transparent">#00000000</color>
-    <color name="colorYellow">#ffff00</color>
     <color name="colorLightGrey"></color>
 </resources>

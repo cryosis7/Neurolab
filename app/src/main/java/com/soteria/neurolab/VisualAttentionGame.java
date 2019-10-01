@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -39,13 +40,13 @@ import java.util.Random;
 public class VisualAttentionGame extends AppCompatActivity {
 
     //Values from patient to be passed through as intents
-    private int attemptsLeft = 3; private int patientID = 1;
+    private int attemptsLeft = 3; private int patientID = 0;
     //These fields are used by multiple methods and are initialised
     private int roundCount = 1; private int numOfTargets = 0; private int targetsFound = 0;
     private double roundScore = 0; private int numOfTaps = 0; private double totalScore = 0;
 
     private int buttonsHorizontal; private int buttonsVertical; private int[] imageSet;
-    private ImageButton[][] buttons; private Button exitButton;
+    private ImageButton[][] buttons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,15 @@ public class VisualAttentionGame extends AppCompatActivity {
         // Grabs information from the select games pages intent. This will be used for determining
         // the number of times the patient can play the game and for using the users ID to
         // update the game session table in the database.
-        /*try {
+        try {
             Bundle visualBundle = getIntent().getExtras();
             patientID = visualBundle.getInt("PATIENT_ID");
             attemptsLeft = visualBundle.getInt("ATTEMPTS");
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),"ERROR - An error occurred during page transition : " + e,Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ViewPatientDetails.class)); //TODO change ViewPatientDetails to SelectGameActivity once added
+            startActivity(new Intent(this, SelectGameActivity.class));
             finish();
-        }*/
-
+        }
         setUpRounds();
     }
 
@@ -192,6 +192,7 @@ public class VisualAttentionGame extends AppCompatActivity {
 
         TextView attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
         Button playAgainBtn = findViewById(R.id.visual_attention_play_again_btn);
+        Button exitButton = findViewById(R.id.visual_attention_exit_btn);
 
         //Creates a new game session in the database
         GameSession gameSession = new GameSession(patientID,  4, finalScore, new Date());
@@ -217,13 +218,13 @@ public class VisualAttentionGame extends AppCompatActivity {
         });
 
         //TODO implement functionality to return to select game screen once implemented
-       /* exitButton.setOnClickListener(new View.OnClickListener() {
+        exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
                 finish();
             }
-        });*/
+        });
     }
 
     /**
@@ -615,5 +616,25 @@ public class VisualAttentionGame extends AppCompatActivity {
             case 5: return roundTenSetFive;
         }
         return null;
+    }
+
+    /**
+     * This function has the code that operates when the user clicks on a button at the top bar.
+     * This class only has the back button on the top bar.
+     *
+     * @param menuItem The button that was pressed on the top bar
+     * @return A boolean value depending if the user pressed a button that belonged to a case
+     * ( true ) or if it had to refer to the default case ( false )
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if(menuItem.getItemId() == android.R.id.home) {
+            onBackPressed();
+            finish();
+            return true;
+        } else {
+            finish();
+            return false;
+        }
     }
 }

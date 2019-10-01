@@ -1,5 +1,6 @@
 package com.soteria.neurolab;
 
+import android.content.Intent;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibilit
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +32,31 @@ public class VisualAttentionTest {
 
     @Rule
     public ActivityTestRule<VisualAttentionGame> rule =
-            new ActivityTestRule<>(VisualAttentionGame.class);
+            new ActivityTestRule<>(VisualAttentionGame.class, false, false);
 
+    @Before
+    public void setIntent(){
+        Intent intent = new Intent();
+        intent.putExtra("PATIENT_ID", 1);
+        intent.putExtra("ATTEMPTS", 3);
+        rule.launchActivity(intent);
+    }
+
+    /**
+     * Checks the intent has been passed through
+     */
+    @Test
+    public void testIntent(){
+        int patientID = 1;
+        int attemtps = 3;
+
+        assertEquals(patientID, rule.getActivity().getIntent().getIntExtra("PATIENT_ID", 0));
+        assertEquals(attemtps, rule.getActivity().getIntent().getIntExtra("ATTEMPTS", 0));
+    }
+
+    /**
+     * Checks that the elements for round one have loaded
+     */
     @Test
     public void testGameLoads(){
         String round = "Round 1";
@@ -45,10 +71,13 @@ public class VisualAttentionTest {
 
         onView(withId(R.id.visual_attention_target_text)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                withText(R.string.visualAttention_tap_text)
-        )));
+                withText(R.string.visualAttention_tap_text))));
     }
 
+    /**
+     * Method for testing that grid buttons are displayed
+     * @param gridSize
+     */
     public void testGrid(int gridSize){
         LinearLayout layout;
         ImageButton button;
@@ -68,6 +97,11 @@ public class VisualAttentionTest {
         }
     }
 
+    /**
+     * Method for testing the number of targets displayed in the grid, and tests that all targets are found
+     * @param gridSize
+     * @param numOfTargets
+     */
     public void testFindTargets(int gridSize, int numOfTargets){
         ImageView target;
         ImageButton button;
@@ -91,16 +125,36 @@ public class VisualAttentionTest {
         assertEquals(targetsFound, numOfTargets);
     }
 
+    /**
+     * Tests pressing submit without tapping any symbols
+     */
+    @Test
+    public void testSubmitNoTaps(){
+        onView(withId(R.id.visual_attention_submit_button)).perform(click());
+
+        onView(withId(R.id.visual_attention_grid1)).check(matches(allOf(
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))));
+    }
+
+    /**
+     * Tests that the 4x4 grid is displayed
+     */
     @Test
     public void testDisplayGrid4x4(){
         testGrid(4);
     }
 
+    /**
+     * Tests all targets are found im the 4x4 grid
+     */
     @Test
     public void testFindTargets4x4() {
         testFindTargets(4, 4);
     }
 
+    /**
+     * Tests that the next round is displayed after pressing submit
+     */
     @Test
     public void testNextRound4x4(){
         testFindTargets4x4();
@@ -117,11 +171,12 @@ public class VisualAttentionTest {
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
+    /**
+     * Tests that the 5x5 grid is displayed after completing rounds 1, 2 and 3
+     */
     @Test
     public void testDisplayGrid5x5(){
-        testFindTargets4x4();
         testNextRound4x4();
-        testFindTargets4x4();
         testNextRound4x4();
         testFindTargets4x4();
 
@@ -139,10 +194,21 @@ public class VisualAttentionTest {
         testGrid(5);
     }
 
+    /**
+     * Tests all targets are found in the 5x5 grid
+     */
+    @Test
+    public void testFindTargets5x5(){
+        testFindTargets(5, 7);
+    }
+
+    /**
+     * Tests that the mext round is displayed after pressing submit
+     */
     @Test
     public void testNextRound5x5(){
         testDisplayGrid5x5();
-        testFindTargets(5, 7);
+        testFindTargets5x5();
         onView(withId(R.id.visual_attention_submit_button)).perform(click());
 
         try {
@@ -155,6 +221,9 @@ public class VisualAttentionTest {
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
+    /**
+     * Tests that the 6x6 grid is displayed after completing rounds 4, 5 and 6
+     */
     @Test
     public void testDisplayGrid6x6(){
         testNextRound5x5();
@@ -165,21 +234,25 @@ public class VisualAttentionTest {
         testFindTargets(5, 7);
         onView(withId(R.id.visual_attention_submit_button)).perform(click());
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         onView(withId(R.id.visual_attention_grid3)).check(matches(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
+    /**
+     * Tests all targets are found in the 6x6 grid
+     */
     @Test
-    public void testNextRounds6x6(){
-        testDisplayGrid6x6();
+    public void testFindTargets6x6(){
         testFindTargets(6, 8);
+    }
 
+    /**
+     * Tests that the mext round is displayed after pressing submit
+     */
+    @Test
+    public void testNextRound6x6(){
+        testDisplayGrid6x6();
+        testFindTargets6x6();
         onView(withId(R.id.visual_attention_submit_button)).perform(click());
 
         try {
@@ -192,21 +265,25 @@ public class VisualAttentionTest {
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
+    /**
+     * Tests that the score screen, along with the correct score, play again and exit buttons are
+     * all displayed
+     */
     @Test
     public void testDisplayScore(){
         String percentage = "100.0%";
 
-        testNextRounds6x6();
+        testNextRound6x6();
         testGrid(6);
-        testFindTargets(6, 8);
+        testFindTargets6x6();
         onView(withId(R.id.visual_attention_submit_button)).perform(click());
 
         testGrid(6);
-        testFindTargets(6, 8);
+        testFindTargets6x6();
         onView(withId(R.id.visual_attention_submit_button)).perform(click());
 
         testGrid(6);
-        testFindTargets(6, 8);
+        testFindTargets6x6();
         onView(withId(R.id.visual_attention_submit_button)).perform(click());
 
         onView(withId(R.id.visual_attention_score_screen)).check(matches(
@@ -215,8 +292,16 @@ public class VisualAttentionTest {
         onView(withId(R.id.visual_attention_score_text)).check(matches(
                 withText(percentage)));
 
+        onView(withId(R.id.visual_attention_play_again_btn)).check(matches(
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+
+        onView(withId(R.id.visual_attention_exit_btn)).check(matches(
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
+    /**
+     * Tests that pressing the play again button runs the game again
+     */
     @Test
     public void testPlayAgain(){
         testDisplayScore();
@@ -227,6 +312,9 @@ public class VisualAttentionTest {
         testGameLoads();
     }
 
+    /**
+     * Tests that a session for the given patient and game are added to the database
+     */
     @Test
     public void testGetSessions(){
         DatabaseAccess db = DatabaseAccess.getInstance(InstrumentationRegistry.getInstrumentation().getTargetContext());
