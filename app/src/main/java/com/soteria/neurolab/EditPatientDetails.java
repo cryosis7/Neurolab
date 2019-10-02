@@ -79,28 +79,32 @@ public class EditPatientDetails extends AppCompatActivity {
 
         //check the checkboxes of the currently assigned games
         final List<GameAssignment> gameAssignments = db.getAssignments(patient.getPatientID());
-        for (GameAssignment ga : gameAssignments){
-            switch(ga.getGameID()){
-                case 1:
-                    checkBoxReaction.setChecked(true);
-                    break;
-                case 2:
-                    checkBoxMemory.setChecked(true);
-                    break;
-                case 3:
-                    checkBoxMotor.setChecked(true);
-                    break;
-                case 4:
-                    checkBoxAttention.setChecked(true);
-                    break;
-                default:
-                    break;
+        if(gameAssignments.size() != 0) {
+            for (GameAssignment ga : gameAssignments) {
+                switch (ga.getGameID()) {
+                    case 1:
+                        checkBoxReaction.setChecked(true);
+                        break;
+                    case 2:
+                        checkBoxMemory.setChecked(true);
+                        break;
+                    case 3:
+                        checkBoxMotor.setChecked(true);
+                        break;
+                    case 4:
+                        checkBoxAttention.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
         //Functionality for the seek bar
-        seekAttemptsBar.setProgress(db.getAssignments(patient.getPatientID()).get(0).getGameAttempts() - 1);
-        seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
+        if(gameAssignments.size() != 0){
+            seekAttemptsBar.setProgress(db.getAssignments(patient.getPatientID()).get(0).getGameAttempts() - 1);
+            seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
+        }
         seekAttemptsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {

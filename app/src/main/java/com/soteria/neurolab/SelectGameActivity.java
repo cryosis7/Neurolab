@@ -27,6 +27,7 @@ public class SelectGameActivity extends AppCompatActivity {
     private int patientID;
     private Map<String, Class> gameClassMap;
     private List<String> dataSet;
+    private DatabaseAccess db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class SelectGameActivity extends AppCompatActivity {
      * @return the number of attempts left the patient has left for a particular game.
      */
     private int getAttemptsLeft(String gameName) {
-        DatabaseAccess db = new DatabaseAccess(this);
+        db = new DatabaseAccess(this);
         int gameId = db.getGameId(gameName);
         int maxAttempts = db.getAssignment(patientID, gameId).getGameAttempts();
         int dailyAttempts = db.getTodaysSessions(patientID, gameId).size();
