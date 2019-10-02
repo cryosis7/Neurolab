@@ -117,7 +117,7 @@
 
     <!--    Recover Password Screen-->
     <string name="login_recover_textview_recover_title">Reset Password</string>
-    <string name="login_recover_button_forgot">I forgot my answers</string>
+    <string name="login_recover_button_forgot">Forgot Answers</string>
     <string name="login_recover_question_one_title">Security Question One</string>
     <string name="login_recover_question_two_title">Security Question Two</string>
     
@@ -137,11 +137,13 @@
     <string name="settings_password_error">Old password incorrect, please try again</string>
     <string name="settings_password_reset_successful">Password reset successfully</string>
     <string name="settings_textview_security_title">Security Questions</string>
-    <string name="settings_editText_security_question_one">Question One</string>
-    <string name="settings_editText_hint_one">Your mothers maiden name</string>
+    <string name="settings_textview_security_question_one">Security Question One</string>
+    <string name="settings_textview_security_question_two">Security Question Two</string>
+    <string name="settings_editText_security_question_one"> Question One</string>
+    <string name="settings_editText_hint_one">Ex: Your mothers maiden name</string>
     <string name="settings_editText_security_answer_one">Answer One</string>
     <string name="settings_editText_security_question_two">Question Two</string>
-    <string name="settings_editText_hint_two">Your first pets name</string>
+    <string name="settings_editText_hint_two">Ex: Your first pets name</string>
     <string name="settings_editText_security_answer_two">Answer Two</string>
     <string name="settings_button_submit">Submit</string>
     <string name="settings_toast_security_reset_successful">Security Questions set successfully</string>

@@ -201,6 +201,12 @@ public class LoginFragment extends Fragment {
                     bodyText.setTextSize(24);
                 }
             });
+            eraseBuilder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
             final AlertDialog showErase = eraseBuilder.create();
             showErase.setOnShowListener( new DialogInterface.OnShowListener() {
                 @Override

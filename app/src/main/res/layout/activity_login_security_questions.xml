@@ -40,6 +40,7 @@
         android:ems="10"
         android:hint="@string/settings_editText_security_answer_one"
         android:inputType="textPersonName"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_textview_question_one" />
@@ -66,10 +67,11 @@
         android:ems="10"
         android:hint="@string/settings_editText_security_answer_two"
         android:inputType="textPersonName"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_textview_security_two" />
+        app:layout_constraintTop_toBottomOf="@+id/login_textview_question_two" />
 
     <Button
         android:id="@+id/login_submit_questions"
@@ -91,18 +93,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="Shared Preferences Question One"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_security_question_one_title" />
 
     <TextView
-        android:id="@+id/login_textview_security_two"
+        android:id="@+id/login_textview_question_two"
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="Shared Preferences Question Two"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,6 +115,7 @@
     <Button
         android:id="@+id/login_forgot_answers"
         style="@style/TextButtonRed"
+        android:textSize="@dimen/text_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"

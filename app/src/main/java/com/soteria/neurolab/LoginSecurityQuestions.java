@@ -26,11 +26,17 @@ import com.soteria.neurolab.database.DatabaseAccess;
  */
 public class LoginSecurityQuestions extends AppCompatActivity {
 
+    //The hardcoded int value needed to perform a reset of the app
     final int securityCode = 3579753;
 
+    /*
+        Contains the UI element declarations and button functionality.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Sets the top bar with the title and backwards functionality
         if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_recover_password);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -43,17 +49,33 @@ public class LoginSecurityQuestions extends AppCompatActivity {
             //UI element declarations
             final Button submitButton = findViewById(R.id.login_submit_questions);
             final Button forgotAnswers = findViewById(R.id.login_forgot_answers);
+            final TextView questionOne = findViewById(R.id.login_textview_question_one);
+            final TextView questionTwo = findViewById(R.id.login_textview_question_two);
             final EditText answerOne = findViewById(R.id.login_security_answer_one_input);
             final EditText answerTwo = findViewById(R.id.login_security_answer_two_input);
+
+            //Checks to see whether the Shared Preferences contain questions one and two, and sets
+            //them to their relevant textviews
+            if(prefs.contains("QUESTION_ONE"))
+                questionOne.setText(prefs.getString("QUESTION_ONE", "Question one not set"));
+            if(prefs.contains("QUESTION_TWO"))
+                questionTwo.setText(prefs.getString("QUESTION_TWO", "Question two not set"));
 
             //If the "submit" button is pressed
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //Checks to see whether the questions have the correct answers submitted to them
                     if(answerOne.getText().toString().equals(prefs.getString("ANSWER_ONE", null)) ||
-                       answerTwo.getText().toString().equals(prefs.getString("ANSWER_TWO", null))) {
-                        //Commence Reset here
+                        answerTwo.getText().toString().equals(prefs.getString("ANSWER_TWO", null))) {
+                        //If they do, access the shared preferences and remove the password value
+                        SharedPreferences.Editor prefEdit = prefs.edit();
+                        prefEdit.remove("passwordHash");
+                        prefEdit.apply();
+                        // Send the user back to the login page to reset their password
+                        startActivity(new Intent(LoginSecurityQuestions.this, LoginCreatePasswordActivity.class));
                     } else {
+                        //Notify the user that their answers were incorrect
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_question_answers_incorrect), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -61,6 +83,7 @@ public class LoginSecurityQuestions extends AppCompatActivity {
 
             //If the "I forgot my answers" button is pressed
             forgotAnswers.setOnClickListener(new View.OnClickListener() {
+                //Set up an alert dialog box asking
                 @Override
                 public void onClick(View view) {
                     final AlertDialog.Builder eraseBuilder = new AlertDialog.Builder(LoginSecurityQuestions.this);
