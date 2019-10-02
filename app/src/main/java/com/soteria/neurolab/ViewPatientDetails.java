@@ -100,6 +100,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                     Intent intent = new Intent(v.getContext(), SelectGameActivity.class);
                     intent.putExtra("PATIENT_ID", patient.getPatientID());
                     startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(),"No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
                 }

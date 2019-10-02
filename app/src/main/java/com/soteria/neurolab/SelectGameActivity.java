@@ -122,7 +122,10 @@ public class SelectGameActivity extends AppCompatActivity {
 
                         PasswordAuthentication authenticator = new PasswordAuthentication();
                         if (authenticator.authenticate(password.toCharArray(), storedHash)) {
-                            SelectGameActivity.super.onBackPressed(); // Triggers normal back button, skipping the rest of the function.
+                            Intent intent = new Intent(getApplicationContext(), ViewPatientDetails.class);
+                            intent.putExtra("PATIENT_ID", patientID);
+                            startActivity(intent);
+                            finish();
                         }
                         else
                             Toast.makeText(SelectGameActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
