@@ -66,14 +66,15 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //Checks to see whether the questions have the correct answers submitted to them
-                    if(answerOne.getText().toString().equals(prefs.getString("ANSWER_ONE", null)) ||
-                        answerTwo.getText().toString().equals(prefs.getString("ANSWER_TWO", null))) {
+                    if(answerOne.getText().toString().toLowerCase().equals(prefs.getString("ANSWER_ONE", null).toLowerCase()) &&
+                        answerTwo.getText().toString().toLowerCase().equals(prefs.getString("ANSWER_TWO", null).toLowerCase())) {
                         //If they do, access the shared preferences and remove the password value
                         SharedPreferences.Editor prefEdit = prefs.edit();
                         prefEdit.remove("passwordHash");
                         prefEdit.apply();
                         // Send the user back to the login page to reset their password
                         startActivity(new Intent(LoginSecurityQuestions.this, LoginCreatePasswordActivity.class));
+                        finish();
                     } else {
                         //Notify the user that their answers were incorrect
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_question_answers_incorrect), Toast.LENGTH_SHORT).show();

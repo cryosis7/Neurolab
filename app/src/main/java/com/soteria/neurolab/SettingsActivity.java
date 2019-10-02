@@ -63,12 +63,6 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
     };
 
     @Override
-    public void onBackPressed()
-    {
-        finish();
-    }
-
-    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }

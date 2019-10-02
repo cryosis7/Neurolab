@@ -122,7 +122,8 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
                 //Else take them to the function that sets the questions in Shared Preferences
                 }  else {
                     setQuestions(prefs);
-                    startActivity(new Intent(getContext(), SearchCreateDeleteActivity.class));
+                    answerOne.setText("");
+                    answerTwo.setText("");
                 }
             }
         });

@@ -27,7 +27,7 @@
         <activity android:name=".VisualMemoryActivity"/>
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
-        <activity android:name=".SettingsActivity" android:exported="true"/>
+        <activity android:name=".SettingsActivity"/>
         <activity android:name=".LoginSecurityQuestions" />
         <activity android:name=".SelectGameActivity"/>
     </application>
