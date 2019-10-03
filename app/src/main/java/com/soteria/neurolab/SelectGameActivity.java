@@ -64,6 +64,7 @@ public class SelectGameActivity extends AppCompatActivity {
                     Intent intent = new Intent(view.getContext(), gameClassMap.get(gameName));
                     intent.putExtra("PATIENT_ID", patientID);
                     intent.putExtra("ATTEMPTS", attemptsLeft);
+                    intent.putExtra("GAME_NAME", gameName);
                     startActivity(intent);
                 }
                 else

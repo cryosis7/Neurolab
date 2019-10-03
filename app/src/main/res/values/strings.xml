@@ -119,6 +119,7 @@
 
     <!-- Tutorial Activity -->
     <string name="game_instructions">Game Instructions</string>
+    <string name="video_tutorial">Video Tutorial</string>
 
 
 </resources>

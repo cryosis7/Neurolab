@@ -13,17 +13,17 @@
         android:id="@+id/tutorial_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:text="@string/game_instructions"
         style="@style/TextSubHead" />
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginBottom="@dimen/margin_large" >
+        android:layout_weight="2"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium">
 
         <ScrollView
             android:layout_width="wrap_content"
@@ -41,16 +41,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
         android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginBottom="@dimen/margin_large">
+        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/video_tutorial"
+            style="@style/TextBody"
+            android:layout_marginBottom="@dimen/margin_small"/>
 
         <VideoView
             android:id="@+id/videoView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:longClickable="false" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_black_thick"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
 
@@ -59,8 +70,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/TextButtonBlue"
-        android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginBottom="@dimen/margin_large"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="56dp"
         android:text="@string/start_game"/>
 
 </LinearLayout>
