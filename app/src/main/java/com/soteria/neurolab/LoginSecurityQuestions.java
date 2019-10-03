@@ -47,12 +47,12 @@ public class LoginSecurityQuestions extends AppCompatActivity {
             final SharedPreferences prefs = getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
 
             //UI element declarations
-            final Button submitButton = findViewById(R.id.login_submit_questions);
-            final Button forgotAnswers = findViewById(R.id.login_forgot_answers);
-            final TextView questionOne = findViewById(R.id.login_textview_question_one);
-            final TextView questionTwo = findViewById(R.id.login_textview_question_two);
-            final EditText answerOne = findViewById(R.id.login_security_answer_one_input);
-            final EditText answerTwo = findViewById(R.id.login_security_answer_two_input);
+            final Button submitButton = findViewById(R.id.login_security_button_submit_questions);
+            final Button forgotAnswers = findViewById(R.id.login_security_button_forgot_answers);
+            final TextView questionOne = findViewById(R.id.login_security_textview_question_one);
+            final TextView questionTwo = findViewById(R.id.login_security_textview_question_two);
+            final EditText answerOne = findViewById(R.id.login_security_edittext_answer_one_input);
+            final EditText answerTwo = findViewById(R.id.login_security_edittext_answer_two_input);
 
             //Checks to see whether the Shared Preferences contain questions one and two, and sets
             //them to their relevant textviews
@@ -99,6 +99,7 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                             codeInput.setHint("Security Code");
                             codeInput.setHintTextColor(getResources().getColor(R.color.colorDarkGrey));
                             codeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            codeInput.setTag(1,"security_code_edittext");
 
                             confirmBuilder.setTitle("Confirm Code");
                             confirmBuilder.setMessage(getString(R.string.security_reset_information));

@@ -115,11 +115,11 @@
     <string name="security_question_answers_incorrect">The answers to the security questions are incorrect, please try again</string>
 
 
-    <!--    Recover Password Screen-->
-    <string name="login_recover_textview_recover_title">Reset Password</string>
-    <string name="login_recover_button_forgot">Forgot Answers</string>
-    <string name="login_recover_question_one_title">Security Question One</string>
-    <string name="login_recover_question_two_title">Security Question Two</string>
+    <!--    Login Security Questions Screen-->
+    <string name="login_security_textview_reset">Reset Password</string>
+    <string name="login_security_textview_question_one">Security Question One</string>
+    <string name="login_security_textview_question_two">Security Question Two</string>
+    <string name="login_security_button_forgot">Forgot Answers</string>
     
 
     <!-- Edit Patient Details Strings -->
