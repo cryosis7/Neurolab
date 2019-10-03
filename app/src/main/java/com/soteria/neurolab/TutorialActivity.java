@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -15,7 +16,7 @@ import com.soteria.neurolab.models.Game;
 
 public class TutorialActivity extends AppCompatActivity {
 
-    private static final String TEST_VIDEO_NAME = "test_tutorial";
+    private static final String TEST_VIDEO_NAME = "short_term_visual_memory";
     private int patientID;
     private Game game;
 
@@ -48,14 +49,31 @@ public class TutorialActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tutorial_header)).setText(game.getGameName());
         ((TextView) findViewById(R.id.tutorial_description)).setText(game.getGameDesc());
 
-        // Set The Video
+        setVideo();
+    }
+
+    /**
+     * Will set up and load the video
+     */
+    private void setVideo() {
         final VideoView video = findViewById(R.id.videoView);
+        final MediaController mediaController = new MediaController(this);
         video.setVideoURI(getVideo(TEST_VIDEO_NAME));
         video.requestFocus();
+
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                video.start();
+                mediaPlayer.setVolume(0f, 0f);
+                mediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                    @Override
+                    public void onVideoSizeChanged(MediaPlayer mediaPlayer, int i, int i1) {
+                        video.setMediaController(mediaController);
+                        mediaController.setAnchorView(video);
+                    }
+                });
+
+                mediaPlayer.start();
             }
         });
     }

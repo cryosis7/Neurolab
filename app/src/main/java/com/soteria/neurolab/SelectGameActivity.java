@@ -104,7 +104,7 @@ public class SelectGameActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.apply();
         final String storedHash = pref.getString("passwordHash", null); //TODO: Store string as preference not literal
-        if (storedHash == null) throw new RuntimeException("No password has been set"); //TODO: Uncomment with 016 pushed to master
+        if (storedHash == null) throw new RuntimeException("No password has been set");
 
         // Build alert dialog
         final EditText input = new EditText(this);
