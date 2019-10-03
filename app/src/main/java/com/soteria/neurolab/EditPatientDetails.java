@@ -79,7 +79,7 @@ public class EditPatientDetails extends AppCompatActivity {
 
         //check the checkboxes of the currently assigned games
         final List<GameAssignment> gameAssignments = db.getAssignments(patient.getPatientID());
-        if(gameAssignments.size() != 0) {
+        if(!db.checkAssignments(patient)) {
             for (GameAssignment ga : gameAssignments) {
                 switch (ga.getGameID()) {
                     case 1:

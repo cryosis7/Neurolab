@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,14 +16,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.soteria.neurolab.database.DatabaseAccess;
+import com.soteria.neurolab.models.Game;
+import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class ViewPatientDetails extends AppCompatActivity {
+    private DatabaseAccess db;
 
     /**
      *  Handles the creation of UI elements that change on load and button press logic.
@@ -91,18 +97,20 @@ public class ViewPatientDetails extends AppCompatActivity {
         patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patientReference));
         lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastTimePlayed));
 
-
-        /*When run games is pressed, sends user to the patient profile
-        TODO add link to send users to patient home once created, remove toast and comment markers  once done. */
+        /*When run games is pressed, checks to see if patient has any game assignments and remaining
+        attempts, if they do the user is redirected to the patient profile. */
         runButton.setOnClickListener(new View.OnClickListener() {
+            final List<GameAssignment> assignments = db.getAssignments(patient.getPatientID());
             public void onClick(View v) {
-                if( db.checkAssignments(patient) ) {
+                if( db.checkAssignments(patient) && checkAttemptsRemaining(assignments)) {
                     Intent intent = new Intent(v.getContext(), SelectGameActivity.class);
                     intent.putExtra("PATIENT_ID", patient.getPatientID());
                     startActivity(intent);
                     finish();
-                } else {
+                } else if(!db.checkAssignments(patient)){
                     Toast.makeText(getApplicationContext(),"No games have been assigned to this patient",Toast.LENGTH_SHORT).show();
+                } else if(!checkAttemptsRemaining(assignments)){
+                    Toast.makeText(getApplicationContext(),"This patient has no attempts left for any games",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -174,6 +182,27 @@ public class ViewPatientDetails extends AppCompatActivity {
                 bodyText.setTextSize(24);
             }
         });
+    }
+
+    /**
+     * Checks if a patient has any attempts remaining for all assigned games
+     * @param assignments
+     * @return remainingAttempts as a boolean value
+     */
+    private boolean checkAttemptsRemaining(List<GameAssignment> assignments) {
+        boolean remaningAttempts = false;
+        for(GameAssignment assignment : assignments){
+            db = new DatabaseAccess(this);
+            int maxAttempts = assignment.getGameAttempts();
+            int dailyAttempts = db.getTodaysSessions(assignment.getPatientID(), assignment.getGameID()).size();
+            int attempts = maxAttempts - dailyAttempts;
+            if(attempts > 0){
+                remaningAttempts = true;
+            } else {
+                remaningAttempts = false;
+            }
+        }
+        return remaningAttempts;
     }
 
     /** Sets the actions bar to include an overflow menu with the disclaimer and log out options.
