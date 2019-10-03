@@ -148,6 +148,7 @@ public class SelectGameActivity extends AppCompatActivity {
         map.put(getResources().getString(R.string.title_reaction_time), ReactionGameActivity.class);
         map.put(getResources().getString(R.string.title_visual_short_term_memory), VisualMemoryActivity.class);
         map.put(getResources().getString(R.string.title_visual_attention), VisualAttentionGame.class);
+        map.put(getResources().getString(R.string.title_motor_skills), MotorSkillsGameActivity.class);
         return map;
     }
 
