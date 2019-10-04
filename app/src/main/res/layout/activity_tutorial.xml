@@ -67,11 +67,12 @@
 
     <Button
         android:id="@+id/tutorial_start_button"
+        style="@style/TextButtonBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextButtonBlue"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="56dp"
-        android:text="@string/start_game"/>
+        android:onClick="startGame"
+        android:text="@string/start_game" />
 
 </LinearLayout>

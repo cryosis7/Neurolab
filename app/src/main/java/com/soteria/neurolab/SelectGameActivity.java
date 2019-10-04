@@ -18,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SelectGameActivity extends AppCompatActivity {
 
     private int patientID;
-    private Map<String, Class> gameClassMap;
     private List<String> dataSet;
 
     @Override
@@ -46,7 +43,6 @@ public class SelectGameActivity extends AppCompatActivity {
             else throw new IllegalArgumentException("Expected intent extra 'PATIENT_ID' or 'PATIENT_REFERENCE' - Received none");
         }
 
-        gameClassMap = initMap();
         dataSet = new DatabaseAccess(this).getAssignmentNames(patientID);
 
         // Initialise Recycler View
@@ -61,7 +57,7 @@ public class SelectGameActivity extends AppCompatActivity {
                 String gameName = dataSet.get(position);
                 int attemptsLeft = getAttemptsLeft(gameName);
                 if (attemptsLeft > 0) {
-                    Intent intent = new Intent(view.getContext(), gameClassMap.get(gameName));
+                    Intent intent = new Intent(view.getContext(), TutorialActivity.class);
                     intent.putExtra("PATIENT_ID", patientID);
                     intent.putExtra("ATTEMPTS", attemptsLeft);
                     intent.putExtra("GAME_NAME", gameName);
@@ -137,20 +133,6 @@ public class SelectGameActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-    }
-
-    /**
-     * Initiates the map that pairs game names to the names of their classes.
-     *
-     * @return A map of {string : Class} i.e. "Reaction Time" : ReactionGameActivity.class
-     */
-    private Map<String, Class> initMap() {
-        Map map = new HashMap<>();
-        map.put(getResources().getString(R.string.title_reaction_time), ReactionGameActivity.class);
-        map.put(getResources().getString(R.string.title_visual_short_term_memory), VisualMemoryActivity.class);
-        map.put(getResources().getString(R.string.title_visual_attention), VisualAttentionGame.class);
-        map.put(getResources().getString(R.string.title_motor_skills), MotorSkillsGameActivity.class);
-        return map;
     }
 
     @Override

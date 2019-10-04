@@ -61,6 +61,7 @@
     <string name="visualAttention_play_again">Play Again</string>
     <string name="visualAttention_exit">Exit</string>
     <string name="visualAttention_tap_text">Tap Every</string>
+
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
     <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>

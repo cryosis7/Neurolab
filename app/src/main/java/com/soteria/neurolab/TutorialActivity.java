@@ -1,15 +1,10 @@
 package com.soteria.neurolab;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,13 +12,19 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.Game;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TutorialActivity extends AppCompatActivity {
 
     private int patientID;
     private Game game;
+    private int attemptsLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +37,20 @@ public class TutorialActivity extends AppCompatActivity {
         // Handling intents
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
-//        String patientRef = intent.getStringExtra("PATIENT_REFERENCE");   //TODO: Uncomment
-        String patientRef = "SC05";
+        String patientRef = intent.getStringExtra("PATIENT_REFERENCE");
         if (patientID == -1) {
             if (patientRef != null)
                 patientID = new DatabaseAccess(this).getPatient(patientRef).getPatientID();
             else
                 throw new IllegalArgumentException("Expected intent extra 'PATIENT_ID' or 'PATIENT_REFERENCE' - Received none");
         }
-//        String gameName = intent.getStringExtra("GAME_NAME");              // TODO: Uncomment
-        String gameName = "Short-term Visual Memory";
+        String gameName = intent.getStringExtra("GAME_NAME");
         if (gameName == null)
             throw new IllegalArgumentException("Expected String Extra 'GAME_ID' in Intent - Received none");
         else game = new DatabaseAccess(this).getGameByName(gameName);
         if (game == null)
             throw new IllegalArgumentException("Could not find game with name: " + gameName + " in database.");
+        attemptsLeft = intent.getIntExtra("ATTEMPTS", -1);
 
         // Set the UI description and name of the game
         ((TextView) findViewById(R.id.tutorial_header)).setText(game.getGameName());
@@ -130,5 +130,27 @@ public class TutorialActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    /**
+     * Initiates the map that pairs game names to the names of their classes.
+     *
+     * @return A map of {string : Class} i.e. "Reaction Time" : ReactionGameActivity.class
+     */
+    private Map<String, Class> getClassMap() {
+        Map map = new HashMap<>();
+        map.put(getResources().getString(R.string.title_reaction_time), ReactionGameActivity.class);
+        map.put(getResources().getString(R.string.title_visual_short_term_memory), VisualMemoryActivity.class);
+        map.put(getResources().getString(R.string.title_visual_attention), VisualAttentionGame.class);
+        map.put(getResources().getString(R.string.title_motor_skills), MotorSkillsGameActivity.class);
+        return map;
+    }
+
+    public void startGame(View view) {
+        Intent intent = new Intent(view.getContext(), getClassMap().get(game.getGameName()));
+        intent.putExtra("PATIENT_ID", patientID);
+        intent.putExtra("ATTEMPTS", attemptsLeft);
+        startActivity(intent);
     }
 }
