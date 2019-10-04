@@ -49,7 +49,6 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
      *
      * @return A new instance of fragment SearchPatientFragment.
      */
-    // TODO: Rename and change types and number of parameters
     private static SearchPatientFragment newInstance(String param1, String param2) {
         return new SearchPatientFragment();
     }
@@ -123,7 +122,7 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
         return false;
     }
 
-    //Filters patient list when user types in search box
+    //Filters patient list when user types in the search box
     @Override
     public boolean onQueryTextChange(String s) {
 

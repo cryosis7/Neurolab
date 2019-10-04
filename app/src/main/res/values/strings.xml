@@ -26,12 +26,6 @@
     <string name="error_patient_id_in_use">PatientID already in use</string>
     <string name="open">Open</string>
 
-    <!-- View patient report page strings -->
-    <string name="settings">
-        <item>Disclaimer</item>
-        <item>Logout</item>
-    </string>
-
     <!-- Search Patient fragment strings -->
     <string name="search_patient_hint">Enter Patient ID</string>
     <string name="search_patient_error_toast_text">Patient doesn\'t exist in the database, updating the patient list</string>
@@ -46,6 +40,9 @@
     <!--Generic Game Related strings-->
     <string name="start_game">Start Game</string>
     <string name="next_round">Next Round</string>
+    <string name="attempts_none">No more attempts remaining</string>
+    <string name="textview_attempts_plural">%1$s attempts remaining</string>
+    <string name="textview_attempts_singular">%1$s attempt remaining</string>
 
     <!--Reaction Game Strings-->
     <string name="reactionGame_tap">TAP</string>
@@ -55,12 +52,11 @@
 
     <!--Visual Attention Game-->
     <string name="visualAttention_round">Round</string>\
-    <string name="visualAttention_attempts_left">Attempts Remaining:</string>
-    <string name="visualAttention_no_attempts">No More Attempts</string>
     <string name="visualAttention_display_score">YOUR SCORE</string>
     <string name="visualAttention_play_again">Play Again</string>
     <string name="visualAttention_exit">Exit</string>
     <string name="visualAttention_tap_text">Tap Every</string>
+
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
     <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
@@ -68,9 +64,6 @@
     <string name="visual_memory_textview_round_complete">You are correct!</string>
     <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
     <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
-    <string name="visual_memory_textview_attempts_plural">%1$s attempts remaining</string>
-    <string name="visual_memory_textview_attempts_singular">%1$s attempt remaining</string>
-    <string name="visual_memory_textview_attempts_none">No more attempts remaining</string>
     <string name="visual_memory_button_start_game">Start Game</string>
     <string name="visual_memory_button_continue">Play Again</string>
     <string name="visual_memory_button_exit">Exit Game</string>
@@ -124,7 +117,10 @@
 
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="settings_string">Settings</string>
+    <string name="logout">Log out</string>
     <string-array name="settings">
+        <item>Settings</item>
         <item>Disclaimer</item>
         <item>Log Out</item>
     </string-array>

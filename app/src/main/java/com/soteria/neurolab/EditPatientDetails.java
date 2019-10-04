@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,7 +80,6 @@ public class EditPatientDetails extends AppCompatActivity {
 
         //check the checkboxes of the currently assigned games
         final List<GameAssignment> gameAssignments = db.getAssignments(patient.getPatientID());
-        if(!db.checkAssignments(patient)) {
             for (GameAssignment ga : gameAssignments) {
                 switch (ga.getGameID()) {
                     case 1:
@@ -98,9 +98,8 @@ public class EditPatientDetails extends AppCompatActivity {
                         break;
                 }
             }
-        }
 
-        //Functionality for the seek bar
+        //Functionality for the seek bar, checks first if patient has any game assignments
         if(gameAssignments.size() != 0){
             seekAttemptsBar.setProgress(db.getAssignments(patient.getPatientID()).get(0).getGameAttempts() - 1);
             seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
@@ -269,10 +268,12 @@ public class EditPatientDetails extends AppCompatActivity {
                     return true;
                 //If the log out button is pressed, send the user to the log in screen
                 case R.id.action_logout:
-                    //TODO link to logout, remove toast afterwards
-                    Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
-                     /*startActivity(new Intent(this, //TODO add link to log in here));
-                       finish();
+                    startActivity(new Intent(this, LoginCreatePasswordActivity.class));
+                    finish();
+                    return true;
+                case R.id.action_settings:
+                    Toast.makeText(getApplicationContext(), "SETTINGS PRESSED - Going to settings screen", Toast.LENGTH_SHORT).show();
+                    /*startActivity(new Intent(this, //TODO add link to settings page));
                      */
                     return true;
                 //If an unknown option is selected, display an error to the user

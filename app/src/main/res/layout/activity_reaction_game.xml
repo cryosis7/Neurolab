@@ -48,15 +48,15 @@
 
     <TextView
         android:id="@+id/reaction_game_information_txt"
-        android:layout_width="600dp"
-        android:layout_height="wrap_content"
+        android:layout_width="635dp"
+        android:layout_height="166dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/reactionGame_information"
         android:textAlignment="center"
         android:textColor="@color/colorTextPrimary"
-        android:textSize="32sp"
+        android:textSize="@dimen/text_sub_heading"
         app:layout_constraintBottom_toTopOf="@+id/reaction_game_circle_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

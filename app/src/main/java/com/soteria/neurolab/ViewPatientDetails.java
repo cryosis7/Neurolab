@@ -246,10 +246,12 @@ public class ViewPatientDetails extends AppCompatActivity {
                      return true;
                   //If the log out button is pressed, send the user to the log in screen
                  case R.id.action_logout:
-                     //TODO link to logout, remove toast afterwards
-                     Toast.makeText(getApplicationContext(), "LOGOUT PRESSED - Going to log in screen", Toast.LENGTH_SHORT).show();
-                     /*startActivity(new Intent(this, //TODO add link to log in here));
-                       finish();
+                     startActivity(new Intent(this, LoginCreatePasswordActivity.class));
+                     finish();
+                     return true;
+                 case R.id.action_settings:
+                     Toast.makeText(getApplicationContext(), "SETTINGS PRESSED - Going to settings screen", Toast.LENGTH_SHORT).show();
+                     /*startActivity(new Intent(this, //TODO add link to settings page));
                      */
                      return true;
                   //If an unknown option is selected, display an error to the user

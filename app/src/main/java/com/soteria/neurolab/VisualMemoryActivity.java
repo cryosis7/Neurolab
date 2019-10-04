@@ -93,9 +93,9 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         triesText = findViewById(R.id.visual_memory_attempts_incorrect_info);
         infoText.setText(getResources().getString(R.string.title_visual_short_term_memory));
         if( attemptsLeft != 1 )
-            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_plural, Integer.toString(attemptsLeft)));
+            triesText.setText(getResources().getString(R.string.textview_attempts_plural, Integer.toString(attemptsLeft)));
         else
-            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_singular, Integer.toString(attemptsLeft)));
+            triesText.setText(getResources().getString(R.string.textview_attempts_singular, Integer.toString(attemptsLeft)));
 
         /*
          * Pressing the start game button will set up the visual memory board and will allow the
@@ -245,11 +245,11 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         infoText.setText(getResources().getString(R.string.visual_memory_textview_game_complete));
         //Sets the triesText textview to show the users attempts remaining
         if (attemptsLeft > 1)
-            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_plural, Integer.toString(attemptsLeft)));
+            triesText.setText(getResources().getString(R.string.textview_attempts_plural, Integer.toString(attemptsLeft)));
         else if (attemptsLeft == 1)
-            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_singular, Integer.toString(attemptsLeft)));
+            triesText.setText(getResources().getString(R.string.textview_attempts_singular, Integer.toString(attemptsLeft)));
         else
-            triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_none));
+            triesText.setText(getResources().getString(R.string.attempts_none));
 
         //Sets the current pattern number to one to prepare for the next attempt.
         currentPatternNumber = 1;

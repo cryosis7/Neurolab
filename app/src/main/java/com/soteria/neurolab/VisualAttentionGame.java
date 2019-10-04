@@ -40,12 +40,19 @@ import java.util.Random;
 public class VisualAttentionGame extends AppCompatActivity {
 
     //Values from patient to be passed through as intents
-    private int attemptsLeft = 3; private int patientID = 0;
+    private int attemptsLeft = 3;
+    private int patientID = 0;
     //These fields are used by multiple methods and are initialised
-    private int roundCount = 1; private int numOfTargets = 0; private int targetsFound = 0;
-    private double roundScore = 0; private int numOfTaps = 0; private double totalScore = 0;
+    private int roundCount = 1;
+    private int numOfTargets = 0;
+    private int targetsFound = 0;
+    private double roundScore = 0;
+    private int numOfTaps = 0;
+    private double totalScore = 0;
 
-    private int buttonsHorizontal; private int buttonsVertical; private int[] imageSet;
+    private int buttonsHorizontal;
+    private int buttonsVertical;
+    private int[] imageSet;
     private ImageButton[][] buttons;
 
     @Override
@@ -201,9 +208,15 @@ public class VisualAttentionGame extends AppCompatActivity {
 
         //Displays the remaining attempts, hides the play again button if no remaining attempts
         if(attemptsLeft >= 1){
-            attemptsRemaining.setText(getResources().getString(R.string.visualAttention_attempts_left) + " " + attemptsLeft);
+            if(attemptsLeft == 1){
+                attemptsRemaining.setText(getResources().getString(R.string.textview_attempts_singular,
+                        Integer.toString(attemptsLeft)));
+            } else {
+                attemptsRemaining.setText(getResources().getString(R.string.textview_attempts_plural,
+                        Integer.toString(attemptsLeft)));
+            }
         } else{
-            attemptsRemaining.setText(getResources().getString(R.string.visualAttention_no_attempts));
+            attemptsRemaining.setText(getResources().getString(R.string.attempts_none));
             playAgainBtn.setVisibility(View.INVISIBLE);
         }
 

@@ -74,17 +74,7 @@ public class DeletePatientRecyclerAdapter extends RecyclerView.Adapter<DeletePat
         public MyViewHolder(View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.delete_patient_recycler_checkbox);
-//            itemView.setOnClickListener(this);
         }
-
-//        @Override
-//        public void onClick(View view)
-//        {
-//            Integer pos = (Integer) this.checkBox.getTag();
-//            if(searchClickListener != null) {
-//                searchData.get(pos).setIsSelected(!checkBox.isChecked());
-//            }
-//        }
     }
 
     void setClickListener(DeletePatientRecyclerAdapter.ItemClickListener itemClickListener)

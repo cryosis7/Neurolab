@@ -35,6 +35,10 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
         return new ViewHolder(view);
     }
 
+    /**
+     * Updates the recycler view with the provided list
+     * @param newList
+     */
     public void updateList(List<String> newList){
         searchData = new ArrayList<>();
         searchData.addAll(newList);
@@ -48,6 +52,10 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
         holder.patientInfo.setText(patientIdSet);
     }
 
+    /**
+     * Returns the number of items in the recycler view
+     * @return
+     */
     @Override
     public int getItemCount()
     {
@@ -72,6 +80,11 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
         }
     }
 
+    /**
+     * Returns an item from the recycler view with the given id
+     * @param id
+     * @return
+     */
     String getItem(int id)
     {
         return searchData.get(id);

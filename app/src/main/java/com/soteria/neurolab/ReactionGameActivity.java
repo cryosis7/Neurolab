@@ -34,7 +34,6 @@ public class ReactionGameActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_reaction_game);
 
-
         Intent intent = getIntent();
         patientID = intent.getIntExtra("PATIENT_ID", -1);
         if (patientID == -1)
@@ -77,7 +76,7 @@ public class ReactionGameActivity extends AppCompatActivity {
         }
 
         ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(
-                String.format(Locale.getDefault(), "Round %d\nReaction Time: %dms", round + 1, result));
+                String.format(Locale.getDefault(), "Round %d", round + 1));
 
         round++;
         if (round < 5) {

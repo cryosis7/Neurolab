@@ -136,7 +136,7 @@ public class CreatePatientFragmentTest {
 
         //Check Game_Assignments table in database
         int testPatientID = patients.get(0).getPatientID();
-        List<GameAssignment> gameAssignments = db.getAssignments(patients.get(0));
+        List<GameAssignment> gameAssignments = db.getAssignments(patients.get(0).getPatientID());
         assertThat(gameAssignments.size(), is(4));
         assertEquals(gameAssignments.get(0).getPatientID(), testPatientID);
         assertEquals(gameAssignments.get(0).getGameID(), 1);
@@ -176,7 +176,7 @@ public class CreatePatientFragmentTest {
         assertEquals(patients.get(0).getPatientReference(), "JASON93");
 
         //Check Game_Assignments table in database
-        List<GameAssignment> gameAssignments = db.getAssignments(patients.get(0));
+        List<GameAssignment> gameAssignments = db.getAssignments(patients.get(0).getPatientID());
         assertThat(gameAssignments.size(), is(0));
     }
 

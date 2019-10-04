@@ -27,7 +27,6 @@
         <activity android:name=".VisualMemoryActivity"/>
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
-        <activity android:name=".TestGraphActivity" />
         <activity android:name=".VisualAttentionGame" android:exported="true"/>
         <activity android:name=".SelectGameActivity"/>
     </application>

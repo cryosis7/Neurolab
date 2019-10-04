@@ -146,7 +146,7 @@ public class DatabaseAccessTest extends Assert {
         GameAssignment assignment = new GameAssignment(reactionGame.getGameID(),
                 patient.getPatientID(), 5 );
         db.createAssignment(assignment);
-        List<GameAssignment> assignments = db.getAssignments(patient);
+        List<GameAssignment> assignments = db.getAssignments(patient.getPatientID());
         GameAssignment patientAssignment = assignments.get(0);
 
         assertThat(assignments.size(), is(1));
@@ -166,7 +166,7 @@ public class DatabaseAccessTest extends Assert {
                 patient.getPatientID(), 3);
 
         db.updateAssignment(assignment);
-        List<GameAssignment> assignments = db.getAssignments(patient);
+        List<GameAssignment> assignments = db.getAssignments(patient.getPatientID());
         GameAssignment updatedAssignment = assignments.get(0);
 
         assertThat(assignments.size(), is(1));
@@ -189,7 +189,8 @@ public class DatabaseAccessTest extends Assert {
                 79.5, "2019-08-28");
         db.createSession(session);
 
-        List<GameSession> sessions = db.getAllSessions(patient, game);
+        List<GameSession> sessions = db.getAllSessions(Integer.toString(patient.getPatientID()),
+                Integer.toString(game.getGameID()));
         GameSession gameSession = sessions.get(0);
 
         assertThat(sessions.size(), is(1));
