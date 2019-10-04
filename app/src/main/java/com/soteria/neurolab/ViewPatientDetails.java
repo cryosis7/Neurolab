@@ -54,7 +54,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, SearchPatientFragment.class));
+            startActivity(new Intent(this, SearchCreateDeleteActivity.class));
             finish();
         }
 

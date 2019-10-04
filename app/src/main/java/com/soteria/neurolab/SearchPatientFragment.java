@@ -30,6 +30,8 @@ import java.util.List;
  * to handle interaction events.
  * Use the {@link SearchPatientFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * @author Brianna Winkels, Richard Dasan
  */
 public class SearchPatientFragment extends Fragment implements SearchPatientRecyclerAdapter.ItemClickListener,
         SearchView.OnQueryTextListener {
