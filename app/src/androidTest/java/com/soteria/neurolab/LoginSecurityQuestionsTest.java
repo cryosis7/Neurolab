@@ -231,9 +231,8 @@ public class LoginSecurityQuestionsTest {
         onView(withText("Confirm")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click());
         //Checks that the relevant toast that appears whenever the user wipes the database appears
         onView(withText(R.string.security_correct_security_code))
-                .inRoot(withDecorView(not(is(
-                        loginSecurityRule.getActivity().getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
+                .inRoot(withDecorView(not(is(loginSecurityRule.getActivity().getWindow()
+                        .getDecorView())))).check(matches(isDisplayed()));
     }
 
     /**

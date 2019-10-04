@@ -66,7 +66,7 @@ public class SettingsResetPasswordFragment extends Fragment {
                     passwordNewLayout.setError("New passwords do not match");
                 } else if (!getPasswordNew.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|])[A-Za-z\\d!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|]{6,}$")){
                     passwordNewLayout.setErrorEnabled(true);
-                    passwordNewLayout.setError("Password  must be at least 6 characters and have a special character and a number");
+                    passwordNewLayout.setError("Password must be at least 6 characters and have a special character and a number");
 
                 } else {
                     passwordChange(passwordCurrent.getText().toString() ,passwordNew.getText().toString(), passwordCurrent, passwordNew, passwordConfirm);

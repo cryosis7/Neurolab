@@ -7,12 +7,14 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.View;
 
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -27,6 +29,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Checks.checkNotNull;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -104,9 +107,11 @@ public class SettingsResetPasswordFragmentTest {
     @Test
     public void incorrectPassword() {
         onView(withId(R.id.settings_current_password)).perform(typeText("Password1111"));
+        onView(withId(R.id.settings_password_new)).perform(typeText("Password2@"));
+        onView(withId(R.id.settings_password_confirm)).perform(typeText("Password2@"));
         onView(withId(R.id.settings_submit_reset)).perform(click());
-        onView(withId(R.id.settings_password_current_inputLayout)).check(matches(textInputLayoutErrorTextMatcher
-                ("Current password incorrect, please try again")));
+        onView(withId(R.id.settings_password_current_inputLayout)).check(matches(withErrorInInputLayout
+                ("Incorrect Password")));
     }
 
     @Test
@@ -115,6 +120,8 @@ public class SettingsResetPasswordFragmentTest {
         onView(withId(R.id.settings_password_new)).perform(typeText("word!"));
         onView(withId(R.id.settings_password_confirm)).perform(typeText("word!"));
         onView(withId(R.id.settings_submit_reset)).perform(click());
+        onView(withId(R.id.settings_password_new_inputLayout)).check(matches(withErrorInInputLayout
+                ("Password must be at least 6 characters and have a special character and a number")));
 
     }
 
@@ -124,22 +131,23 @@ public class SettingsResetPasswordFragmentTest {
         onView(withId(R.id.settings_password_new)).perform(typeText("Password2@"));
         onView(withId(R.id.settings_password_confirm)).perform(typeText("Password2@"));
         onView(withId(R.id.settings_submit_reset)).perform(click());
-
     }
 
     @Test
     public void noFieldsFilled() {
         onView(withId(R.id.settings_submit_reset)).perform(click());
-        onView(withId(R.id.settings_password_current_inputLayout)).check(matches(textInputLayoutErrorTextMatcher
-                (neurolabResources.getString(R.string.settings_password_error))));
+        onView(withId(R.id.settings_password_current_inputLayout)).check(matches(withErrorInInputLayout
+                ("Current password field is blank")));
 
     }
 
     @Test
-    public void someFieldsFilled() {
+    public void oneFieldFilled() {
         onView(withId(R.id.settings_current_password)).perform(typeText("Password1!"));
         onView(withId(R.id.settings_password_new)).perform(typeText("Password2@"));
         onView(withId(R.id.settings_submit_reset)).perform(click());
+        onView(withId(R.id.settings_password_new_inputLayout)).check(matches(withErrorInInputLayout
+                ("New passwords do not match")));
     }
 
     @Test
@@ -148,35 +156,41 @@ public class SettingsResetPasswordFragmentTest {
         onView(withId(R.id.settings_password_new)).perform(typeText("Password2@"));
         onView(withId(R.id.settings_password_confirm)).perform(typeText("Password3#"));
         onView(withId(R.id.settings_submit_reset)).perform(click());
+        onView(withId(R.id.settings_password_new_inputLayout)).check(matches(withErrorInInputLayout
+                ("New passwords do not match")));
     }
 
     /**
-     * Custom matcher for TextInputLayout error text
-     * @param expectedErrorText - String expected error text
-     * @return - true if error text matches the expected error text
+     * Checking for an error in a TextInputLayout
+     * @param stringMatcher
+     * @return
      */
-    public static Matcher<View> textInputLayoutErrorTextMatcher(final String expectedErrorText) {
-        return new TypeSafeMatcher<View>() {
+    public static Matcher<View> withErrorInInputLayout(final Matcher<String> stringMatcher) {
+        checkNotNull(stringMatcher);
+
+        return new BoundedMatcher<View, TextInputLayout>(TextInputLayout.class) {
+            String actualError = "";
+
             @Override
             public void describeTo(Description description) {
+                description.appendText("with error: ");
+                stringMatcher.describeTo(description);
+                description.appendText("But got: " + actualError);
             }
 
             @Override
-            protected boolean matchesSafely(View item) {
-                if (!(item instanceof TextInputLayout)) {
-                    return false;
+            public boolean matchesSafely(TextInputLayout textInputLayout) {
+                CharSequence error = textInputLayout.getError();
+                if (error != null) {
+                    actualError = error.toString();
+                    return stringMatcher.matches(actualError);
                 }
-
-                CharSequence error = ((TextInputLayout) item).getError();
-
-                if (error == null) {
-                    return false;
-                }
-
-                String errorString = error.toString();
-
-                return expectedErrorText.equals(errorString);
+                return false;
             }
         };
+    }
+
+    public static Matcher<View> withErrorInInputLayout(final String string) {
+        return withErrorInInputLayout(CoreMatchers.is(string));
     }
 }
