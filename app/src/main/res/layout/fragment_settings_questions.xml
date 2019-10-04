@@ -28,7 +28,7 @@
                 android:text="@string/settings_textview_security_title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/settings_password_current_inputLayout"
+                android:id="@+id/settings_questions_current_inputlayout"
                 style="@style/TextInputLayoutAppearance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/settings_password_old"
+                    android:hint="@string/settings_password_current"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

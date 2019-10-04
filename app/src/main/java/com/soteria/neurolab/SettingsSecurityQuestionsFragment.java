@@ -1,7 +1,6 @@
 package com.soteria.neurolab;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -104,12 +103,12 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
                 //If the password textbox is empty
                 if(confirmPassword.getText().toString().equals(""))
                     //Reply with an error stating password is empty
-                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout))
+                    ((TextInputLayout) getActivity().findViewById(R.id.settings_questions_current_inputlayout))
                             .setError("Password field is empty, please enter the account password to continue");
                 //If the password does not match the one stored in Shared Preferences
                 else if(!authenticator.authenticate(password, storedHash)) {
                     //Reply with an error stating passwords do not match
-                    ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout))
+                    ((TextInputLayout) getActivity().findViewById(R.id.settings_questions_current_inputlayout))
                             .setError("Password is incorrect, please try again");
                 //If the security questions and answers fields are empty
                 } else if(questionOneString.equals("") ||

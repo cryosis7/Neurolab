@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -49,7 +48,7 @@ public class SettingsResetPasswordFragment extends Fragment {
         final EditText passwordConfirm = passwordView.findViewById(R.id.settings_password_confirm);
         final TextInputLayout passwordCurrentLayout = passwordView.findViewById(R.id.settings_password_current_inputLayout);
         final TextInputLayout passwordNewLayout = passwordView.findViewById(R.id.settings_password_new_inputLayout);
-        final TextInputLayout passwordConfirmLayout = passwordView.findViewById(R.id.settings_password_repeat_inputLayout);
+        final TextInputLayout passwordConfirmLayout = passwordView.findViewById(R.id.settings_password_confirm_inputLayout);
 
         //Code to run when the submit button is pressed
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +61,15 @@ public class SettingsResetPasswordFragment extends Fragment {
                 if (getPasswordCurrent.equals("")) {
                     passwordCurrentLayout.setErrorEnabled(true);
                     passwordCurrentLayout.setError("Current password field is blank");
-                } else if (!getPasswordNew.equals(getPasswordConfirm)){
+                } else if (!getPasswordNew.equals(getPasswordConfirm)) {
+                    passwordNewLayout.setErrorEnabled(true);
                     passwordNewLayout.setError("New passwords do not match");
+                } else if (!getPasswordNew.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|])[A-Za-z\\d!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|]{6,}$")){
+                    passwordNewLayout.setErrorEnabled(true);
+                    passwordNewLayout.setError("Password  must be at least 6 characters and have a special character and a number");
+
                 } else {
-                    passwordChange(passwordCurrent.getText().toString() ,passwordNew.getText().toString());
-                    passwordCurrent.setText(null);
-                    passwordNew.setText(null);
-                    passwordConfirm.setText(null);
+                    passwordChange(passwordCurrent.getText().toString() ,passwordNew.getText().toString(), passwordCurrent, passwordNew, passwordConfirm);
                 }
             }
         });
@@ -133,35 +134,27 @@ public class SettingsResetPasswordFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void passwordChange(String oldPassword, String newPassword) {
-        if( passwordCheck( newPassword ) ) {
-            char[] passwordToCheck = oldPassword.toCharArray();
-            char[] passwordToSave = newPassword.toCharArray();
-            // Lookup the preferences file to access the stored password (If exists)
-            SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.apply();
-            String storedHash = pref.getString("passwordHash", null);
+    private void passwordChange(String oldPassword, String newPassword, EditText current, EditText newer, EditText confirm ) {
+        char[] passwordToCheck = oldPassword.toCharArray();
+        char[] passwordToSave = newPassword.toCharArray();
+        // Lookup the preferences file to access the stored password (If exists)
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.apply();
+        String storedHash = pref.getString("passwordHash", null);
 
-            PasswordAuthentication authenticator = new PasswordAuthentication();
-            if (authenticator.authenticate(passwordToCheck, storedHash)) {
-                String hashedPassword = authenticator.hash(passwordToSave);
-                editor.putString("passwordHash", hashedPassword);
-                editor.commit();
-                Toast.makeText(getActivity(), "Password has been successfully reset", Toast.LENGTH_SHORT).show();
-            } else {
-                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setErrorEnabled(true);
-                ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setError("Incorrect Password");
-            }
+        PasswordAuthentication authenticator = new PasswordAuthentication();
+        if (authenticator.authenticate(passwordToCheck, storedHash)) {
+            String hashedPassword = authenticator.hash(passwordToSave);
+            editor.putString("passwordHash", hashedPassword);
+            editor.commit();
+            Toast.makeText(getActivity(), "Password has been successfully reset", Toast.LENGTH_SHORT).show();
+            current.setText(null);
+            newer.setText(null);
+            confirm.setText(null);
         } else {
-            ((TextInputLayout) getActivity().findViewById(R.id.settings_password_new_inputLayout)).setError(getResources().getString(R.string.create_password_criteria));
+            ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setErrorEnabled(true);
+            ((TextInputLayout) getActivity().findViewById(R.id.settings_password_current_inputLayout)).setError("Incorrect Password");
         }
-    }
-
-    private boolean passwordCheck( String newPassword )
-    {
-        if(newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|])[A-Za-z\\d!@#$%^&*()\\-=_+`~<>,./?;':\"{}\\\\|]{6,}$"))
-            return true;
-        return false;
     }
 }

@@ -99,7 +99,7 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                             codeInput.setHint("Security Code");
                             codeInput.setHintTextColor(getResources().getColor(R.color.colorDarkGrey));
                             codeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            codeInput.setTag(1,"security_code_edittext");
+                            codeInput.setTag(R.string.security_tag_security_code,"security_code_edittext");
 
                             confirmBuilder.setTitle("Confirm Code");
                             confirmBuilder.setMessage(getString(R.string.security_reset_information));
