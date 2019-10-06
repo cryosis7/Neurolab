@@ -29,7 +29,21 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
     private Cursor cursor = null;
 
-    public DatabaseAccess(Context context) {
+    //enum with game titles
+    public enum GAME_ENUM {
+        REACTION(1), MEMORY(2), MOTOR(3), Attention(4);
+        private int gameID;
+
+        GAME_ENUM(int value){
+            this.gameID = value;
+        }
+
+        public int getGameID(){
+            return this.gameID;
+        }
+    }
+
+    public DatabaseAccess(Context context){
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -571,6 +585,42 @@ public class DatabaseAccess {
     }
 
     /**
+     * Gets a specific game assignment wih patientID and gameID
+     * @param patientID - ID of the patient
+     * @param gameID - ID of the game - use GAME_ENUM if you don't know the gameID,
+     *               e.g. GAME_ENUM.MOTOR.getGameID();
+     * @return
+     */
+    public GameAssignment getAssignment(int patientID, GAME_ENUM gameID){
+        open();
+        GameAssignment ga = new GameAssignment();
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ? AND game_ID = ?",
+                new String[]{Integer.toString(patientID), Integer.toString(gameID.getGameID())});
+        cursor.moveToFirst();
+        ga.setGameID(cursor.getInt(0));
+        ga.setPatientID(cursor.getInt(1));
+        ga.setGameAttempts(cursor.getInt(2));
+        cursor.close();
+        close();
+        return ga;
+    }
+
+    public boolean checkAssignments(Patient patient)throws SQLiteException{
+        open();
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return false;
+        } else {
+            cursor.close();
+            close();
+            return true;
+        }
+    }
+
+    /**
      * Returns all game assignments for a particular patient from the database
      *
      * @param patient The patient to retrieve game assignments for
@@ -722,5 +772,17 @@ public class DatabaseAccess {
             close();
             return latestDate;
         }
+    }
+
+    /**
+     * This function is called whenever the main user of the app forgets both their password and
+     * their security questions, or forgets their password and has no security questions put in
+     * place. This function will call all the other functions that focus on deleting all patient
+     * data from the application, allowing for the password to be reset.
+     */
+    public void purgeDatabase() {
+        deleteAllPatients();
+        deleteAllAssignments();
+        deleteAllSessions();
     }
 }

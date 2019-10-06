@@ -60,7 +60,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, SearchPatientFragment.class));
+            startActivity(new Intent(this, SearchCreateDeleteActivity.class));
             finish();
         }
 
@@ -238,6 +238,10 @@ public class ViewPatientDetails extends AppCompatActivity {
                  //If the back button is pressed, return the user to the last visited page
                  case android.R.id.home:
                      super.onBackPressed();
+                     return true;
+                 //If the settings button is pressed, direct the user to the settings page
+                 case R.id.action_settings:
+                     startActivity(new Intent(this, SettingsActivity.class));
                      return true;
                  //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                  case R.id.action_disclaimer:

@@ -93,6 +93,10 @@ public class ViewReportActivity extends AppCompatActivity {
                 onBackPressed();
                 finish();
                 return true;
+            //If the settings button is pressed, direct the user to the settings page
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             case R.id.action_disclaimer:
                 DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
                 dad.showDisclaimer(this, getResources());

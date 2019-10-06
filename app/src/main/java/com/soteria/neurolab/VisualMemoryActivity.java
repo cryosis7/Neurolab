@@ -36,7 +36,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * Global variables for use in multiple functions
      */
     //These integers belong to the patient and are passed through at the beginning of the code.
-    int patientID = 0, attemptsLeft = 3;
+    int patientID, attemptsLeft;
     //These integers determine how many square are in the pattern, the current pattern number the
     //user is up to, and how many errors they are allowed to make in the current pattern.
     //triesRemaining is currently set to 5.
@@ -83,72 +83,81 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             finish();
         }
 
-        // Declarations for the textviews and buttons for setting the text and on click actions
-        // on them on page load.
-        final Button playAgain = findViewById(R.id.visual_memory_play_again);
-        final Button exitGame = findViewById(R.id.visual_memory_exit_game);
-        final Button startGameButton = findViewById(R.id.visual_memory_start_game);
-        // Setting each textview to their starting values
-        infoText = findViewById(R.id.visual_memory_game_info);
-        triesText = findViewById(R.id.visual_memory_attempts_incorrect_info);
-        infoText.setText(getResources().getString(R.string.title_visual_short_term_memory));
-        if( attemptsLeft != 1 )
-            triesText.setText(getResources().getString(R.string.textview_attempts_plural, Integer.toString(attemptsLeft)));
-        else
-            triesText.setText(getResources().getString(R.string.textview_attempts_singular, Integer.toString(attemptsLeft)));
+        //Checks to see if the patient has any attempts left. If they do not, send them back to the
+        //select game screen
+        if( attemptsLeft <= 0 ) {
+            Toast.makeText(getApplicationContext(),"No attempts registered for this game, sending back to main screen"
+                    ,Toast.LENGTH_SHORT).show();
+            onBackPressed(); //TODO set to select games screen once detected
+            finish();
+        } else {
+            // Declarations for the textviews and buttons for setting the text and on click actions
+            // on them on page load.
+            final Button playAgain = findViewById(R.id.visual_memory_play_again);
+            final Button exitGame = findViewById(R.id.visual_memory_exit_game);
+            final Button startGameButton = findViewById(R.id.visual_memory_start_game);
+            // Setting each textview to their starting values
+            infoText = findViewById(R.id.visual_memory_game_info);
+            triesText = findViewById(R.id.visual_memory_attempts_incorrect_info);
+            infoText.setText(getResources().getString(R.string.title_visual_short_term_memory));
+            if (attemptsLeft != 1)
+                triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_plural, Integer.toString(attemptsLeft)));
+            else
+                triesText.setText(getResources().getString(R.string.visual_memory_textview_attempts_singular, Integer.toString(attemptsLeft)));
 
-        /*
-         * Pressing the start game button will set up the visual memory board and will allow the
-         * user to play the game.
-         */
-        startGameButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Sets the ID for each button and reduces the users attempts at the game by one
-                setButtons();
-                //Makes the game board visible
-                findViewById(R.id.gameBoardRow0).setVisibility(View.VISIBLE);
-                findViewById(R.id.gameBoardRow1).setVisibility(View.VISIBLE);
-                findViewById(R.id.gameBoardRow2).setVisibility(View.VISIBLE);
-                findViewById(R.id.gameBoardRow3).setVisibility(View.VISIBLE);
-                findViewById(R.id.gameBoardRow4).setVisibility(View.VISIBLE);
-                // Prevent the user from starting a new game while one is in progress by hiding the
-                // start game button
-                startGameButton.setVisibility(View.INVISIBLE);
-                // Create the pattern for the game
-                setUpPattern();
-            }
-        });
+            /*
+             * Pressing the start game button will set up the visual memory board and will allow the
+             * user to play the game.
+             */
+            startGameButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Sets the ID for each button and reduces the users attempts at the game by one
+                    setButtons();
+                    //Makes the game board visible
+                    findViewById(R.id.gameBoardRow0).setVisibility(View.VISIBLE);
+                    findViewById(R.id.gameBoardRow1).setVisibility(View.VISIBLE);
+                    findViewById(R.id.gameBoardRow2).setVisibility(View.VISIBLE);
+                    findViewById(R.id.gameBoardRow3).setVisibility(View.VISIBLE);
+                    findViewById(R.id.gameBoardRow4).setVisibility(View.VISIBLE);
+                    // Prevent the user from starting a new game while one is in progress by hiding the
+                    // start game button
+                    startGameButton.setVisibility(View.INVISIBLE);
+                    // Create the pattern for the game
+                    setUpPattern();
+                }
+            });
 
-        /*
-         * Pressing the play again button will allow the user to play the game again, resetting
-         * the squaresInPattern and lives values. The code is almost the same as that from the start game
-         * button.
-         */
-        playAgain.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Sets the play again and exit game buttons to invisible so the user does not
-                // click on these accidentally while the game is running.
-                playAgain.setVisibility(View.INVISIBLE);
-                exitGame.setVisibility(View.INVISIBLE);
-                // Resets the values of the squaresInPattern and lives counter to reflect the start of a new
-                // game.
-                squaresInPattern = 3;
-                // Create the pattern for the game
-                setUpPattern();
-            }
-        });
+            /*
+             * Pressing the play again button will allow the user to play the game again, resetting
+             * the squaresInPattern and lives values. The code is almost the same as that from the start game
+             * button.
+             */
+            playAgain.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Sets the play again and exit game buttons to invisible so the user does not
+                    // click on these accidentally while the game is running.
+                    playAgain.setVisibility(View.INVISIBLE);
+                    exitGame.setVisibility(View.INVISIBLE);
+                    // Resets the values of the squaresInPattern and lives counter to reflect the start of a new
+                    // game.
+                    squaresInPattern = 3;
+                    // Create the pattern for the game
+                    setUpPattern();
+                }
+            });
 
-        /*
-         * Pressing the exit game button will take the user back to the select games screen.
-         * If the game is currently running and not finished, an attempt will be given back to
-         * the user.
-         */
-        exitGame.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onBackPressed();
-                finish();
-            }
-        });
+            /*
+             * Pressing the exit game button will take the user back to the select games screen.
+             * If the game is currently running and not finished, an attempt will be given back to
+             * the user.
+             */
+            exitGame.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onBackPressed();
+                    finish();
+                }
+            });
+        }
     }
 
     /**
