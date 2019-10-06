@@ -164,7 +164,7 @@ public class SettingsResetPasswordFragmentTest {
 
         //Clicks the submit button and checks the shared preferences to make sure that the password
         //has been successfully overwritten
-        //TODO does not work correctly
+        //TODO does not work correctly, new password gives differing hash value
         onView(withId(R.id.settings_submit_reset)).perform(click());
         String hashedPassword = authenticator.hash("Password2@".toCharArray());
         assertEquals(hashedPassword, pref.getString("passwordHash", null));
