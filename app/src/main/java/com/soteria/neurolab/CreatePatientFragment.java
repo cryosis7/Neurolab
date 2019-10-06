@@ -191,7 +191,7 @@ public class CreatePatientFragment extends Fragment {
             }
         });
 
-        /**
+        /*
          * Listener on the edit text field to clear the error upon changing the patientID
          */
         editPatientID.addTextChangedListener(new TextWatcher() {

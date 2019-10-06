@@ -791,4 +791,16 @@ public class DatabaseAccess {
             return latestDate;
         }
     }
+
+    /**
+     * This function is called whenever the main user of the app forgets both their password and
+     * their security questions, or forgets their password and has no security questions put in
+     * place. This function will call all the other functions that focus on deleting all patient
+     * data from the application, allowing for the password to be reset.
+     */
+    public void purgeDatabase() {
+        deleteAllPatients();
+        deleteAllAssignments();
+        deleteAllSessions();
+    }
 }

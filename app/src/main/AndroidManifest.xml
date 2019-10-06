@@ -28,7 +28,8 @@
         <activity android:name=".VisualMemoryActivity"/>
         <activity android:name=".ViewPatientDetails" />
         <activity android:name=".ViewReportActivity" />
-        <activity android:name=".TestGraphActivity" />
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".LoginSecurityQuestions" />
         <activity android:name=".VisualAttentionGame" />
         <activity android:name=".SelectGameActivity"/>
     </application>

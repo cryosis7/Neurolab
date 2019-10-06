@@ -209,6 +209,10 @@ public class ViewPatientDetails extends AppCompatActivity {
                  case android.R.id.home:
                      super.onBackPressed();
                      return true;
+                 //If the settings button is pressed, direct the user to the settings page
+                 case R.id.action_settings:
+                     startActivity(new Intent(this, SettingsActivity.class));
+                     return true;
                  //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                  case R.id.action_disclaimer:
                      DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
