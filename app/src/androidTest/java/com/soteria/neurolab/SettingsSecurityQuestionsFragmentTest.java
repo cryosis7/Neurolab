@@ -40,6 +40,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class is a test class for the LoginSecurityQuestiions class. If focuses on making sure all
@@ -59,6 +60,10 @@ public class SettingsSecurityQuestionsFragmentTest {
     //Grabs the resources for the app for string comparisons
     private Resources neurolabResources = getApplicationContext().getResources();
 
+    /**
+     *  This class focuses on preparing the Shared Preferences for use in tests that require it,
+     *  and navigates the tests to the security questions fragment.
+     */
     @Before
     public void prepareQuestions() {
         //Prepares the password for insertion into the Shared Preferences
@@ -85,6 +90,10 @@ public class SettingsSecurityQuestionsFragmentTest {
         onView(withId(R.id.settings_textview_security_title)).check(matches(isDisplayed()));
     }
 
+    /**
+     * This class tests to make sure all visible elements are active on the fragment and checks
+     * that they have the appropriate data available to them.
+     */
     @Test
     public void testElementsOnLoad() {
         //Checks to see if all required elements are visible
@@ -129,14 +138,19 @@ public class SettingsSecurityQuestionsFragmentTest {
         )));
     }
 
+    /**
+     * This test checks to make sure the text generated into the question one and question two
+     * edittexts reflect the text found inside the Shared Preferences
+     */
     @Test
     public void sharedPreferencesTest() {
-
         //Grabs the shared preferences from the main activity
         Activity activity = settingsSecurityRule.getActivity();
         Context context = activity.getApplicationContext();
         SharedPreferences pref = context.getSharedPreferences(context.getString(R.string.shared_preferences_filename), MODE_PRIVATE);
 
+        //Checks that the text inside the edit texts matches the same values in the shared
+        //preferences
         onView(withId(R.id.settings_security_question_one_input)).check(matches(allOf(isDisplayed(),
                 withText(pref.getString("QUESTION_ONE", null))
         )));
@@ -145,43 +159,85 @@ public class SettingsSecurityQuestionsFragmentTest {
         )));
     }
 
+    /**
+     * This test checks that the user is able to successfully reset their security questions,
+     * checking to make sure the toast prompt
+     */
     @Test
     public void resetQuestions() {
+        //Grabs the shared preferences from the main activity
+        Activity activity = settingsSecurityRule.getActivity();
+        Context context = activity.getApplicationContext();
+        SharedPreferences pref = context.getSharedPreferences(context.getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+
+        //Inputs all test values into their respective elements
         onView(withId(R.id.settings_editText_current_password)).perform(typeText("Password1!"));
         onView(withId(R.id.settings_security_question_one_input)).perform(clearText(), typeText("What is 1 + 1?"));
         onView(withId(R.id.settings_security_question_two_input)).perform(clearText(), typeText("What is 2 + 2?"));
         onView(withId(R.id.settings_security_answer_one_input)).perform(typeText("2"));
         onView(withId(R.id.settings_security_answer_two_input)).perform(typeText("4"));
         onView(withId(R.id.settings_submit_questions)).perform(click());
+
+        onView(withText("Security questions have been saved"))
+                .inRoot(withDecorView(not(is(
+                        settingsSecurityRule.getActivity().getWindow().getDecorView()))))
+                            .check(matches(isDisplayed()));
+
+        //Checks that the shared preferences have been updated appropriately
+        assertEquals("What is 1 + 1?", pref.getString("QUESTION_ONE", null));
+        assertEquals("What is 2 + 2?", pref.getString("QUESTION_TWO", null));
+        assertEquals("2", pref.getString("ANSWER_ONE", null));
+        assertEquals("4", pref.getString("ANSWER_TWO", null));
     }
 
+    /**
+     * This text checks to make sure the appropriate error message appears whenever the user enters
+     * in no questions or answers.
+     */
     @Test
     public void noQuestions() {
+        //Inputs all test values into their respective elements
         onView(withId(R.id.settings_editText_current_password)).perform(typeText("Password1!"));
+
+        //Clicks the submit error and checks to see whether the blank question message appears
         onView(withId(R.id.settings_submit_questions)).perform(click());
         onView(withText("Please make sure both questions and answers are filled out"))
                 .inRoot(withDecorView(not(is(settingsSecurityRule.getActivity().getWindow()
                         .getDecorView())))).check(matches(isDisplayed()));
     }
 
+    /**
+     * This text checks to make sure the appropriate error message appears whenever the user enters
+     * in only one question and answer.
+     */
     @Test
     public void oneQuestion() {
+        //Inputs all test values into their respective elements
         onView(withId(R.id.settings_editText_current_password)).perform(typeText("Password1!"));
         onView(withId(R.id.settings_security_question_one_input)).perform(clearText(), typeText("What is 1 + 1?"));
         onView(withId(R.id.settings_security_answer_one_input)).perform(typeText("2"));
+
+        //Clicks the submit error and checks to see whether the blank question message appears
         onView(withId(R.id.settings_submit_questions)).perform(click());
         onView(withText("Please make sure both questions and answers are filled out"))
                 .inRoot(withDecorView(not(is(settingsSecurityRule.getActivity().getWindow()
                         .getDecorView())))).check(matches(isDisplayed()));
     }
 
+    /**
+     * This text checks to make sure the appropriate error message appears whenever the password
+     * entered is incorrect.
+     */
     @Test
     public void wrongPassword() {
+        //Inputs all test values into their respective elements
         onView(withId(R.id.settings_editText_current_password)).perform(typeText("Password2!"));
         onView(withId(R.id.settings_security_question_one_input)).perform(clearText(), typeText("What is 1 + 1?"));
         onView(withId(R.id.settings_security_question_two_input)).perform(clearText(), typeText("What is 2 + 2?"));
         onView(withId(R.id.settings_security_answer_one_input)).perform(typeText("2"));
         onView(withId(R.id.settings_security_answer_two_input)).perform(typeText("4"));
+
+        //Clicks the submit error and checks to see whether the password error message appears
         onView(withId(R.id.settings_submit_questions)).perform(click());
         onView(withId(R.id.settings_questions_current_inputlayout)).check(matches(withErrorInInputLayout
                 ("Password is incorrect, please try again")));
@@ -216,6 +272,13 @@ public class SettingsSecurityQuestionsFragmentTest {
         };
     }
 
+    /**
+     * This matcher helps check the string value of error messages stored in the edit texts.
+     *
+     * @param string The error stored inside the InputTextLayout
+     * @return a boolean value to check whether the string passed through matches the required
+     * string
+     */
     public static Matcher<View> withErrorInInputLayout(final String string) {
         return withErrorInInputLayout(CoreMatchers.is(string));
     }

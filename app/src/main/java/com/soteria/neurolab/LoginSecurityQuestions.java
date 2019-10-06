@@ -87,45 +87,71 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                 //Set up an alert dialog box asking
                 @Override
                 public void onClick(View view) {
+                    //Build an erase alertDialog that warns the user that if they proceed, they will erase
+                    //all information in the app as well as their password and security questions
                     final AlertDialog.Builder eraseBuilder = new AlertDialog.Builder(LoginSecurityQuestions.this);
                     eraseBuilder.setTitle("Warning");
                     eraseBuilder.setMessage(getString(R.string.security_erase_database_warning));
+                    //If the user accepts
                     eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            //Builds the confirm alertDialog that asks the user for a security code
+                            //found inside the user manual.
                             final AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(LoginSecurityQuestions.this);
+
+                            //Creates an editText for use inside the new alertDialog for entering
+                            //in the security code and customizes it appropriately
                             final EditText codeInput = new EditText(LoginSecurityQuestions.this);
                             codeInput.setHint("Security Code");
                             codeInput.setHintTextColor(getResources().getColor(R.color.colorDarkGrey));
                             codeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
                             codeInput.setTag(R.string.security_tag_security_code,"security_code_edittext");
 
+                            //Sets the message and buttons appropriately.
                             confirmBuilder.setTitle("Confirm Code");
                             confirmBuilder.setMessage(getString(R.string.security_reset_information));
                             confirmBuilder.setView( codeInput );
                             confirmBuilder.setPositiveButton("Confirm", null );
+
+                            //Closes the confirm alertDialog if back is pressed
                             confirmBuilder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.cancel();
                                 }
                             });
+                            //Closes the erase alertDialog
                             dialogInterface.cancel();
+
+                            //Creates the confirmDialog and shows it to the user
                             final AlertDialog showConfirm = confirmBuilder.create();
                             showConfirm.show();
+
+                            //Sets the positive button to check the security code entered
                             Button showConfirmPositiveButton = showConfirm.getButton(AlertDialog.BUTTON_POSITIVE);
                             showConfirmPositiveButton.setOnClickListener( new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    //If the code is blank, mention that error to the user
                                     if( codeInput.getText().toString().equals(""))
-                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_code_blank), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), getResources()
+                                                .getString(R.string.security_code_blank), Toast.LENGTH_SHORT).show();
+                                    //Otherwise, erase the database and remove all values of the
+                                    //Shared Preferences
                                     else if( Integer.parseInt(codeInput.getText().toString() ) == securityCode) {
+                                        //Sets the variable for the database
                                         DatabaseAccess db = new DatabaseAccess(LoginSecurityQuestions.this);
 
+                                        //Purges the database of all values
                                         db.purgeDatabase();
+
+                                        //Sets the variable for the shared preferences
                                         SharedPreferences pref = LoginSecurityQuestions.this.getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
                                         SharedPreferences.Editor editor = pref.edit();
+
+                                        //Remove all values from the shared preferences
                                         editor.remove("passwordHash");
                                         editor.remove("QUESTION_ONE");
                                         editor.remove("QUESTION_TWO");
@@ -133,9 +159,11 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                                         editor.remove("ANSWER_TWO");
                                         editor.apply();
 
+                                        //Mention the change to the user, and sends them to the login screeen
                                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_correct_security_code), Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(LoginSecurityQuestions.this, LoginCreatePasswordActivity.class));
                                         finish();
+                                    //Else if the code is incorrect, set an error message stating such.
                                     } else {
                                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.security_incorrect_security_code), Toast.LENGTH_SHORT).show();
                                     }
@@ -145,14 +173,16 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                             bodyText.setTextSize(24);
                         }
                     });
-
+                    //If the user declines to erase the database, close the alertDialog
                     eraseBuilder.setNegativeButton("Decline", new DialogInterface.OnClickListener()  {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
                         }
                     });
+                    //Creates the alertDialog
                     final AlertDialog showErase = eraseBuilder.create();
+                    //Sets the aesthetics of the alertDialog
                     showErase.setOnShowListener( new DialogInterface.OnShowListener() {
                         @Override
                         public void onShow(DialogInterface arg0) {
@@ -161,6 +191,7 @@ public class LoginSecurityQuestions extends AppCompatActivity {
                             showErase.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
                         }
                     });
+                    //Show the alertDialog to the user
                     showErase.show();
                     TextView bodyText = showErase.findViewById(android.R.id.message);
                     bodyText.setTextSize(24);
@@ -169,6 +200,10 @@ public class LoginSecurityQuestions extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Enables the page to go back to the previous page by pressing the back button on the
+     *  top bar.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if(menuItem.getItemId() == android.R.id.home) {

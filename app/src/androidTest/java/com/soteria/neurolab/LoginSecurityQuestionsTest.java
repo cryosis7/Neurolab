@@ -97,6 +97,7 @@ public class LoginSecurityQuestionsTest {
     {
         //Pushes the submit button immediately, entering in no information. Should display
         //the incorrect entry message.
+        //TODO unable to read toast
         onView(withId(R.id.login_security_button_submit_questions)).perform(click());
         onView(withText(R.string.security_question_answers_incorrect))
                 .inRoot(withDecorView(not(is(
@@ -252,6 +253,7 @@ public class LoginSecurityQuestionsTest {
         onView(withText("Confirm")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click());
         //Checks that the relevant toast that appears whenever the user attempts to wipes the
         //database and fails appears
+        //TODO unable to read toast
         onView(withText(R.string.security_incorrect_security_code))
                 .inRoot(withDecorView(not(is(loginSecurityRule.getActivity().getWindow()
                         .getDecorView())))).check(matches(isDisplayed()));

@@ -20,18 +20,23 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * This class sets or reset the security questions for the account. This can only be done if the
- * account password is known.
+ * account password is known. If the security questions have been filled in, they are saved in the
+ * Shared Preferences file. If there are already Shared Preferences for security questions, the
+ * questions are loaded into the questions editTexts upon load.
  *
  * @author Richard Dasan
  */
 public class SettingsSecurityQuestionsFragment extends Fragment {
 
+    //Fragment listener used to attach and detach the fragment from the current page.
+    //Despite saying it is not in use, it is used in the onAttach and onDetach classes.
     private SettingsSecurityQuestionsFragment.OnFragmentInteractionListener mListener;
+
+    //The strings used to store the questions and answers made by the user
     private String questionOneString, questionTwoString, answerOneString, answerTwoString;
 
-    public SettingsSecurityQuestionsFragment() {
-
-    }
+    //Default constructor for the class
+    public SettingsSecurityQuestionsFragment() { }
 
     public static SettingsSecurityQuestionsFragment newInstance() {
         return new SettingsSecurityQuestionsFragment();
@@ -169,12 +174,15 @@ public class SettingsSecurityQuestionsFragment extends Fragment {
      * @param prefs the Shared Preferences information passed to it by the onCreate Function
      */
     private void setQuestions( SharedPreferences prefs) {
+        //Opens up the shared preferences and sets the questions and answers to their relevant
+        //strings
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("QUESTION_ONE", questionOneString);
         editor.putString("QUESTION_TWO", questionTwoString);
         editor.putString("ANSWER_ONE", answerOneString);
         editor.putString("ANSWER_TWO", answerTwoString);
         editor.apply();
+        //Notifies the user that the changes have been made
         Toast.makeText(getContext(), "Security questions have been saved", Toast.LENGTH_SHORT).show();
     }
 }
