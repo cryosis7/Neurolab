@@ -115,7 +115,7 @@ public class SelectGameActivityTest {
                 .check(matches(isDisplayed()))
                 .perform(click());
 
-        onView(withId(R.id.reaction_game_screen)).check(matches(isDisplayed()));
+        onView(withId(R.id.tutorial_root)).check(matches(isDisplayed()));
 
         assignment.setGameAttempts(savedPreviousAttemptLimit);
         db.updateAssignment(assignment);

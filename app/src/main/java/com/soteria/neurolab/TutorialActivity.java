@@ -46,7 +46,7 @@ public class TutorialActivity extends AppCompatActivity {
         }
         String gameName = intent.getStringExtra("GAME_NAME");
         if (gameName == null)
-            throw new IllegalArgumentException("Expected String Extra 'GAME_ID' in Intent - Received none");
+            throw new IllegalArgumentException("Expected String Extra 'GAME_NAME' in Intent - Received none");
         else game = new DatabaseAccess(this).getGameByName(gameName);
         if (game == null)
             throw new IllegalArgumentException("Could not find game with name: " + gameName + " in database.");
