@@ -63,6 +63,7 @@
     <string name="visualAttention_play_again">Play Again</string>
     <string name="visualAttention_exit">Exit</string>
     <string name="visualAttention_tap_text">Tap Every</string>
+
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
     <string name="visual_memory_textview_start_pattern">Enter in the pattern</string>
@@ -172,13 +173,12 @@
 
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string-array name="settings">
-        <item>Settings</item>
-        <item>Disclaimer</item>
-        <item>Log Out</item>
-    </string-array>
-
-
+    
     <!-- Select Game Screen -->
     <string name="select_game">Select Game</string>
+
+    <!-- Tutorial Activity -->
+    <string name="game_instructions">Game Instructions</string>
+    <string name="video_demonstration">Video Demonstration</string>
+
 </resources>
