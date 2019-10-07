@@ -162,6 +162,7 @@
 
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
     
     <!-- Select Game Screen -->
     <string name="select_game">Select Game</string>

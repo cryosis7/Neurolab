@@ -70,8 +70,8 @@ public class MotorSkillsGameTest {
                 withText(R.string.title_motor_skills)
         )));
 
-        String attemptsString = attempts == 1 ? rule.getActivity().getResources().getString(R.string.visual_memory_textview_attempts_singular, attempts)
-                : rule.getActivity().getResources().getString(R.string.visual_memory_textview_attempts_plural, attempts);
+        String attemptsString = attempts == 1 ? rule.getActivity().getResources().getString(R.string.textview_attempts_singular, attempts)
+                : rule.getActivity().getResources().getString(R.string.textview_attempts_plural, attempts);
 
         onView(withId(R.id.motor_skills_game_incorrect_info)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
@@ -105,7 +105,7 @@ public class MotorSkillsGameTest {
                 withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)
         )));
 
-        String roundString = rule.getActivity().getResources().getString(R.string.motor_skills_game_round, 1);
+        String roundString = rule.getActivity().getResources().getString(R.string.game_round, 1);
 
         onView(withId(R.id.motor_skills_game_title)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
@@ -134,7 +134,7 @@ public class MotorSkillsGameTest {
         onView(allOf(withTagValue(is((Object) "B")), isDisplayed()));
         onView(allOf(withTagValue(is((Object) "C")), isDisplayed()));
 
-        String roundString = rule.getActivity().getResources().getString(R.string.motor_skills_game_round, 2);
+        String roundString = rule.getActivity().getResources().getString(R.string.game_round, 2);
 
         onView(withId(R.id.motor_skills_game_title)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
@@ -227,8 +227,8 @@ public class MotorSkillsGameTest {
 
         attempts--;
 
-        String attemptsString = attempts == 1 ? rule.getActivity().getResources().getString(R.string.visual_memory_textview_attempts_singular, attempts)
-                : rule.getActivity().getResources().getString(R.string.visual_memory_textview_attempts_plural, attempts);
+        String attemptsString = attempts == 1 ? rule.getActivity().getResources().getString(R.string.textview_attempts_singular, attempts)
+                : rule.getActivity().getResources().getString(R.string.textview_attempts_plural, attempts);
 
         onView(withId(R.id.motor_skills_game_incorrect_info)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
@@ -237,12 +237,12 @@ public class MotorSkillsGameTest {
 
         onView(withId(R.id.motor_skills_game_play_again)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                withText(R.string.visual_memory_button_continue)
+                withText(R.string.play_again)
         )));
 
         onView(withId(R.id.motor_skills_game_exit_game)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                withText(R.string.visual_memory_button_exit)
+                withText(R.string.exit)
         )));
 
         //Assert database game session created
@@ -290,8 +290,8 @@ public class MotorSkillsGameTest {
 
         attempts--;
 
-        String attemptsString = attempts == 1 ? rule.getActivity().getResources().getString(R.string.visual_memory_textview_attempts_singular, attempts)
-                : rule.getActivity().getResources().getString(R.string.visual_memory_textview_attempts_plural, attempts);
+        String attemptsString = attempts == 1 ? rule.getActivity().getResources().getString(R.string.textview_attempts_singular, attempts)
+                : rule.getActivity().getResources().getString(R.string.textview_attempts_plural, attempts);
 
         onView(withId(R.id.motor_skills_game_incorrect_info)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
@@ -300,12 +300,12 @@ public class MotorSkillsGameTest {
 
         onView(withId(R.id.motor_skills_game_play_again)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                withText(R.string.visual_memory_button_continue)
+                withText(R.string.play_again)
         )));
 
         onView(withId(R.id.motor_skills_game_exit_game)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                withText(R.string.visual_memory_button_exit)
+                withText(R.string.exit)
         )));
 
         //Assert database game session created
@@ -339,7 +339,7 @@ public class MotorSkillsGameTest {
 
         onView(withId(R.id.motor_skills_game_exit_game)).check(matches(allOf(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                withText(R.string.visual_memory_button_exit)
+                withText(R.string.exit)
         )));
     }
 

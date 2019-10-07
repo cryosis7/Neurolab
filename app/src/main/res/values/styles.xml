@@ -144,4 +144,10 @@
         <item name="colorAccent">@color/colorYellow</item>
     </style>
 
+    <style name="button_yellow_background" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@color/colorYellow</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
 </resources>

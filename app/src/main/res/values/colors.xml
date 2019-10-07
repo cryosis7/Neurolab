@@ -13,6 +13,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorDarkGrey">#212121</color>
     <color name="colorYellow">#FFFF00</color>
+    <color name="colorYellowDark">#ffe200</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGreen">#00FF00</color>
     <color name="transparent">#00000000</color>
