@@ -110,6 +110,8 @@ public class TutorialActivity extends AppCompatActivity {
                     }
                 });
 
+                video.setMediaController(mediaController);
+                mediaController.setAnchorView(video);
                 video.seekTo(1);
             }
         });
