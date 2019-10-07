@@ -162,15 +162,12 @@
 
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="settings_string">Settings</string>
-    <string name="logout">Log out</string>
-    <string-array name="settings">
-        <item>Settings</item>
-        <item>Disclaimer</item>
-        <item>Log Out</item>
-    </string-array>
-
-
+    
     <!-- Select Game Screen -->
     <string name="select_game">Select Game</string>
+
+    <!-- Tutorial Activity -->
+    <string name="game_instructions">Game Instructions</string>
+    <string name="video_demonstration">Video Demonstration</string>
+
 </resources>
