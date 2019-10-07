@@ -1,7 +1,5 @@
 package com.soteria.neurolab;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,20 +8,35 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.models.GameSession;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+/**
+ * This class contains the functionality for the reaction time game.
+ * The game will initiate with a very short instruction, telling the user to tap the button
+ * as soon as they see it. When the 'start' button is pressed, the screen is cleared and
+ * a yellow button will appear after a random duration.
+ * Once the user taps the button, another 'ready' button appears and this cycle will repeat for 5
+ * rounds. When the 5 rounds are up, the average reaction speed is displayed to the user and stored
+ * in the database.
+ *
+ * @author Scott Curtis
+ */
 public class ReactionGameActivity extends AppCompatActivity {
     private int patientID;
     private ReactionTimer reactionTimer;
     private static long startTime = -1;
     private int round = 0;
-    private int[] results = new int[5];
+    private List<Integer> results = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +72,7 @@ public class ReactionGameActivity extends AppCompatActivity {
     /**
      * onClick handler to stop the timer and measure reaction time.
      * If it's the last round, it will end the game - endGame()
+     *
      * @param circleButton The circle button that is tapped.
      */
     public void stopTimer(View circleButton) {
@@ -68,14 +82,17 @@ public class ReactionGameActivity extends AppCompatActivity {
             throw new IllegalStateException(getString(R.string.reactionGame_exception_timer_not_started));
 
         int result = (int) (endTime - startTime);
-        results[round] = result;
-        if (result < 250) {
+        if (result < 225) {
             stopTimerFoul();
             return;
         }
 
+        results.add(result);
+
         ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(
-                String.format(Locale.getDefault(), "Round %d", round + 1));
+                (round < 4)
+                        ? String.format(Locale.getDefault(), "Round %d", round + 1)
+                        : String.format(Locale.getDefault(), "Round %d\nReaction Time: %dms", round + 1, getAverageResult()));
 
         round++;
         if (round < 5) {
@@ -91,21 +108,30 @@ public class ReactionGameActivity extends AppCompatActivity {
      * PATIENT_ID & GAME_SCORE (An int value representing the gameSession metric)
      */
     private void endGame() {
-        int avgResult = 0;
-        for (int x : results)
-            avgResult += x;
-        avgResult /= results.length;
-
         DatabaseAccess db = new DatabaseAccess(this);
         String gameName = getResources().getString(R.string.title_reaction_time);
         int gameID = db.getGameId(gameName);
         if (gameID == -1)
             throw new IllegalArgumentException("Invalid Game Name: " + gameName);
-        GameSession gameSession = new GameSession(patientID, gameID, avgResult, new Date());
+        GameSession gameSession = new GameSession(patientID, gameID, getAverageResult(), new Date());
         db.createSession(gameSession);
 
-        onBackPressed();
-        finish();
+        // TODO: Add a play again + exit button here displaying their number of attempts left.
+
+//        onBackPressed();
+//        finish();
+    }
+
+    /**
+     * Will return the average result for the amount of rounds that have been played so far.
+     * @return The average reaction time in milliseconds.
+     */
+    private int getAverageResult() {
+        int avgResult = 0;
+        for (int x : results)
+            avgResult += x;
+        avgResult /= results.size();
+        return avgResult;
     }
 
     @Override
