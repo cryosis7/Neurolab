@@ -8,65 +8,69 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="@string/visualAttention_display_score"
-        android:textSize="56sp"
+        android:id="@+id/visual_attention_info_text"
+        android:gravity="center_horizontal"
+        android:layout_width="364dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="140dp"
+        android:text="@string/visualAttention_title"
+        style="@style/TextSubHead"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/visual_attention_score_text"
-        android:layout_width="263dp"
-        android:layout_height="92dp"
-        android:text=""
-        android:textSize="56sp"
+        style="@style/TextSubHead"
+        android:layout_width="338dp"
+        android:layout_height="133dp"
+        android:gravity="center_horizontal"
+        android:text="@string/visualAttention_display_score"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintTop_toBottomOf="@+id/visual_attention_info_text"
+        app:layout_constraintVertical_bias="0.093" />
 
     <TextView
         android:id="@+id/visual_attention_attempts_text"
-        android:layout_width="459dp"
-        android:layout_height="145dp"
-        android:text=""
-        android:textSize="56sp"
+        style="@style/TextSubHead"
+        android:layout_width="626dp"
+        android:layout_height="131dp"
+        android:text="@string/textview_attempts_plural"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintHorizontal_bias="0.941"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.339" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
 
     <Button
-        android:id="@+id/visual_attention_play_again_btn"
-        android:layout_width="190dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="60dp"
-        android:text="@string/visualAttention_play_again"
-        android:textSize="28dp"
+        android:id="@+id/visual_attention_play_btn"
+        style="@style/TextButtonBlue"
+        android:layout_width="304dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center_horizontal"
+        android:text="@string/start_game"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/visual_attention_attempts_text" />
 
     <Button
         android:id="@+id/visual_attention_exit_btn"
-        android:layout_width="190dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/visualAttention_exit"
-        android:textSize="28dp"
+        android:gravity="center_horizontal"
+        style="@style/TextButtonBlue"
+        android:layout_width="301dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/visual_memory_button_exit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visual_attention_play_again_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/visual_attention_play_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

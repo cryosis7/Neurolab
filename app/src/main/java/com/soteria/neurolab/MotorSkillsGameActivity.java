@@ -108,8 +108,8 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
         playAgainButton.setVisibility(View.INVISIBLE);
         exitGameButton.setEnabled(false);
         exitGameButton.setVisibility(View.INVISIBLE);
-        gameAttemptsTextView.setText(attemptsLeft == 1 ? getResources().getString(R.string.visual_memory_textview_attempts_singular, String.valueOf(attemptsLeft))
-                : getResources().getString(R.string.visual_memory_textview_attempts_plural, String.valueOf(attemptsLeft)));
+        gameAttemptsTextView.setText(attemptsLeft == 1 ? getResources().getString(R.string.textview_attempts_singular, String.valueOf(attemptsLeft))
+                : getResources().getString(R.string.textview_attempts_plural, String.valueOf(attemptsLeft)));
 
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,8 +192,8 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
         attemptsLeft--;
         GameSession gameSession = new GameSession(patient.getPatientID(), DatabaseAccess.GAME_ENUM.MOTOR.getGameID(), score, new Date());
         db.createSession(gameSession);
-        gameAttemptsTextView.setText(attemptsLeft == 1 ? getResources().getString(R.string.visual_memory_textview_attempts_singular, String.valueOf(attemptsLeft))
-                : getResources().getString(R.string.visual_memory_textview_attempts_plural, String.valueOf(attemptsLeft)));
+        gameAttemptsTextView.setText(attemptsLeft == 1 ? getResources().getString(R.string.textview_attempts_singular, String.valueOf(attemptsLeft))
+                : getResources().getString(R.string.textview_attempts_plural, String.valueOf(attemptsLeft)));
         gameTitleTextView.setText(score == 1 ? getResources().getString(R.string.motor_skills_game_score_one, String.valueOf(score)) :
                 getResources().getString(R.string.motor_skills_game_score_multiple, String.valueOf(score)));
         if(attemptsLeft > 0) {

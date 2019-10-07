@@ -42,7 +42,7 @@
     <!--Generic Game Related strings-->
     <string name="start_game">Start Game</string>
     <string name="next_round">Next Round</string>
-    <string name="attempts_none">No more attempts remaining</string>
+    <string name="attempts_none">No attempts remaining</string>
     <string name="textview_attempts_plural">%1$s attempts remaining</string>
     <string name="textview_attempts_singular">%1$s attempt remaining</string>
 
@@ -53,8 +53,9 @@
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!--Visual Attention Game-->
-    <string name="visualAttention_round">Round</string>\
-    <string name="visualAttention_display_score">YOUR SCORE</string>
+    <string name="visualAttention_title">Visual Attention</string>
+    <string name="visualAttention_round">Round %1$s</string>\
+    <string name="visualAttention_display_score">Score: %1$s</string>
     <string name="visualAttention_play_again">Play Again</string>
     <string name="visualAttention_exit">Exit</string>
     <string name="visualAttention_tap_text">Tap Every</string>
