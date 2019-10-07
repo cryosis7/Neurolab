@@ -42,10 +42,6 @@ public class GameSession {
 
     public GameSession(){}
 
-    public int getSessionID() {
-        return sessionID;
-    }
-
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }

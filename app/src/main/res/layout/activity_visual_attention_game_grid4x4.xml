@@ -22,7 +22,7 @@
             android:layout_marginTop="-2dp"
             android:layout_marginEnd="262dp"
             android:paddingBottom="20dp"
-            android:text="Round 1"
+            android:text="@string/game_round"
             style="@style/TextSubHead" />
 
     </RelativeLayout>
@@ -59,7 +59,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="0dp"
-            android:text="Submit Answer" />
+            android:text="@string/visualAttention_submit" />
     </RelativeLayout>
 
     <LinearLayout

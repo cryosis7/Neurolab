@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -57,9 +56,8 @@ public class VisualAttentionGame extends AppCompatActivity {
 
     private TextView scoreText;
     private TextView attemptsRemaining;
-    private TextView game_info;
     private Button playBtn;
-   private Button exitButton;
+    private Button exitButton;
 
 
     @Override
@@ -89,7 +87,6 @@ public class VisualAttentionGame extends AppCompatActivity {
 
     public void startGame(){
         setContentView(R.layout.activity_visual_attention_game_score_screen);
-        game_info = findViewById(R.id.visual_attention_info_text);
         attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
         playBtn = findViewById(R.id.visual_attention_play_btn);
         exitButton = findViewById(R.id.visual_attention_exit_btn);
@@ -146,7 +143,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         final ImageView targetImage = findViewById(R.id.visual_attention_target_image);
 
         //Sets text to display the round number
-        roundNumText.setText(getResources().getString(R.string.visualAttention_round,
+        roundNumText.setText(getResources().getString(R.string.game_round,
                 Integer.toString(roundCount)));
         //Gets a set of images depending on the round number
         imageSet = getImageSets();
@@ -240,7 +237,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         scoreText.setVisibility(View.VISIBLE);
         exitButton = findViewById(R.id.visual_attention_exit_btn);
         playBtn = findViewById(R.id.visual_attention_play_btn);
-        playBtn.setText(getResources().getString(R.string.visualAttention_play_again));
+        playBtn.setText(getResources().getString(R.string.play_again));
         attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
 
         //Creates a new game session in the database

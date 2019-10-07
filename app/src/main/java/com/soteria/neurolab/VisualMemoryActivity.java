@@ -79,7 +79,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
             attemptsLeft = visualBundle.getInt("ATTEMPTS");
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),"ERROR - An error occurred during page transition : " + e,Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ViewPatientDetails.class)); //TODO change ViewPatientDetails to SelectGameActivity once added
+            startActivity(new Intent(this, SelectGameActivity.class));
             finish();
         }
 
@@ -88,7 +88,7 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         if( attemptsLeft <= 0 ) {
             Toast.makeText(getApplicationContext(),"No attempts registered for this game, sending back to main screen"
                     ,Toast.LENGTH_SHORT).show();
-            onBackPressed(); //TODO set to select games screen once detected
+            onBackPressed();
             finish();
         } else {
             // Declarations for the textviews and buttons for setting the text and on click actions

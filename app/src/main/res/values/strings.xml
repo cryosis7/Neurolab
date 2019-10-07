@@ -45,6 +45,9 @@
     <string name="attempts_none">No attempts remaining</string>
     <string name="textview_attempts_plural">%1$s attempts remaining</string>
     <string name="textview_attempts_singular">%1$s attempt remaining</string>
+    <string name="play_again">Play Again</string>
+    <string name="exit">Exit Game</string>
+    <string name="game_round">Round %1$s</string>
 
     <!--Reaction Game Strings-->
     <string name="reactionGame_tap">TAP</string>
@@ -53,12 +56,9 @@
     <string name="reactionGame_exception_timer_not_started">Attempted to measure elapsed time but start time has not been set.</string>
 
     <!--Visual Attention Game-->
-    <string name="visualAttention_title">Visual Attention</string>
-    <string name="visualAttention_round">Round %1$s</string>\
     <string name="visualAttention_display_score">Score: %1$s</string>
-    <string name="visualAttention_play_again">Play Again</string>
-    <string name="visualAttention_exit">Exit</string>
     <string name="visualAttention_tap_text">Tap Every</string>
+    <string name="visualAttention_submit">Submit Answer</string>
 
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
@@ -67,9 +67,6 @@
     <string name="visual_memory_textview_round_complete">You are correct!</string>
     <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
     <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
-    <string name="visual_memory_button_start_game">Start Game</string>
-    <string name="visual_memory_button_continue">Play Again</string>
-    <string name="visual_memory_button_exit">Exit Game</string>
     <string name="visual_memory_tag_error_check">Incorrect Guess</string>
     <string name="visual_memory_tag_not_correct_button">Not Correct</string>
     <string name="visual_memory_tag_pattern_check">Part of Pattern</string>
@@ -156,7 +153,6 @@
     <!-- Motor Skills Game -->
     <string name="motor_skills_game_score_one">Score: %1$s Round</string>
     <string name="motor_skills_game_score_multiple">Score: %1$s Rounds</string>
-    <string name="motor_skills_game_round">Round %1$s</string>
 
 
     <!--Generic Strings-->

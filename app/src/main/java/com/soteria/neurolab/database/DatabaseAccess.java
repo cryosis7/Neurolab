@@ -503,18 +503,6 @@ public class DatabaseAccess {
     }
 
     /**
-     * Deletes all sessions in the database matching the patientID and gameID.
-     *
-     * @param patientID
-     * @param gameID
-     */
-    public void deletePatientSessions(String patientID, String gameID) {
-        open();
-        db.delete("Game_Session", "patient_ID=? AND game_ID=?", new String[]{patientID, gameID});
-        close();
-    }
-
-    /**
      * Deletes all game sessions, used for testing purposes only
      *
      * @throws SQLiteException

@@ -3,7 +3,6 @@ package com.soteria.neurolab;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -58,7 +57,6 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
      *
      * @return A new instance of fragment DeletePatientFragment.
      */
-    // TODO: Rename and change types and number of parameters
     private static DeletePatientFragment newInstance() {
         return new DeletePatientFragment();
     }

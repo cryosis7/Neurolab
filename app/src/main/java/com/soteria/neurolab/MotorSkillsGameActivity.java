@@ -1,11 +1,9 @@
 package com.soteria.neurolab;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.soteria.neurolab.database.DatabaseAccess;
-import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.GameSession;
 import com.soteria.neurolab.models.Patient;
-import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -214,7 +210,7 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
            finishGame();
         //Else start a new round
         } else {
-            gameTitleTextView.setText(getResources().getString(R.string.motor_skills_game_round, String.valueOf(score + 1)));
+            gameTitleTextView.setText(getResources().getString(R.string.game_round, String.valueOf(score + 1)));
             current = 0;
             gameLayout.removeAllViews();
             //Reset the button array
