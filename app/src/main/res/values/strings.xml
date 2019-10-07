@@ -58,7 +58,10 @@
     <!--Visual Attention Game-->
     <string name="visualAttention_display_score">Score: %1$s</string>
     <string name="visualAttention_tap_text">Tap Every</string>
+<<<<<<< HEAD
     <string name="visualAttention_submit">Submit Answer</string>
+=======
+>>>>>>> master
 
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
@@ -162,15 +165,12 @@
 
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <string name="settings_string">Settings</string>
-    <string name="logout">Log out</string>
-    <string-array name="settings">
-        <item>Settings</item>
-        <item>Disclaimer</item>
-        <item>Log Out</item>
-    </string-array>
-
-
+    
     <!-- Select Game Screen -->
     <string name="select_game">Select Game</string>
+
+    <!-- Tutorial Activity -->
+    <string name="game_instructions">Game Instructions</string>
+    <string name="video_demonstration">Video Demonstration</string>
+
 </resources>
