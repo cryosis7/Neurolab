@@ -20,6 +20,18 @@ import com.soteria.neurolab.models.Game;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class will load a tutorial for the game that is about to be played.
+ * It requires 3 Intents.
+ * 1) PATIENT_ID | PATIENT_REFERENCE - The patient ID or reference to store the game results in.
+ *                                     This isn't used in this class but passed onto the game class.
+ * 2) GAME_NAME - The name of the game to load the tutorial for. This should be identical to the
+ *                name that is used in the database
+ * 3) ATTEMPTS - The number of attempts that the patient has left for this game for the day.
+ *               This isn't used in this class but passed onto the game class.
+ *
+ * @author Scott Curtis
+ */
 public class TutorialActivity extends AppCompatActivity {
 
     private int patientID;
@@ -60,12 +72,14 @@ public class TutorialActivity extends AppCompatActivity {
 
     /**
      * Will set up and load the video
+     * The video can be started/paused from tapping on it.
+     * A media control bar will also appear after tapping it that allows for
+     * play/pause, scrubbing and skipping time.
      */
     @SuppressLint("ClickableViewAccessibility")
     private void setVideo(String gameName) {
         final VideoView video = findViewById(R.id.videoView);
         final MediaController mediaController = new MediaController(this);
-
 
         // Handles starting and pausing the video on touches.
         video.setOnTouchListener(new View.OnTouchListener() {
@@ -83,7 +97,7 @@ public class TutorialActivity extends AppCompatActivity {
         video.setVideoURI(getVideo(gameName));
         video.requestFocus();
 
-        // Loads the video and sets it to the first frame when ready.
+        // Loads the video, mutes it and sets it to the first frame when ready.
         video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(final MediaPlayer mediaPlayer) {
@@ -139,7 +153,7 @@ public class TutorialActivity extends AppCompatActivity {
      * @return A map of {string : Class} i.e. "Reaction Time" : ReactionGameActivity.class
      */
     private Map<String, Class> getClassMap() {
-        Map map = new HashMap<>();
+        Map<String, Class> map = new HashMap<>();
         map.put(getResources().getString(R.string.title_reaction_time), ReactionGameActivity.class);
         map.put(getResources().getString(R.string.title_visual_short_term_memory), VisualMemoryActivity.class);
         map.put(getResources().getString(R.string.title_visual_attention), VisualAttentionGame.class);
@@ -147,10 +161,15 @@ public class TutorialActivity extends AppCompatActivity {
         return map;
     }
 
+    /**
+     * Starts the game that the tutorial is loaded for.
+     * @param view The view that this function is called on.
+     */
     public void startGame(View view) {
         Intent intent = new Intent(view.getContext(), getClassMap().get(game.getGameName()));
         intent.putExtra("PATIENT_ID", patientID);
         intent.putExtra("ATTEMPTS", attemptsLeft);
         startActivity(intent);
+        finish();
     }
 }
