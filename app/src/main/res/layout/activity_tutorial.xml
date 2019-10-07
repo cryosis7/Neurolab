@@ -27,7 +27,7 @@
         android:layout_marginBottom="@dimen/margin_medium">
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
@@ -42,24 +42,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="4"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginBottom="@dimen/margin_large"
-        android:layout_weight="4"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/video_header"
+            style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/video_tutorial"
-            style="@style/TextBody"
-            android:layout_marginBottom="@dimen/margin_small"/>
+            android:layout_marginBottom="@dimen/margin_small"
+            android:text="@string/video_demonstration" />
 
         <VideoView
-            android:id="@+id/videoView"
+            android:id="@+id/video_view"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:background="@drawable/border_black_thick"
             android:clickable="true"
             android:focusable="true" />

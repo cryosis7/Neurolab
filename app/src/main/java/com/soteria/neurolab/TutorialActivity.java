@@ -78,7 +78,7 @@ public class TutorialActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void setVideo(String gameName) {
-        final VideoView video = findViewById(R.id.videoView);
+        final VideoView video = findViewById(R.id.video_view);
         final MediaController mediaController = new MediaController(this);
 
         // Handles starting and pausing the video on touches.

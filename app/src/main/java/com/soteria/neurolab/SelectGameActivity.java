@@ -20,6 +20,14 @@ import com.soteria.neurolab.utilities.PasswordAuthentication;
 
 import java.util.List;
 
+/**
+ * This class is used to select the game that the patient will play. It requires an ID/Reference then
+ * it will load up the games that that patient is assigned to in a list. A game can only be selected
+ * if they still have attempts left for the day for that game. It will launch the correlated game that
+ * was pressed with the Intents: PATIENT_ID, GAME_NAME and ATTEMPTS
+ *
+ * @author Scott Curtis
+ */
 public class SelectGameActivity extends AppCompatActivity {
 
     private int patientID;
