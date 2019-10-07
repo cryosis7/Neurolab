@@ -1,6 +1,5 @@
 package com.soteria.neurolab;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +24,6 @@ import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,11 +104,9 @@ public class EditPatientDetails extends AppCompatActivity {
         seekAttemptsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
             }
             /**
              * Changes the number displaying the attempts next to the seekbar
@@ -248,7 +243,6 @@ public class EditPatientDetails extends AppCompatActivity {
 
     /** Determines the behaviour of options selected from the action bar. Options include displaying
      *  the disclaimer and sending the user back to the main menu.
-     *  TODO insert link for logout
      *
      *  @param menuItem - The identifier of the item selected from the top bar.
      *  @return true if an option was able to be selected and false if an exception occurred.
@@ -261,6 +255,9 @@ public class EditPatientDetails extends AppCompatActivity {
                 case android.R.id.home:
                     super.onBackPressed();
                     return true;
+                //If the settings button is pressed, direct the user to the settings page
+                case R.id.action_settings:
+                    startActivity(new Intent(this, SettingsActivity.class));
                 //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                 case R.id.action_disclaimer:
                     DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
@@ -270,11 +267,6 @@ public class EditPatientDetails extends AppCompatActivity {
                 case R.id.action_logout:
                     startActivity(new Intent(this, LoginCreatePasswordActivity.class));
                     finish();
-                    return true;
-                case R.id.action_settings:
-                    Toast.makeText(getApplicationContext(), "SETTINGS PRESSED - Going to settings screen", Toast.LENGTH_SHORT).show();
-                    /*startActivity(new Intent(this, //TODO add link to settings page));
-                     */
                     return true;
                 //If an unknown option is selected, display an error to the user
                 default:

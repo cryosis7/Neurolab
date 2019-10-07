@@ -5,17 +5,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.utilities.PasswordAuthentication;
 
 import java.security.InvalidParameterException;
@@ -25,6 +31,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginFragment extends Fragment {
 
     private static final int PASSWORD_LENGTH_MINIMUM = 6;
+    final private int securityCode = 3579753;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,13 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 signIn();
+            }
+        });
+
+        view.findViewById(R.id.login_reset_password_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                forgotPassword();
             }
         });
 
@@ -115,5 +129,100 @@ public class LoginFragment extends Fragment {
             bodyText.setTextSize(24);
         } else
             ((TextInputLayout) getView().findViewById(R.id.login_password_inputLayout)).setError("Incorrect Password");
+    }
+
+    /**
+     * This function is called whenever the "I forgot my Password" button is pressed. It will
+     * check to see whether they have any security questions set and if they do, will redirect
+     * them to the LoginSecurityQuestions page. If they do not, they will be prompted to do a database
+     * dbPurge and a password reset at the same time. Otherwise they can keep attempting to log in.
+     */
+    private void forgotPassword() {
+        //Grabs the SharedPreferences file
+        final SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+
+        //Checks to see whether the SharedPreferences file has the security questions inside of them
+        if(!pref.contains("QUESTION_ONE") && !pref.contains("QUESTION_TWO")) {
+            //If the security questions do not exist, call an alertDialog to ask if user wants to
+            //wipe their password and the database in order to get back into the app
+            final AlertDialog.Builder eraseBuilder = new AlertDialog.Builder(getContext());
+            eraseBuilder.setTitle("Warning");
+            eraseBuilder.setMessage(getString(R.string.login_erase_database_warning));
+            eraseBuilder.setPositiveButton("Erase", new DialogInterface.OnClickListener()  {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    final AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(getContext());
+                    final EditText codeInput = new EditText(getContext());
+                    codeInput.setHint("Security Code");
+                    codeInput.setHintTextColor(getResources().getColor(R.color.colorDarkGrey));
+                    codeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    codeInput.setFilters(new InputFilter[] {new InputFilter.LengthFilter(9)});
+
+                    confirmBuilder.setTitle("Confirm Code");
+                    confirmBuilder.setMessage(getString(R.string.security_reset_information));
+                    confirmBuilder.setView( codeInput );
+                    confirmBuilder.setPositiveButton("Confirm", null );
+                    confirmBuilder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    dialogInterface.cancel();
+                    final AlertDialog showConfirm = confirmBuilder.create();
+                    showConfirm.show();
+                    Button showConfirmPositiveButton = showConfirm.getButton(AlertDialog.BUTTON_POSITIVE);
+                    showConfirmPositiveButton.setOnClickListener( new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if( codeInput.getText().toString().equals(""))
+                                Toast.makeText(getContext(), getResources().getString(R.string.security_code_blank), Toast.LENGTH_SHORT).show();
+                            else if( Integer.parseInt(codeInput.getText().toString() ) == securityCode) {
+                                DatabaseAccess db = new DatabaseAccess(getContext());
+
+                                db.purgeDatabase();
+                                SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.shared_preferences_filename), MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.remove("passwordHash");
+                                editor.remove("QUESTION_ONE");
+                                editor.remove("QUESTION_TWO");
+                                editor.remove("ANSWER_ONE");
+                                editor.remove("ANSWER_TWO");
+                                editor.apply();
+
+                                Toast.makeText(getContext(), getResources().getString(R.string.security_correct_security_code), Toast.LENGTH_SHORT).show();
+                                showConfirm.dismiss();
+                            } else {
+                                Toast.makeText(getContext(), getResources().getString(R.string.security_incorrect_security_code), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    TextView bodyText = showConfirm.findViewById(android.R.id.message);
+                    bodyText.setTextSize(24);
+                }
+            });
+            eraseBuilder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            final AlertDialog showErase = eraseBuilder.create();
+            showErase.setOnShowListener( new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface arg0) {
+                    showErase.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(20);
+                    showErase.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorWarning));
+                    showErase.getButton(AlertDialog.BUTTON_NEGATIVE).setTextSize(20);
+                }
+            });
+            showErase.show();
+            TextView bodyText = showErase.findViewById(android.R.id.message);
+            bodyText.setTextSize(24);
+        } else {
+            //If the security questions do exist, direct the user to the LoginSecurityQuestions
+            //page
+            startActivity(new Intent(getContext(), LoginSecurityQuestions.class));
+        }
     }
 }

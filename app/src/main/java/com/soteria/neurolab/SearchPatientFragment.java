@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,10 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import com.soteria.neurolab.database.DatabaseAccess;
-import com.soteria.neurolab.models.Patient;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,7 +145,6 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

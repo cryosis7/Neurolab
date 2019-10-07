@@ -29,7 +29,21 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
     private Cursor cursor = null;
 
-    public DatabaseAccess(Context context) {
+    //enum with game titles
+    public enum GAME_ENUM {
+        REACTION(1), MEMORY(2), MOTOR(3), Attention(4);
+        private int gameID;
+
+        GAME_ENUM(int value){
+            this.gameID = value;
+        }
+
+        public int getGameID(){
+            return this.gameID;
+        }
+    }
+
+    public DatabaseAccess(Context context){
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -489,18 +503,6 @@ public class DatabaseAccess {
     }
 
     /**
-     * Deletes all sessions in the database matching the patientID and gameID.
-     *
-     * @param patientID
-     * @param gameID
-     */
-    public void deletePatientSessions(String patientID, String gameID) {
-        open();
-        db.delete("Game_Session", "patient_ID=? AND game_ID=?", new String[]{patientID, gameID});
-        close();
-    }
-
-    /**
      * Deletes all game sessions, used for testing purposes only
      *
      * @throws SQLiteException
@@ -529,21 +531,6 @@ public class DatabaseAccess {
         close();
     }
 
-    public boolean checkAssignments(Patient patient) throws SQLiteException {
-        open();
-        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
-                new String[]{Integer.toString(patient.getPatientID())});
-        if (cursor.getCount() == 0) {
-            cursor.close();
-            close();
-            return false;
-        } else {
-            cursor.close();
-            close();
-            return true;
-        }
-    }
-
     /**
      * Returns all game assignments for a particular patient from the database
      *
@@ -568,6 +555,21 @@ public class DatabaseAccess {
         cursor.close();
         close();
         return gameAssignments;
+    }
+
+    public boolean checkAssignments(Patient patient)throws SQLiteException{
+        open();
+        cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
+                new String[]{Integer.toString(patient.getPatientID())});
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            close();
+            return false;
+        } else {
+            cursor.close();
+            close();
+            return true;
+        }
     }
 
     /**
@@ -722,5 +724,17 @@ public class DatabaseAccess {
             close();
             return latestDate;
         }
+    }
+
+    /**
+     * This function is called whenever the main user of the app forgets both their password and
+     * their security questions, or forgets their password and has no security questions put in
+     * place. This function will call all the other functions that focus on deleting all patient
+     * data from the application, allowing for the password to be reset.
+     */
+    public void purgeDatabase() {
+        deleteAllPatients();
+        deleteAllAssignments();
+        deleteAllSessions();
     }
 }

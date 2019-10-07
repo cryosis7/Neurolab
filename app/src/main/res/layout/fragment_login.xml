@@ -69,12 +69,22 @@
 
         <Button
             android:id="@+id/login_sign_in_button"
-            android:enabled="false"
             style="@style/TextButtonBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_large"
+            android:enabled="false"
             android:text="@string/login_sign_in" />
+
+        <Button
+            android:id="@+id/login_reset_password_button"
+            style="@style/TextButtonRed"
+            android:textSize="@dimen/text_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/login_reset_password" />
     </LinearLayout>
 
 </LinearLayout>

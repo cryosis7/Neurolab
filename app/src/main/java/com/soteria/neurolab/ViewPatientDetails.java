@@ -2,9 +2,7 @@ package com.soteria.neurolab;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,14 +14,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.soteria.neurolab.database.DatabaseAccess;
-import com.soteria.neurolab.models.Game;
 import com.soteria.neurolab.models.GameAssignment;
 import com.soteria.neurolab.models.Patient;
 import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,7 +56,7 @@ public class ViewPatientDetails extends AppCompatActivity {
                 
         } catch (NullPointerException e) {
             Toast.makeText(getApplicationContext(),"ERROR - Patient does not exist or is corrupted",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, SearchPatientFragment.class));
+            startActivity(new Intent(this, SearchCreateDeleteActivity.class));
             finish();
         }
 
@@ -116,15 +112,12 @@ public class ViewPatientDetails extends AppCompatActivity {
         });
 
         /*When manage patient button is pressed, send the user to the manage patient screen for the
-          current patient.
-          TODO add link to send users to the manage patient screen once created, remove toast and comment markers  once done. */
+          current patient.*/
         manageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                Intent manageIntent = new Intent(ViewPatientDetails.this, EditPatientDetails.class);
                manageIntent.putExtra("PATIENT_REFERENCE", patientReference);
                startActivity(manageIntent);
-
             }
         });
 
@@ -226,7 +219,6 @@ public class ViewPatientDetails extends AppCompatActivity {
 
     /** Determines the behaviour of options selected from the action bar. Options include displaying
      *  the disclaimer and sending the user back to the main menu.
-     *  TODO insert link for logout
      *
      *  @param menuItem - The identifier of the item selected from the top bar.
      *  @return true if an option was able to be selected and false if an exception occurred.
@@ -239,6 +231,10 @@ public class ViewPatientDetails extends AppCompatActivity {
                  case android.R.id.home:
                      super.onBackPressed();
                      return true;
+                 //If the settings button is pressed, direct the user to the settings page
+                 case R.id.action_settings:
+                     startActivity(new Intent(this, SettingsActivity.class));
+                     return true;
                  //If the disclaimer button is pressed, display the disclaimer in an alert dialog
                  case R.id.action_disclaimer:
                      DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
@@ -248,11 +244,6 @@ public class ViewPatientDetails extends AppCompatActivity {
                  case R.id.action_logout:
                      startActivity(new Intent(this, LoginCreatePasswordActivity.class));
                      finish();
-                     return true;
-                 case R.id.action_settings:
-                     Toast.makeText(getApplicationContext(), "SETTINGS PRESSED - Going to settings screen", Toast.LENGTH_SHORT).show();
-                     /*startActivity(new Intent(this, //TODO add link to settings page));
-                     */
                      return true;
                   //If an unknown option is selected, display an error to the user
                  default:

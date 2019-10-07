@@ -93,6 +93,10 @@ public class ViewReportActivity extends AppCompatActivity {
                 onBackPressed();
                 finish();
                 return true;
+            //If the settings button is pressed, direct the user to the settings page
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             case R.id.action_disclaimer:
                 DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
                 dad.showDisclaimer(this, getResources());
@@ -101,11 +105,6 @@ public class ViewReportActivity extends AppCompatActivity {
             case R.id.action_logout:
                 startActivity(new Intent(this, LoginCreatePasswordActivity.class));
                 finish();
-                return true;
-            case R.id.action_settings:
-                Toast.makeText(getApplicationContext(), "SETTINGS PRESSED - Going to settings screen", Toast.LENGTH_SHORT).show();
-                /*startActivity(new Intent(this, //TODO add link to settings page));
-                 */
                 return true;
             //If an unknown option is selected, display an error to the user
             default:

@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +54,12 @@ public class VisualAttentionGame extends AppCompatActivity {
     private int[] imageSet;
     private ImageButton[][] buttons;
 
+    private TextView scoreText;
+    private TextView attemptsRemaining;
+    private Button playBtn;
+    private Button exitButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +82,37 @@ public class VisualAttentionGame extends AppCompatActivity {
             startActivity(new Intent(this, SelectGameActivity.class));
             finish();
         }
-        setUpRounds();
+        startGame();
+    }
+
+    public void startGame(){
+        setContentView(R.layout.activity_visual_attention_game_score_screen);
+        attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
+        playBtn = findViewById(R.id.visual_attention_play_btn);
+        exitButton = findViewById(R.id.visual_attention_exit_btn);
+
+        if(attemptsLeft == 1){
+            attemptsRemaining.setText(getResources().getString(R.string.textview_attempts_singular,
+                    Integer.toString(attemptsLeft)));
+        } else {
+            attemptsRemaining.setText(getResources().getString(R.string.textview_attempts_plural,
+                    Integer.toString(attemptsLeft)));
+        }
+
+        playBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setUpRounds();
+            }
+        });
+
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                finish();
+            }
+        });
     }
 
     /**
@@ -108,7 +143,8 @@ public class VisualAttentionGame extends AppCompatActivity {
         final ImageView targetImage = findViewById(R.id.visual_attention_target_image);
 
         //Sets text to display the round number
-        roundNumText.setText(getResources().getString(R.string.visualAttention_round) + " " + roundCount);
+        roundNumText.setText(getResources().getString(R.string.game_round,
+                Integer.toString(roundCount)));
         //Gets a set of images depending on the round number
         imageSet = getImageSets();
         //Sets a random target image from the image set
@@ -194,12 +230,15 @@ public class VisualAttentionGame extends AppCompatActivity {
 
         //Displays the score screen
         setContentView(R.layout.activity_visual_attention_game_score_screen);
-        TextView scoreText = findViewById(R.id.visual_attention_score_text);
-        scoreText.setText(finalScore + "%");
-
-        TextView attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
-        Button playAgainBtn = findViewById(R.id.visual_attention_play_again_btn);
-        Button exitButton = findViewById(R.id.visual_attention_exit_btn);
+        //game_info = findViewById(R.id.visual_attention_info_text);
+        scoreText = findViewById(R.id.visual_attention_score_text);
+        scoreText.setText(getResources().getString(R.string.visualAttention_display_score,
+                Double.toString(finalScore)) + "%");
+        scoreText.setVisibility(View.VISIBLE);
+        exitButton = findViewById(R.id.visual_attention_exit_btn);
+        playBtn = findViewById(R.id.visual_attention_play_btn);
+        playBtn.setText(getResources().getString(R.string.play_again));
+        attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
 
         //Creates a new game session in the database
         GameSession gameSession = new GameSession(patientID,  4, finalScore, new Date());
@@ -217,12 +256,12 @@ public class VisualAttentionGame extends AppCompatActivity {
             }
         } else{
             attemptsRemaining.setText(getResources().getString(R.string.attempts_none));
-            playAgainBtn.setVisibility(View.INVISIBLE);
+            playBtn.setVisibility(View.INVISIBLE);
         }
 
         //If the patient plays again, round count, round score and total score are reset.
         //Game restarts from round 1
-        playAgainBtn.setOnClickListener(new View.OnClickListener() {
+        playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 roundCount = 1; roundScore = 0; totalScore = 0;
@@ -230,7 +269,6 @@ public class VisualAttentionGame extends AppCompatActivity {
             }
         });
 
-        //TODO implement functionality to return to select game screen once implemented
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
