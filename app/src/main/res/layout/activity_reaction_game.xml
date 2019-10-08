@@ -9,53 +9,71 @@
     android:onClick="screenTapped"
     tools:context=".ReactionGameActivity">
 
-    <Button
-        android:id="@+id/reaction_game_start_button"
-
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        style="@style/button_yellow_background"
-        android:onClick="runRound"
-        android:text="@string/start_game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/reaction_game_circle_button"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/reaction_game_circle"
-        android:onClick="stopTimer"
-        android:text="@string/reactionGame_tap"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="128sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/reaction_game_information_txt"
-        android:layout_width="661dp"
-        android:layout_height="160dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+                <Button
+                    android:id="@+id/reaction_game_start_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    style="@style/button_yellow_background"
+                    android:onClick="runRound"
+                    android:text="@string/start_game"/>
+
+            <Button
+                android:id="@+id/reaction_game_exit_btn"
+                style="@style/button_yellow_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/exit"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/reactionGame_information"
-        android:textAlignment="center"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="@dimen/text_body"
-        app:layout_constraintBottom_toTopOf="@+id/reaction_game_circle_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/reaction_game_information_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:lineSpacingExtra="20sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/reactionGame_information"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="@dimen/text_body"/>
+
+        <Button
+            android:id="@+id/reaction_game_circle_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reaction_game_circle"
+            android:onClick="stopTimer"
+            android:text="@string/reactionGame_tap"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="128sp"
+            android:visibility="invisible"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

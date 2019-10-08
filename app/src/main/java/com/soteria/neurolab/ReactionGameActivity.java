@@ -1,5 +1,6 @@
 package com.soteria.neurolab;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,6 +51,13 @@ public class ReactionGameActivity extends AppCompatActivity {
         patientID = intent.getIntExtra("PATIENT_ID", -1);
         if (patientID == -1)
             throw new IllegalArgumentException("Expected Int Extra 'PATIENT_ID' in Intent - Received none");
+
+        findViewById(R.id.reaction_game_exit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     /**
@@ -60,13 +68,23 @@ public class ReactionGameActivity extends AppCompatActivity {
      * @param startButton The start button that is tapped to run the game.
      */
     public void runRound(View startButton) {
-        startButton.setVisibility(View.INVISIBLE);
-        ((TextView) findViewById(R.id.reaction_game_information_txt)).setText("");
-        reactionTimer = new ReactionTimer();
-        reactionTimer.execute(this);
+        if (!((Button) startButton).getText().equals(getResources().getString(R.string.play_again))) {
+            startButton.setVisibility(View.INVISIBLE);
+            ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(getString(R.string.reactionGame_information));
+            reactionTimer = new ReactionTimer();
+            reactionTimer.execute(this);
 
-        if (((Button) startButton).getText().equals(getResources().getString(R.string.start_game)))
-            ((Button) startButton).setText(R.string.next_round);
+            if (((Button) startButton).getText().equals(getResources().getString(R.string.start_game)))
+                ((Button) startButton).setText(R.string.next_round);
+        }
+        else {
+            ((Button) startButton).setText(R.string.start_game);
+            ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(getString(R.string.reactionGame_information));
+            findViewById(R.id.reaction_game_exit_btn).setVisibility(View.INVISIBLE);
+
+            round = 0;
+            results.clear();
+        }
     }
 
     /**
@@ -92,7 +110,7 @@ public class ReactionGameActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.reaction_game_information_txt)).setText(
                 (round < 4)
                         ? String.format(Locale.getDefault(), "Round %d", round + 1)
-                        : String.format(Locale.getDefault(), "Round %d\nReaction Time: %dms", round + 1, getAverageResult()));
+                        : String.format(Locale.getDefault(), "GAME OVER\nReaction Time: %dms", getAverageResult()));
 
         round++;
         if (round < 5) {
@@ -104,8 +122,7 @@ public class ReactionGameActivity extends AppCompatActivity {
 
     /**
      * Averages the results and will save it to the database.
-     * It then launches the next activity. bundles two extras into the intent:
-     * PATIENT_ID & GAME_SCORE (An int value representing the gameSession metric)
+     * It then displays a play again button and an exit game button.
      */
     private void endGame() {
         DatabaseAccess db = new DatabaseAccess(this);
@@ -116,10 +133,19 @@ public class ReactionGameActivity extends AppCompatActivity {
         GameSession gameSession = new GameSession(patientID, gameID, getAverageResult(), new Date());
         db.createSession(gameSession);
 
-        // TODO: Add a play again + exit button here displaying their number of attempts left.
+        int maxAttempts = db.getAssignment(patientID, gameID).getGameAttempts();
+        int dailyAttempts = db.getTodaysSessions(patientID, gameID).size();
+        int attemptsRemaining = maxAttempts - dailyAttempts;
 
-//        onBackPressed();
-//        finish();
+        ((TextView) findViewById(R.id.reaction_game_information_txt)).append(
+                String.format(Locale.ENGLISH,
+                        "\nYou have %d attempt%s remaining today.",
+                        attemptsRemaining, attemptsRemaining == 1 ? "" : "s"));
+        ((Button) findViewById(R.id.reaction_game_start_button)).setText(getString(R.string.play_again));
+
+        if (attemptsRemaining > 0)
+            findViewById(R.id.reaction_game_start_button).setVisibility(View.VISIBLE);
+        findViewById(R.id.reaction_game_exit_btn).setVisibility(View.VISIBLE);
     }
 
     /**
@@ -167,15 +193,18 @@ public class ReactionGameActivity extends AppCompatActivity {
      * @param view
      */
     public void screenTapped(View view) {
-        View circleButton = findViewById(R.id.reaction_game_circle_button);
-        View startButton = findViewById(R.id.reaction_game_start_button);
-        if (circleButton.getVisibility() == View.VISIBLE)
-            stopTimer(circleButton);
-        else if (startButton.getVisibility() == View.INVISIBLE)
-            stopTimerFoul();
-        else if (startButton.getVisibility() == View.VISIBLE)
-            runRound(startButton);
+        if (findViewById(R.id.reaction_game_exit_btn).getVisibility() == View.INVISIBLE){
+            View circleButton = findViewById(R.id.reaction_game_circle_button);
+            View startButton = findViewById(R.id.reaction_game_start_button);
+            if (circleButton.getVisibility() == View.VISIBLE)
+                stopTimer(circleButton);
+            else if (startButton.getVisibility() == View.INVISIBLE)
+                stopTimerFoul();
+            else if (startButton.getVisibility() == View.VISIBLE)
+                runRound(startButton);
+        }
     }
+
 
     /**
      * An inner class that pauses for a random delay on a separate thread then updates the
