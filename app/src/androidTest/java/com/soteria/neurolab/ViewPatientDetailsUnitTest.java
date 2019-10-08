@@ -55,7 +55,7 @@ public class ViewPatientDetailsUnitTest
         String testStringID = "Patient: PL15";
         String testStringDate = "Games last run: No games recorded on current patient";
 
-        onView(withId(R.id.patientIDTitleTextView)).check(matches(allOf
+        onView(withId(R.id.patientReferenceTitleTextView)).check(matches(allOf
                 (withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
                         withText(testStringID))));
         onView(withId(R.id.patientGamesLastRunTextView)).check(matches(allOf
