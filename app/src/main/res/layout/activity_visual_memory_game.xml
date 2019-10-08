@@ -28,9 +28,7 @@
 
     <Button
         android:id="@+id/visual_memory_start_game"
-        style="@style/TextButtonBlue"
-        android:layout_width="275dp"
-        android:layout_height="65dp"
+        style="@style/button_yellow_background"
         android:layout_marginBottom="120dp"
         android:text="@string/start_game"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,9 +39,7 @@
 
     <Button
         android:id="@+id/visual_memory_play_again"
-        style="@style/TextButtonBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/button_yellow_background"
         android:layout_marginStart="120dp"
         android:layout_marginBottom="68dp"
         android:text="@string/play_again"
@@ -57,9 +53,7 @@
 
     <Button
         android:id="@+id/visual_memory_exit_game"
-        style="@style/TextButtonBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/button_yellow_background"
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="68dp"
         android:text="@string/exit"

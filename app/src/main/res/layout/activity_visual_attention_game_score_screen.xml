@@ -48,9 +48,7 @@
 
     <Button
         android:id="@+id/visual_attention_play_btn"
-        style="@style/TextButtonBlue"
-        android:layout_width="304dp"
-        android:layout_height="88dp"
+        style="@style/button_yellow_background"
         android:layout_marginTop="48dp"
         android:gravity="center_horizontal"
         android:text="@string/start_game"
@@ -61,11 +59,11 @@
 
     <Button
         android:id="@+id/visual_attention_exit_btn"
-        android:gravity="center_horizontal"
-        style="@style/TextButtonBlue"
-        android:layout_width="301dp"
-        android:layout_height="78dp"
+        style="@style/button_yellow_background"
+        android:layout_width="281dp"
+        android:layout_height="67dp"
         android:layout_marginTop="32dp"
+        android:gravity="center_horizontal"
         android:text="@string/exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

@@ -52,13 +52,12 @@
 
         <Button
             android:id="@+id/visual_attention_submit_button"
-            style="@style/TextButtonBlue"
-            android:layout_width="192dp"
-            android:layout_height="108dp"
+            style="@style/button_yellow_background"
+
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="0dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="3dp"
             android:text="@string/visualAttention_submit" />
     </RelativeLayout>
 

@@ -43,31 +43,25 @@
 
     <Button
         android:id="@+id/motor_skills_game_start_game"
-        style="@style/TextButtonBlue"
-        android:text="@string/start_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/button_yellow_background"
         android:layout_marginBottom="120dp"
+        android:text="@string/start_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/motor_skills_game_play_again"
-        style="@style/TextButtonBlue"
-        android:text="@string/play_again"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/button_yellow_background"
         android:layout_marginStart="120dp"
         android:layout_marginBottom="68dp"
+        android:text="@string/play_again"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/motor_skills_game_exit_game"
-        style="@style/TextButtonBlue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/button_yellow_background"
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="68dp"
         android:text="@string/exit"

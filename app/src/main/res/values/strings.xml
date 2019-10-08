@@ -58,7 +58,7 @@
     <!--Visual Attention Game-->
     <string name="visualAttention_display_score">Score: %1$s</string>
     <string name="visualAttention_tap_text">Tap Every</string>
-    <string name="visualAttention_submit">Submit Answer</string>
+    <string name="visualAttention_submit">Submit</string>
 
     <!--Visual Memory Game Strings-->
     <string name="visual_memory_textview_remember">Remember this pattern</string>
