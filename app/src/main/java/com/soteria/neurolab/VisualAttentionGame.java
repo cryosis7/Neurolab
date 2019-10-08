@@ -47,7 +47,7 @@ public class VisualAttentionGame extends AppCompatActivity {
     private int targetsFound = 0;
     private double roundScore = 0;
     private int numOfTaps = 0;
-    private double totalScore = 0;
+    private int totalScore = 0;
 
     private int buttonsHorizontal;
     private int buttonsVertical;
@@ -224,16 +224,16 @@ public class VisualAttentionGame extends AppCompatActivity {
         //Decrements remaining attempts
         attemptsLeft--;
         //Calculates the final score
-        totalScore = totalScore / 10;
-        BigDecimal decimalScore = new BigDecimal(totalScore).setScale(2, RoundingMode.HALF_UP);
-        double finalScore = decimalScore.doubleValue();
+        totalScore = Math.round(totalScore / 10);
+        //BigDecimal decimalScore = new BigDecimal(totalScore).setScale(2, RoundingMode.HALF_UP);
+        //double finalScore = decimalScore.doubleValue();
 
         //Displays the score screen
         setContentView(R.layout.activity_visual_attention_game_score_screen);
         //game_info = findViewById(R.id.visual_attention_info_text);
         scoreText = findViewById(R.id.visual_attention_score_text);
         scoreText.setText(getResources().getString(R.string.visualAttention_display_score,
-                Double.toString(finalScore)) + "%");
+                totalScore + "%"));
         scoreText.setVisibility(View.VISIBLE);
         exitButton = findViewById(R.id.visual_attention_exit_btn);
         playBtn = findViewById(R.id.visual_attention_play_btn);
@@ -241,7 +241,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
 
         //Creates a new game session in the database
-        GameSession gameSession = new GameSession(patientID,  4, finalScore, new Date());
+        GameSession gameSession = new GameSession(patientID,  4, totalScore, new Date());
         DatabaseAccess db = new DatabaseAccess(this);
         db.createSession(gameSession);
 
