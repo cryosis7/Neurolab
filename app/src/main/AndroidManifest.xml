@@ -23,7 +23,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".EditPatientDetails" />
         <activity android:name=".ReactionGameActivity" />
-        <activity android:name=".TutorialActivity" android:exported="true"/>
+        <activity android:name=".TutorialActivity"/>
         <activity android:name=".MotorSkillsGameActivity" />
         <activity android:name=".VisualMemoryActivity"/>
         <activity android:name=".ViewPatientDetails" />

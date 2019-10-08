@@ -1,6 +1,5 @@
 package com.soteria.neurolab;
 
-import android.content.ComponentName;
 import android.util.Log;
 import android.view.View;
 import android.widget.Checkable;
@@ -28,7 +27,6 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -77,8 +75,8 @@ public class EditPatientDetailsTest {
         onView(withId(R.id.editPatientDetails_confirmButton)).perform(new ViewAction[]{ViewActions.click()});
         Log.i("@Test", "testDontChangeAnythingConfirm: Asserting toast message and change page");
         onView(withText(R.string.edit_patient_details_patient_updated)).inRoot(MobileViewMatchers.isToast()).check(ViewAssertions.matches(isDisplayed()));
-        onView(withId(R.id.patientIDTitleTextView)).check(ViewAssertions.matches(isDisplayed()));
-        onView(withId(R.id.patientIDTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASON93")));
+        onView(withId(R.id.patientReferenceTitleTextView)).check(ViewAssertions.matches(isDisplayed()));
+        onView(withId(R.id.patientReferenceTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASON93")));
         List<Patient> patients = this.db.getAllPatients();
         MatcherAssert.assertThat(Integer.valueOf(patients.size()), CoreMatchers.is(1));
         MatcherAssert.assertThat(patients.get(0).getPatientReference(), CoreMatchers.is("JASON93"));
@@ -113,7 +111,7 @@ public class EditPatientDetailsTest {
         Log.i("@Test", "testEditPatientAllGames: Asserting toast message and change page");
         onView(withText(R.string.edit_patient_details_patient_updated)).inRoot(MobileViewMatchers.isToast()).check(ViewAssertions.matches(isDisplayed()));
         onView(withId(R.id.viewPatientDetailsActivity)).check(ViewAssertions.matches(isDisplayed()));
-        onView(withId(R.id.patientIDTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASON93")));
+        onView(withId(R.id.patientReferenceTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASON93")));
         List<Patient> patients = this.db.getAllPatients();
         MatcherAssert.assertThat(Integer.valueOf(patients.size()), CoreMatchers.is(1));
         MatcherAssert.assertThat(patients.get(0).getPatientReference(), CoreMatchers.is("JASON93"));
@@ -138,7 +136,7 @@ public class EditPatientDetailsTest {
         Log.i("@Test", "testCreatePatientNoGames: Asserting toast message and change page");
         onView(withText(R.string.edit_patient_details_patient_updated)).inRoot(MobileViewMatchers.isToast()).check(ViewAssertions.matches(isDisplayed()));
         onView(withId(R.id.viewPatientDetailsActivity)).check(ViewAssertions.matches(isDisplayed()));
-        onView(withId(R.id.patientIDTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASON93")));
+        onView(withId(R.id.patientReferenceTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASON93")));
         List<Patient> patients = this.db.getAllPatients();
         MatcherAssert.assertThat(Integer.valueOf(patients.size()), CoreMatchers.is(1));
         MatcherAssert.assertThat(patients.get(0).getPatientReference(), CoreMatchers.is("JASON93"));
@@ -172,7 +170,7 @@ public class EditPatientDetailsTest {
         Log.i("@Test", "testChangePatientReference: Asserting toast message and change page");
         onView(withText(R.string.edit_patient_details_patient_updated)).inRoot(MobileViewMatchers.isToast()).check(ViewAssertions.matches(isDisplayed()));
         onView(withId(R.id.viewPatientDetailsActivity)).check(ViewAssertions.matches(isDisplayed()));
-        onView(withId(R.id.patientIDTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASONNT")));
+        onView(withId(R.id.patientReferenceTitleTextView)).check(ViewAssertions.matches(withText("Patient: JASONNT")));
         List<Patient> patients = this.db.getAllPatients();
         MatcherAssert.assertThat(Integer.valueOf(patients.size()), CoreMatchers.is(1));
         MatcherAssert.assertThat(patients.get(0).getPatientReference(), CoreMatchers.is("JASONNT"));

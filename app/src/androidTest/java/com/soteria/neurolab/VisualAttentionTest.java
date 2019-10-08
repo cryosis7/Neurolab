@@ -292,7 +292,7 @@ public class VisualAttentionTest {
         onView(withId(R.id.visual_attention_score_text)).check(matches(
                 withText(percentage)));
 
-        onView(withId(R.id.visual_attention_play_again_btn)).check(matches(
+        onView(withId(R.id.visual_attention_play_btn)).check(matches(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         onView(withId(R.id.visual_attention_exit_btn)).check(matches(
@@ -306,7 +306,7 @@ public class VisualAttentionTest {
     public void testPlayAgain(){
         testDisplayScore();
 
-        onView(withId(R.id.visual_attention_play_again_btn)).check(matches(
+        onView(withId(R.id.visual_attention_play_btn)).check(matches(
                 withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).perform(click());
 
         testGameLoads();

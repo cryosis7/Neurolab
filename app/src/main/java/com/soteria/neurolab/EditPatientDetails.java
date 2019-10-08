@@ -28,8 +28,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * TODO: Needs class description
+ */
 public class EditPatientDetails extends AppCompatActivity {
     private static final String TAG = "EditPatientDetails";
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class EditPatientDetails extends AppCompatActivity {
             finish();
         }
 
-        final Patient patient = db.getPatient(patientReferenceOld);
+        patient = db.getPatient(patientReferenceOld);
 
         //Initializing UI Elements
         final TextInputEditText editPatientID = findViewById(R.id.editPatientDetails_inputPatientID);
@@ -164,9 +168,10 @@ public class EditPatientDetails extends AppCompatActivity {
 
                         //Produce toast message saying patient updated and go to view patient details page
                         Toast.makeText(EditPatientDetails.this, getResources().getString(R.string.edit_patient_details_patient_updated),Toast.LENGTH_LONG).show();
+
                         Intent viewIntent = new Intent(EditPatientDetails.this, ViewPatientDetails.class);
                         viewIntent.putExtra("PATIENT_REFERENCE", patientReference);
-                        startActivity(viewIntent);
+                        setResult(RESULT_OK, viewIntent);
                         finish();
                     } else {
                         editPatientIDLayout.setErrorEnabled(true);
@@ -278,5 +283,4 @@ public class EditPatientDetails extends AppCompatActivity {
             return false;
         }
     }
-
 }
