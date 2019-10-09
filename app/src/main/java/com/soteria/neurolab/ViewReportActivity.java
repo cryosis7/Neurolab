@@ -233,20 +233,20 @@ public class ViewReportActivity extends AppCompatActivity {
     /**
      * Calculates the highest score for that game and time period and sets the text
      */
-    private void getBestScore(){
+    private void getBestScore() {
         double scoreBest = 0;
-        if(gameListSpinner.getSelectedItem().toString().equals(getResources().getString(R.string.title_reaction_time))) {
+        if (gameListSpinner.getSelectedItem().toString().equals(getResources().getString(R.string.title_reaction_time))) {
             for (GameSession gs : gameSessions)
                 scoreBest = gs.getMetrics() < scoreBest || scoreBest == 0 ? gs.getMetrics() : scoreBest;
         } else {
             for (GameSession gs : gameSessions)
                 scoreBest = gs.getMetrics() > scoreBest ? gs.getMetrics() : scoreBest;
         }
-            if (scoreBest == 0) {
-                highestScoreTextView.setText(getResources().getString(R.string.view_report_best_blank));
-            } else {
-                highestScoreTextView.setText(getResources().getString(R.string.view_report_best, String.valueOf(scoreBest)));
-            }
+        if (scoreBest == 0) {
+            highestScoreTextView.setText(getResources().getString(R.string.view_report_best_blank));
+        } else {
+            highestScoreTextView.setText(getResources().getString(R.string.view_report_best, String.valueOf(scoreBest)));
+        }
     }
 
     /**
