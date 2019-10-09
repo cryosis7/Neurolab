@@ -286,7 +286,6 @@ public class ViewPatientDetails extends AppCompatActivity {
                 TextView lastPlayed = findViewById(R.id.patientGamesLastRunTextView);
                 lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, getDate(patient)));
             }
-
         }
     }
 }

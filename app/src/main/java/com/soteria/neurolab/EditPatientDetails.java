@@ -283,4 +283,15 @@ public class EditPatientDetails extends AppCompatActivity {
             return false;
         }
     }
+
+    /**
+     * Overrides the on back pressed to indicate the state (Does not need refresh) that it is
+     * returning to the ViewPatientDetails screen
+     */
+    @Override
+    public void onBackPressed() {
+        Intent viewIntent = new Intent(this, ViewPatientDetails.class);
+        setResult(RESULT_CANCELED, viewIntent);
+        finish();
+    }
 }
