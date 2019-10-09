@@ -50,6 +50,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
     Button[][] gridButton = new Button[5][5];
     //An number array list used to store the numbers 1 through to 25.
     ArrayList<Integer> randList = new ArrayList<>();
+    //This value determines whether or not the user is in the first round\
+    boolean firstRound = false;
 
     /**
      * This function is called when the page is loaded. It sets the UI elements on the page and grabs
@@ -122,6 +124,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                     // Prevent the user from starting a new game while one is in progress by hiding the
                     // start game button
                     startGameButton.setVisibility(View.INVISIBLE);
+                    // Marks the beginning of the first round
+                    firstRound = true;
                     // Create the pattern for the game
                     setUpPattern();
                 }
@@ -142,6 +146,8 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                     // game.
                     squaresInPattern = 3;
                     // Create the pattern for the game
+                    // Marks the beginning of the first round
+                    firstRound = true;
                     setUpPattern();
                 }
             });
@@ -250,8 +256,6 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
      * would like to go again.
      */
     private void gameOver() {
-        //Sets the infoText textview to show game completion
-        infoText.setText(getResources().getString(R.string.visual_memory_textview_game_complete));
         //Sets the triesText textview to show the users attempts remaining
         if (attemptsLeft > 1)
             triesText.setText(getResources().getString(R.string.textview_attempts_plural, Integer.toString(attemptsLeft)));
@@ -275,9 +279,13 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
         }
         //Calculates the score by using the squaresInPattern number. This is reduced by one as the
         //last pattern is a failure and is not counted towards the score.
-        double score = Double.parseDouble(Integer.toString(squaresInPattern--));
-        if( score < 3 )
+        double score = Double.parseDouble(Integer.toString(squaresInPattern-1));
+        //If it was the first round, make the score 0
+        if( firstRound )
             score = 0;
+
+        //Sets the infoText textview to show game completion
+        infoText.setText(getResources().getString(R.string.visual_memory_textview_score, Long.toString(Math.round(score)) ));
 
         //Creates a new game session in the database
         GameSession gameSession = new GameSession(patientID, 2, score, new Date());
@@ -330,6 +338,9 @@ public class VisualMemoryActivity extends AppCompatActivity implements View.OnCl
                 //for the next round
                 squaresInPattern++;
                 currentPatternNumber = 1;
+                //If the round was the first round, make first round boolean false
+                if( firstRound )
+                    firstRound = false;
                 //Prevents overflow by ending the game early if the squares in pattern go over the
                 //number of buttons available in the grid.
                 if (squaresInPattern > 25) {

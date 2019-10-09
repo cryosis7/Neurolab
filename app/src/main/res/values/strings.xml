@@ -67,6 +67,7 @@
     <string name="visual_memory_textview_round_complete">You are correct!</string>
     <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
     <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
+    <string name="visual_memory_textview_score">Score: %1$s squares</string>
     <string name="visual_memory_tag_error_check">Incorrect Guess</string>
     <string name="visual_memory_tag_not_correct_button">Not Correct</string>
     <string name="visual_memory_tag_pattern_check">Part of Pattern</string>
