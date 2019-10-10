@@ -157,7 +157,10 @@
 
     <!--Generic Strings-->
     <string name="disclaimer">Disclaimer</string>
-    <string name="disclaimer_body">"Neurolab by Soteria is designed as an assistant tool only.\nIt should not be relied upon for treatment, diagnosis or professional medical advice.\nIf you have any queries about its use, please consult your local physician or health care provider.\n\nBy accessing and using this app, you have confirmed that you have read, understood and accepted the above statement."</string>
+    <string name="disclaimer_body">"In regards to this app\nNeurolab by Soteria is designed as an assistant tool only. It should not be relied upon for treatment, diagnosis\n or professional medical advice. If you have any queries about its use,\nplease consult your local physician or health care provider.
+        \nIn regards to personal data\nSoteria do not store any personal data you enter on external hardware, \ninformation gathered by this app will stay on the device installed. Your information, \nand control over it, is accessible only to you or your healthcare provider.
+        \nYour Responsibilities\nYou must not store any information that could be considered confidential information \non this application for the purposes of identifying a patient registered on this device. Information includes but is not limited to a patient's name, age, address, phone number or birthday.
+        \nBy continuing to the app, you confirm that you have read, understood and accept the above statement."</string>
     <string name="shared_preferences_filename">neurolabPrefs</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
