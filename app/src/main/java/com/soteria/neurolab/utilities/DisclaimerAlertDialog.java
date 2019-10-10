@@ -52,7 +52,7 @@ public class DisclaimerAlertDialog {
         final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(callingClass);
 
         disclaimerBuilder.setTitle(resources.getString(R.string.disclaimer))
-                .setMessage(resources.getString(R.string.disclaimer_body))
+                .setMessage(resources.getText(R.string.disclaimer_body))
                 .setCancelable(false)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
