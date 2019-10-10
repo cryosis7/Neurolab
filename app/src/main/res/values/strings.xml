@@ -67,6 +67,7 @@
     <string name="visual_memory_textview_round_complete">You are correct!</string>
     <string name="visual_memory_textview_try_plural">%1$s tries remaining</string>
     <string name="visual_memory_textview_try_singular">%1$s try remaining</string>
+    <string name="visual_memory_textview_score">Score: %1$s squares</string>
     <string name="visual_memory_tag_error_check">Incorrect Guess</string>
     <string name="visual_memory_tag_not_correct_button">Not Correct</string>
     <string name="visual_memory_tag_pattern_check">Part of Pattern</string>
@@ -109,7 +110,7 @@
     <string name="security_code_blank">Security code is blank, please try again</string>
     <string name="security_incorrect_security_code">Incorrect security code, please try again</string>
     <string name="security_correct_security_code">Security code correct, wiping database information and login information</string>
-    <string name="security_reset_information">Please enter in the security code to wipe the database information. This code can be found inside the user manual.\n\nOnce you confirm the security code, the reset will happen immediately.\n\n</string>
+    <string name="security_reset_information">Please enter in the security code to wipe the database information. This code can be found inside the user manual, in the "Quick Guide - Resetting Your Password" page.\n\nOnce you confirm the security code, the reset will happen immediately.\n\n</string>
     <string name="security_tag_security_code">Security Code</string>
     <string name="security_question_answers_incorrect">The answers to the security questions are incorrect, please try again</string>
 

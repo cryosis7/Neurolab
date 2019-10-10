@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -85,8 +84,17 @@ public class ViewPatientDetails extends AppCompatActivity {
 
         // Code for changing the patientID and lastGamesRun text views to display the information
         // passed through to it from another page.
+        String lastTimePlayed;
+        try {
+            lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
+        } catch (ParseException e) {
+            lastTimePlayed = db.getLatestDate(patient.getPatientID());
+        } catch (NullPointerException e) {
+            lastTimePlayed = "No games recorded on current patient";
+        }
+
         patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patient.getPatientReference()));
-        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, getDate(patient)));
+        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastTimePlayed));
 
         /*When run games is pressed, checks to see if patient has any game assignments and remaining
         attempts, if they do the user is redirected to the patient profile. */
@@ -172,45 +180,26 @@ public class ViewPatientDetails extends AppCompatActivity {
     }
 
     /**
-     * Attempts to grab the most recent date the patient has played any game. It will attempt
-     * to display the date in an appropriate format but if unable to due to a syntax error will
-     * display the date as is.
-     *
-     * @param patient The patient to set the last date for
-     * @return
-     */
-    private String getDate(Patient patient) {
-        String lastTimePlayed;
-        try {
-            lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
-        } catch (ParseException e) {
-            lastTimePlayed = db.getLatestDate(patient.getPatientID());
-        } catch (NullPointerException e) {
-            lastTimePlayed = "No games recorded on current patient";
-        }
-        return lastTimePlayed;
-    }
-
-    /**
      * Checks if a patient has any attempts remaining for all assigned games
      *
      * @param assignments
      * @return remainingAttempts as a boolean value
      */
     private boolean checkAttemptsRemaining(List<GameAssignment> assignments) {
-        boolean remaningAttempts = false;
+        boolean remainingAttempts = false;
         for (GameAssignment assignment : assignments) {
             db = new DatabaseAccess(this);
             int maxAttempts = assignment.getGameAttempts();
             int dailyAttempts = db.getTodaysSessions(assignment.getPatientID(), assignment.getGameID()).size();
             int attempts = maxAttempts - dailyAttempts;
             if (attempts > 0) {
-                remaningAttempts = true;
+                remainingAttempts = true;
+                break;
             } else {
-                remaningAttempts = false;
+                remainingAttempts = false;
             }
         }
-        return remaningAttempts;
+        return remainingAttempts;
     }
 
     /**

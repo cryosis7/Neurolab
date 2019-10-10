@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -199,7 +200,7 @@ public class LoginFragment extends Fragment {
                                 editor.apply();
 
                                 Toast.makeText(getContext(), getResources().getString(R.string.security_correct_security_code), Toast.LENGTH_SHORT).show();
-                                showConfirm.dismiss();
+                                //TODO switch to the create password fragment
                             } else {
                                 Toast.makeText(getContext(), getResources().getString(R.string.security_incorrect_security_code), Toast.LENGTH_SHORT).show();
                             }

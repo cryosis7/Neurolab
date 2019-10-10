@@ -415,7 +415,9 @@ public class DatabaseAccess {
     public List<GameSession> getAllSessions(String patientID, String gameID) throws SQLiteException {
         open();
         cursor = db.rawQuery(
-                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ?",
+                "SELECT session_ID, patient_ID, game_ID, avg(metrics), date FROM " +
+                        "Game_Session WHERE patient_ID = ? AND game_ID = ?" +
+                        "GROUP BY date",
                 new String[]{patientID, gameID});
         return getSessionList(cursor);
     }
@@ -435,7 +437,9 @@ public class DatabaseAccess {
 
         open();
         cursor = db.rawQuery(
-                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
+                "SELECT session_ID, patient_ID, game_ID, avg(metrics), date" +
+                        " FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?" +
+                        "GROUP BY date",
                 new String[]{patientID, gameID, dateString, DateManager.getDateString(new Date())});
         return getSessionList(cursor);
     }
@@ -455,7 +459,9 @@ public class DatabaseAccess {
 
         open();
         cursor = db.rawQuery(
-                "SELECT * FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?",
+                "SELECT session_ID, patient_ID, game_ID, avg(metrics), date" +
+                        " FROM Game_Session WHERE patient_ID = ? AND game_ID = ? AND date >= ? AND date <= ?" +
+                        "GROUP BY date",
                 new String[]{patientID, gameID, dateString, DateManager.getDateString(new Date())});
         return getSessionList(cursor);
     }
