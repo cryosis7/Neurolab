@@ -27,7 +27,7 @@ import com.soteria.neurolab.database.DatabaseAccess;
 public class LoginSecurityQuestions extends AppCompatActivity {
 
     //The hardcoded int value needed to perform a reset of the app
-    final int securityCode = 3579753;
+    final int securityCode = 2941566;
 
     /*
         Contains the UI element declarations and button functionality.
