@@ -110,6 +110,9 @@ public class EditPatientDetails extends AppCompatActivity {
         if(gameAssignments.size() != 0){
             seekAttemptsBar.setProgress(db.getAssignments(patient.getPatientID()).get(0).getGameAttempts() - 1);
             seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
+        } else{
+            seekAttemptsBar.setProgress(3 - 1);
+            seekAttemptsCount.setText(Integer.toString(seekAttemptsBar.getProgress() + 1));
         }
         seekAttemptsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
