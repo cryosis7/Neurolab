@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -82,19 +83,8 @@ public class ViewPatientDetails extends AppCompatActivity {
         final Button reportButton = findViewById(R.id.viewReportButton);
         final Button deleteButton = findViewById(R.id.deletePatientButton);
 
-        // Code for changing the patientID and lastGamesRun text views to display the information
-        // passed through to it from another page.
-        String lastTimePlayed;
-        try {
-            lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
-        } catch (ParseException e) {
-            lastTimePlayed = db.getLatestDate(patient.getPatientID());
-        } catch (NullPointerException e) {
-            lastTimePlayed = "No games recorded on current patient";
-        }
-
         patientID.setText(getResources().getString(R.string.view_patient_details_patient_identifier, patient.getPatientReference()));
-        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, lastTimePlayed));
+        lastPlayed.setText(getString(R.string.view_patient_details_last_date_played, getDate(patient)));
 
         /*When run games is pressed, checks to see if patient has any game assignments and remaining
         attempts, if they do the user is redirected to the patient profile. */
@@ -177,6 +167,26 @@ public class ViewPatientDetails extends AppCompatActivity {
                 bodyText.setTextSize(24);
             }
         });
+    }
+
+    /**
+     * Attempts to grab the most recent date the patient has played any game. It will attempt
+     * to display the date in an appropriate format but if unable to due to a syntax error will
+     * display the date as is.
+     *
+     * @param patient The patient to set the last date for
+     * @return
+     */
+    private String getDate(Patient patient) {
+        String lastTimePlayed;
+        try {
+            lastTimePlayed = (new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).parse(db.getLatestDate(patient.getPatientID()))).toString();
+        } catch (ParseException e) {
+            lastTimePlayed = db.getLatestDate(patient.getPatientID());
+        } catch (NullPointerException e) {
+            lastTimePlayed = "No games recorded on current patient";
+        }
+        return lastTimePlayed;
     }
 
     /**
