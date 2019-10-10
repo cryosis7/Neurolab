@@ -174,7 +174,14 @@ public class CreatePatientFragment extends Fragment {
                         snackbarTextView.setTextSize(28);
                         snackbarActionTextView.setTextSize(28);
                         patientCreatedSnackbar.show();
+
                         editPatientID.setText("");
+                        checkBoxAttention.setChecked(false);
+                        checkBoxMemory.setChecked(false);
+                        checkBoxMotor.setChecked(false);
+                        checkBoxReaction.setChecked(false);
+                        seekAttemptsBar.setProgress(2);
+                        seekAttemptsCount.setText("3");
                     } else {
                         editPatientIDLayout.setErrorEnabled(true);
                         editPatientIDLayout.setError(getString(R.string.error_patient_id_in_use));
