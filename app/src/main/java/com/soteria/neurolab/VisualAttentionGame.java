@@ -60,6 +60,11 @@ public class VisualAttentionGame extends AppCompatActivity {
     private Button exitButton;
 
 
+    /**
+     * This method is called when the page loads, it gets the intent from the previous page and
+     * calls the startGame method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +90,13 @@ public class VisualAttentionGame extends AppCompatActivity {
         startGame();
     }
 
+    /**
+     * Initialialises the elements in the start screen, calls the setUpRounds function when
+     * start game button is pressed, or returns the user to the select games screen when the
+     * exit button is pressed
+     */
     public void startGame(){
-        setContentView(R.layout.activity_visual_attention_game_score_screen);
+        setContentView(R.layout.activity_visual_attention_start_end_screen);
         attemptsRemaining = findViewById(R.id.visual_attention_attempts_text);
         playBtn = findViewById(R.id.visual_attention_play_btn);
         exitButton = findViewById(R.id.visual_attention_exit_btn);
@@ -229,7 +239,7 @@ public class VisualAttentionGame extends AppCompatActivity {
         //double finalScore = decimalScore.doubleValue();
 
         //Displays the score screen
-        setContentView(R.layout.activity_visual_attention_game_score_screen);
+        setContentView(R.layout.activity_visual_attention_start_end_screen);
         //game_info = findViewById(R.id.visual_attention_info_text);
         scoreText = findViewById(R.id.visual_attention_score_text);
         scoreText.setText(getResources().getString(R.string.visualAttention_display_score,

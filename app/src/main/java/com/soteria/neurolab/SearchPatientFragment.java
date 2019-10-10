@@ -74,8 +74,10 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     }
 
 
-    //Opens ViewPatientDetails page when a patient is clicked
-    //Added an if/else clause to check if the patient still exists, else it removes it from the list
+    /**
+     * Opens ViewPatientDetails page when a patient is clicked
+     * Added an if/else clause to check if the patient still exists, otherwise it removes it from the list
+     */
     @Override
     public void onItemClick(View view, int position)
     {
@@ -90,7 +92,10 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
     }
 
 
-    //Returns a list of all patients from the database
+    /**
+     * Gets a list of all patients from the database
+     * @return
+     */
     private List<String> getPatientList(){
         DatabaseAccess db = DatabaseAccess.getInstance(getContext());
         return db.getAllPatientReferences();
@@ -118,7 +123,9 @@ public class SearchPatientFragment extends Fragment implements SearchPatientRecy
         return false;
     }
 
-    //Filters patient list when user types in the search box
+    /**
+     * Filters list of patients when text is typed into the search box
+     */
     @Override
     public boolean onQueryTextChange(String s) {
 

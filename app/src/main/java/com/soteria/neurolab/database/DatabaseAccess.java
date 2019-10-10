@@ -20,7 +20,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Brianna Winkels
+ * This class gets an instance of the database that contains patient, game, game_assignment
+ * and game_session tables. It also contains all of the required database CRUD functions
+ * @author Brianna Winkels, Jason Krieg, Scott Curtis
  */
 
 public class DatabaseAccess {
@@ -118,6 +120,12 @@ public class DatabaseAccess {
         return patientList;
     }
 
+    /**
+     * Retrieves a list of patient references from the database
+     *
+     * @return a list of patient references
+     * @throws SQLiteException
+     */
     public List<String> getAllPatientReferences() throws SQLiteException {
         open();
         List<String> patientList = new ArrayList<>();
@@ -290,7 +298,7 @@ public class DatabaseAccess {
     }
 
     /**
-     * Gets a game object by it's id
+     * Returns a game from the database that matches a given game id
      *
      * @param gameID
      * @return
@@ -354,7 +362,7 @@ public class DatabaseAccess {
     }
 
     /**
-     * Retrieves a Game ID using it's name as an identifier.
+     * Returns a Game ID using it's name as an identifier.
      *
      * @param gameName The game name to search for - case-sensitive.
      * @return an int representing the game-id.
@@ -563,6 +571,13 @@ public class DatabaseAccess {
         return gameAssignments;
     }
 
+    /**
+     * Checks if a patient has any game assignments
+     *
+     * @param patient
+     * @return a boolean value
+     * @throws SQLiteException
+     */
     public boolean checkAssignments(Patient patient)throws SQLiteException{
         open();
         cursor = db.rawQuery("SELECT * FROM Game_Assignment WHERE patient_ID = ?",
@@ -711,6 +726,12 @@ public class DatabaseAccess {
     //---------------------------Other Methods---------------------------------//
 
 
+    /**
+     * Returns the latest session date for a particular patient
+     *
+     * @param patientID
+     * @return latest session date
+     */
     public String getLatestDate(int patientID) {
         String latestDate;
 
