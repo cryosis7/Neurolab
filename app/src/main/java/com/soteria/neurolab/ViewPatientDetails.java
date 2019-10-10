@@ -186,19 +186,20 @@ public class ViewPatientDetails extends AppCompatActivity {
      * @return remainingAttempts as a boolean value
      */
     private boolean checkAttemptsRemaining(List<GameAssignment> assignments) {
-        boolean remaningAttempts = false;
+        boolean remainingAttempts = false;
         for (GameAssignment assignment : assignments) {
             db = new DatabaseAccess(this);
             int maxAttempts = assignment.getGameAttempts();
             int dailyAttempts = db.getTodaysSessions(assignment.getPatientID(), assignment.getGameID()).size();
             int attempts = maxAttempts - dailyAttempts;
             if (attempts > 0) {
-                remaningAttempts = true;
+                remainingAttempts = true;
+                break;
             } else {
-                remaningAttempts = false;
+                remainingAttempts = false;
             }
         }
-        return remaningAttempts;
+        return remainingAttempts;
     }
 
     /**
