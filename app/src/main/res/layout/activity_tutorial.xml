@@ -28,14 +28,19 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/border_grey"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="128dp">
 
             <TextView
                 android:id="@+id/tutorial_description"
                 style="@style/TextBody"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTextSecondary"/>
+                android:textColor="@color/colorTextSecondary"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"/>
         </ScrollView>
     </FrameLayout>
 

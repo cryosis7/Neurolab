@@ -20,7 +20,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Brianna Winkels
+ * //TODO: Write something
+ *
+ * @author Brianna Winkels, Scott Curtis, Jason Krieg
  */
 
 public class DatabaseAccess {

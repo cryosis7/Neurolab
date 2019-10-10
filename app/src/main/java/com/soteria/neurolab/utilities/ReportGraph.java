@@ -27,10 +27,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Class used for drawing a graph.
+ * Class used for drawing a graph. It uses an external library: MpAndroidChart
  * Documentation for library: https://weeklycoding.com/mpandroidchart-documentation/
  *
- * @Author Scott Curtis
+ * Creates a line chart based on the information supplied to it and graphs it.
+ *
+ * @author Scott Curtis
  */
 public class ReportGraph {
     private final String TAG = "@ReportGraph";
@@ -39,6 +41,10 @@ public class ReportGraph {
 
     public enum TIME_FRAME {ALL, MONTH, WEEK}
 
+    /**
+     * Creates a line-chart in the view in the activity supplied with ID: view_report_report_chart
+     * @param activity
+     */
     public ReportGraph(Activity activity) {
         this.activity = activity;
         chart = activity.findViewById(R.id.view_report_report_chart);

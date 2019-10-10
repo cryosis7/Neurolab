@@ -137,6 +137,11 @@ public class TutorialActivity extends AppCompatActivity {
         return Uri.parse("android.resource://" + getPackageName() + "/raw/" + scrubbedName);
     }
 
+    /**
+     * Sets the nav bar back arrow to the onBackPressed() function.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

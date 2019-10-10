@@ -26,8 +26,13 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is loaded to view the report on a patient.
+ * It loads a graph that displays the data for each game.
+ *
+ * @author Scott Curtis, Jason Krieg
+ */
 public class ViewReportActivity extends AppCompatActivity {
-    private final String TAG = "@ViewReportActivity";
 
     Spinner gameListSpinner;
 
@@ -223,10 +228,12 @@ public class ViewReportActivity extends AppCompatActivity {
         int scoreTotal = 0;
         for(GameSession gs: gameSessions)
             scoreTotal += gs.getMetrics();
+
         if(gameSessions.size() == 0){
-            averageScoreTextView.setText(getResources().getString(R.string.view_report_average_blank));
+            averageScoreTextView.setVisibility(View.INVISIBLE);
         } else {
-            averageScoreTextView.setText(getResources().getString(R.string.view_report_average, String.valueOf(scoreTotal / gameSessions.size())));
+            averageScoreTextView.setVisibility(View.VISIBLE);
+            averageScoreTextView.setText(getString(R.string.view_report_average, String.valueOf(scoreTotal / gameSessions.size())));
         }
     }
 
@@ -243,8 +250,9 @@ public class ViewReportActivity extends AppCompatActivity {
                 scoreBest = gs.getMetrics() > scoreBest ? gs.getMetrics() : scoreBest;
         }
             if (scoreBest == 0) {
-                highestScoreTextView.setText(getResources().getString(R.string.view_report_best_blank));
+                highestScoreTextView.setVisibility(View.INVISIBLE);
             } else {
+                highestScoreTextView.setVisibility(View.VISIBLE);
                 highestScoreTextView.setText(getResources().getString(R.string.view_report_best, String.valueOf(scoreBest)));
             }
     }

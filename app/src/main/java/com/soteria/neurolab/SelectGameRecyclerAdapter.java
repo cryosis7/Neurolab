@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+/**
+ * A recycler adapter that is used to manage the select game list.
+ *
+ * @author Scott Curtis
+ */
 public class SelectGameRecyclerAdapter extends RecyclerView.Adapter<SelectGameRecyclerAdapter.MyViewHolder> {
     private List<String> gameList;
     private ItemClickListener gameClickListener;
@@ -19,6 +24,13 @@ public class SelectGameRecyclerAdapter extends RecyclerView.Adapter<SelectGameRe
         return gameList.get(id);
     }
 
+    /**
+     * The view holder for each item in the recycler view
+     *
+     * The commented out code is potentially a way to fix the usability issue of only being able to
+     * select the checkbox as opposed to selecting the entire item in the recycler view.
+     * To be used in refactor
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView gameInfo;
 
