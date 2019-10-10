@@ -149,7 +149,14 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
 
     public void onBackPressed()
     {
-        startActivity(new Intent(this, LoginCreatePasswordActivity.class));
-        finish();
+        if (active == searchPatientFragment) {
+            startActivity(new Intent(this, LoginCreatePasswordActivity.class));
+            finish();
+        }
+        else {
+            fragmentManager.beginTransaction().hide(active).detach(searchPatientFragment).attach(searchPatientFragment).show(searchPatientFragment).commit();
+            active = searchPatientFragment;
+            toolbar.setTitle("Search Patient");
+        }
     }
 }

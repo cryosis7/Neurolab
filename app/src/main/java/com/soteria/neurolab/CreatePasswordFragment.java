@@ -128,7 +128,6 @@ public class CreatePasswordFragment extends Fragment {
      */
     private boolean validPassword(String password1, String password2) {
         TextInputLayout passwordLayout = getView().findViewById(R.id.create_password_input_layout_1);
-
         if (!password1.equals(password2)) {
             passwordLayout.setError(getResources().getString(R.string.create_password_not_equal));
             return false;
