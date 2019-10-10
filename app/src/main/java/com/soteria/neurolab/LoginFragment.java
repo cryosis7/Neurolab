@@ -29,10 +29,18 @@ import java.security.InvalidParameterException;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * This fragment will handle the log on screen.
+ * The user must enter the valid password or they can attempt to reset their password
+ * if security questions have been set. If questions have not been set - they can wipe all
+ * data in the database if they can provide the security code which will be available in the manual.
+ *
+ * @author Scott Curtis
+ */
 public class LoginFragment extends Fragment {
 
     private static final int PASSWORD_LENGTH_MINIMUM = 6;
-    final private int securityCode = 2941566;
+    private static final int SECURITY_CODE = 3579753;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,7 +186,7 @@ public class LoginFragment extends Fragment {
                         public void onClick(View v) {
                             if( codeInput.getText().toString().equals(""))
                                 Toast.makeText(getContext(), getResources().getString(R.string.security_code_blank), Toast.LENGTH_SHORT).show();
-                            else if( Integer.parseInt(codeInput.getText().toString() ) == securityCode) {
+                            else if( Integer.parseInt(codeInput.getText().toString() ) == SECURITY_CODE) {
                                 DatabaseAccess db = new DatabaseAccess(getContext());
 
                                 db.purgeDatabase();

@@ -21,14 +21,14 @@
             style="@style/ToggleButton"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector_normal"
-            android:text="@string/view_report_all"/>
+            android:text="@string/view_report_all" />
 
         <Button
             android:id="@+id/view_report_month_button"
             style="@style/ToggleButton"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector_normal"
-            android:text="@string/view_report_month"/>
+            android:text="@string/view_report_month" />
 
         <Button
             android:id="@+id/view_report_week_button"
@@ -124,10 +124,8 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:text="@string/view_report_average_blank"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_report_game_list_spinner"
         app:layout_constraintTop_toBottomOf="@+id/button_container"
         app:layout_constraintVertical_bias="0.435" />
 
@@ -136,7 +134,6 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_report_best_blank"
         app:layout_constraintStart_toStartOf="@+id/view_report_text_average"
         app:layout_constraintTop_toBottomOf="@+id/view_report_text_average" />
 

@@ -25,6 +25,7 @@ import java.util.Random;
 
 /**
  * @author Jason Krieg
+ * This is the activity which handles the Motor Skills Game page.
  */
 public class MotorSkillsGameActivity extends AppCompatActivity {
 
@@ -53,6 +54,10 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
     private int score;
     private int lettersInRound;
 
+    /**
+     * Will initialize the UI elements and some game values.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +174,12 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Starts the game from the first round.
+     * Sets score to 0, round to 2, and fails to 5.
+     * round is a value that no longer represents the actual round but rather is used to scale the
+     * button sizes.
+     */
     private void startGame(){
         //Start on round 2 - A and B
         gameStarted = true;
@@ -182,6 +193,10 @@ public class MotorSkillsGameActivity extends AppCompatActivity {
                 getResources().getString(R.string.visual_memory_textview_try_plural, String.valueOf(fails)));
     }
 
+    /**
+     * Handles the end of the game. Can be triggered by failing 5 times or finishing all 9 rounds.
+     * Will update the UI elements and will enable the play again button if attempts remaining > 0
+     */
     private void finishGame(){
         gameStarted = false;
         gameLayout.removeAllViews();

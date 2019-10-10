@@ -36,6 +36,13 @@ public class CreatePasswordFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Initialises class and sets on click listeners.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -80,7 +87,7 @@ public class CreatePasswordFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked())
-                    new DisclaimerAlertDialog().showDisclaimerWithCancel(getContext(), getResources());
+                    new DisclaimerAlertDialog().showDisclaimerWithCancel(getContext(), getResources(), ((CheckBox) view));
             }
         });
 

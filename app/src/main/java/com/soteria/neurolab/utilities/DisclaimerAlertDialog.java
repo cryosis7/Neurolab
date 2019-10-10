@@ -3,7 +3,9 @@ package com.soteria.neurolab.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -46,7 +48,7 @@ public class DisclaimerAlertDialog {
         bodyText.setTextSize(24);
     }
 
-    public void showDisclaimerWithCancel(final Context callingClass, final Resources resources) {
+    public void showDisclaimerWithCancel(final Context callingClass, final Resources resources, final CheckBox checkBox) {
         final AlertDialog.Builder disclaimerBuilder = new AlertDialog.Builder(callingClass);
 
         disclaimerBuilder.setTitle(resources.getString(R.string.disclaimer))
@@ -61,7 +63,8 @@ public class DisclaimerAlertDialog {
                 .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        ((Activity) callingClass).finish();
+                        dialogInterface.dismiss();
+                        checkBox.setChecked(false);
                     }
                 });
 

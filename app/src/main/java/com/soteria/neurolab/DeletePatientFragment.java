@@ -30,6 +30,7 @@ import java.util.List;
 
 
 /**
+ * @author Jason Krieg
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link DeletePatientFragment.OnFragmentInteractionListener} interface
@@ -66,6 +67,13 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Initializes all elements in the page
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -165,7 +173,9 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         return view;
     }
 
-    //Calls the database and sets the full list of patients, also sets the current list to equal the full list
+    /**
+     * Calls the database and sets the full list of patients, also sets the current list to equal the full list
+     */
     private void initializePatientList() {
         DPRItemFullList = new ArrayList<>();
         DatabaseAccess db = DatabaseAccess.getInstance(getContext());
@@ -176,7 +186,9 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         DPRItemCurrentList = DPRItemFullList;
     }
 
-    //Method for attaching the fragment
+    /**
+     * Method for attaching the fragment
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -188,20 +200,28 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
         }
     }
 
-    //Method for detaching the fragment
+    /**
+     * Method for detaching the fragment
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    //Required by interface
+    /**
+     * Required by interface
+     * @param s
+     * @return
+     */
     @Override
     public boolean onQueryTextSubmit(String s) {
         return false;
     }
 
-    //updates the current list based on the search string
+    /**
+     * Updates the current list based on the search string
+     */
     @Override
     public boolean onQueryTextChange(String s) {
         String userInput = s.toUpperCase();

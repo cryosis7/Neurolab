@@ -9,9 +9,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+/**
+ * The root container class for the logon/create password screens.
+ * Each of those two are loaded as fragments inside of this activity and they are toggled as
+ * needed.
+ *
+ * @author Scott Curtis
+ */
 public class LoginCreatePasswordActivity extends AppCompatActivity {
-    private static final String TAG = "LoginCreatePasswordActivity";
-
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private final LoginFragment loginFragment = new LoginFragment();
     private final CreatePasswordFragment createPasswordFragment = new CreatePasswordFragment();

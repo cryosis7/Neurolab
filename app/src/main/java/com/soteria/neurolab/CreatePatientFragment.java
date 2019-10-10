@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 
 /**
+ * @author Jason Krieg
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link CreatePatientFragment.OnFragmentInteractionListener} interface
@@ -117,6 +118,11 @@ public class CreatePatientFragment extends Fragment {
             }
         });
 
+        /**
+         * onClickListener for the Create button.
+         * Will read all the inputs and create a patient in the database and produce a
+         * snackbar message for quick access to the newly created patient.
+         */
         final Button createPatientButton = view.findViewById(R.id.buttonCreate);
         createPatientButton.setOnClickListener(new View.OnClickListener(){
 
@@ -183,7 +189,7 @@ public class CreatePatientFragment extends Fragment {
             }
         });
 
-        /*
+        /**
          * Listener on the edit text field to clear the error upon changing the patientID
          */
         editPatientID.addTextChangedListener(new TextWatcher() {

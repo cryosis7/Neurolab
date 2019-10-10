@@ -160,6 +160,11 @@ public class ReactionGameActivity extends AppCompatActivity {
         return avgResult;
     }
 
+    /**
+     * Sets the back button on the home bar to the onBackPressed() function and finishes the activity.
+     * @param menuItem
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -205,14 +210,19 @@ public class ReactionGameActivity extends AppCompatActivity {
         }
     }
 
-
     /**
-     * An inner class that pauses for a random delay on a separate thread then updates the
-     * UI after the delay.
+     * AsyncTask to run a separate thread that will wait for a period of time without freezing up
+     * the application.
      */
     private static class ReactionTimer extends AsyncTask<ReactionGameActivity, Void, Void> {
         private WeakReference<ReactionGameActivity> gameReference;
 
+        /**
+         * Pauses for a random amount of time between 1 and 7 seconds.
+         * After that time is up it will make a request to update the UI and display the circle button.
+         * @param params
+         * @return
+         */
         @Override
         protected Void doInBackground(ReactionGameActivity... params) {
             gameReference = new WeakReference<>(params[0]); // Weak reference to prevent memory leaks.
@@ -230,6 +240,12 @@ public class ReactionGameActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * Called to update the UI and make the circle button visible after the async task has paused
+         * for a random amount of time.
+         *
+         * @param progress
+         */
         @Override
         protected void onProgressUpdate(Void... progress) {
             super.onProgressUpdate();

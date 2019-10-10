@@ -17,6 +17,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.soteria.neurolab.database.DatabaseAccess;
 import com.soteria.neurolab.utilities.DisclaimerAlertDialog;
 
+/**
+ * @author Jason Krieg
+ * Handles the navigation bar at the bottom of the page for the Search, Create and Delete activities.
+ */
 public class SearchCreateDeleteActivity extends AppCompatActivity implements  CreatePatientFragment.OnFragmentInteractionListener,
         DeletePatientFragment.OnFragmentInteractionListener,
         SearchPatientFragment.OnFragmentInteractionListener {
@@ -31,6 +35,10 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
 
     private ActionBar toolbar;
 
+    /**
+     * Navigation listener, uses a switch statement to swap between fragments, using the button
+     * pressed on the navigation bar as the case for the switch.
+     */
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -57,6 +65,10 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         }
     };
 
+    /**
+     * Draws up the navigation bar and initializes it.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -79,6 +91,11 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
 
     }
 
+    /**
+     * Inflates the bar at the top of the screen
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /*Grabs the information from the overflow_menu resource in the menu folder and sets them
@@ -92,6 +109,11 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
         }
     }
 
+    /**
+     * Creates the options for the triple dots button in the bar at the top of the screen.
+     * @param menuItem
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {

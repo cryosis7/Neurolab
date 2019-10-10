@@ -29,12 +29,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * TODO: Needs class description
+ * @author Jason Krieg
+ * The edit patient details page is the activity in which the user can make changes to or delete a
+ * patient.
  */
 public class EditPatientDetails extends AppCompatActivity {
     private static final String TAG = "EditPatientDetails";
     private Patient patient;
 
+    /**
+     * Initializes all of the elements in the page.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +130,10 @@ public class EditPatientDetails extends AppCompatActivity {
             }
         });
 
-        //Confirm button functionality
+        /*
+          Handles the confirm button functionality.
+          Will update the patient in the database based on the changes made by the user.
+         */
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,6 +190,10 @@ public class EditPatientDetails extends AppCompatActivity {
             }
         });
 
+        /*
+          OnClickListener for the exit button.
+          Will exit the page without making any changes to the patient.
+         */
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,7 +202,7 @@ public class EditPatientDetails extends AppCompatActivity {
         });
 
         /*
-         * Listener on the edit text field to clear the error upon changing the patientID
+          Listener on the edit text field to clear the error upon changing the patientID
          */
         editPatientID.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,6 +216,13 @@ public class EditPatientDetails extends AppCompatActivity {
         });
     }
 
+    /**
+     * Will check the database to make sure that the newly entered patient reference is unique
+     * @param databasePatients - A list of all patients in the database.
+     * @param newID - The string in the Patient ID text field entered by the user.
+     * @param oldID - The old ID of the patient.
+     * @return
+     */
     private boolean patientNameCheck( List<Patient> databasePatients, String newID , String oldID)
     {
         for( Patient temp : databasePatients )
@@ -246,13 +266,6 @@ public class EditPatientDetails extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent viewPatient = new Intent(this.getApplicationContext(), ViewPatientDetails.class);
-        viewPatient.putExtra("PATIENT_REFERENCE", patient.getPatientReference());
-        startActivity(viewPatient);
-    }
-
     /** Determines the behaviour of options selected from the action bar. Options include displaying
      *  the disclaimer and sending the user back to the main menu.
      *
@@ -289,5 +302,16 @@ public class EditPatientDetails extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"EXCEPTION " + e + " occurred!",Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    /**
+     * Overrides the on back pressed to indicate the state (Does not need refresh) that it is
+     * returning to the ViewPatientDetails screen
+     */
+    @Override
+    public void onBackPressed() {
+        Intent viewIntent = new Intent(this, ViewPatientDetails.class);
+        setResult(RESULT_CANCELED, viewIntent);
+        finish();
     }
 }

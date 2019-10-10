@@ -11,7 +11,7 @@
     <!-- Game titles -->
     <string name="title_motor_skills">Motor Skills</string>
     <string name="title_reaction_time">Reaction Time</string>
-    <string name="title_visual_short_term_memory">Short-term Visual Memory</string>
+    <string name="title_visual_short_term_memory">Short Term Visual Memory</string>
     <string name="title_visual_attention">Visual Attention</string>
 
     <!-- Create patient fragment strings -->
@@ -79,8 +79,8 @@
     <string name="view_report_week">Week</string>
     <string name="view_report_average">Average: %1$s</string>
     <string name="view_report_best">Best: %1$s</string>
-    <string name="view_report_average_blank">Average: -</string>
-    <string name="view_report_best_blank">Best: -</string>
+<!--    <string name="view_report_average_blank">Average: -</string>-->
+<!--    <string name="view_report_best_blank">Best: -</string>-->
     <string name="view_report_all">All</string>
 
     <!--View Patient Details Strings-->

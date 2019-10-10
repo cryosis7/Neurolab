@@ -147,6 +147,11 @@ public class SelectGameActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Sets the back button on the top bar to process the validate function before returning.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
