@@ -14,18 +14,34 @@ import com.soteria.neurolab.viewModels.DeletePatientRecyclerItem;
 
 import java.util.ArrayList;
 
+
+/**
+ * @author Jason Krieg
+ * Class that handles the list of patients in the delete fragment
+ */
 public class DeletePatientRecyclerAdapter extends RecyclerView.Adapter<DeletePatientRecyclerAdapter.MyViewHolder>{
 
     private ArrayList<DeletePatientRecyclerItem> searchData;
     private LayoutInflater searchInflater;
     private ItemClickListener searchClickListener;
 
+    /**
+     * Default Constructor
+     * @param context
+     * @param passedData
+     */
     DeletePatientRecyclerAdapter(Context context, ArrayList<DeletePatientRecyclerItem> passedData)
     {
         this.searchInflater = LayoutInflater.from(context);
         this.searchData = passedData;
     }
 
+    /**
+     * inflates the row item in the recycler
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public DeletePatientRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,12 +49,21 @@ public class DeletePatientRecyclerAdapter extends RecyclerView.Adapter<DeletePat
         return new DeletePatientRecyclerAdapter.MyViewHolder(view);
     }
 
+    /**
+     * Updates the recycler with the new list - Happens when the list is filtered by the search box
+     * @param newList
+     */
     public void updateList(ArrayList<DeletePatientRecyclerItem> newList){
         searchData = new ArrayList<>();
         searchData.addAll(newList);
         notifyDataSetChanged();
     }
 
+    /**
+     * Sets the values of each element for each individual row item.
+     * @param holder
+     * @param position
+     */
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final DeletePatientRecyclerItem patientIdSet = searchData.get(position);
         holder.checkBox.setText(patientIdSet.getPatientReference());
