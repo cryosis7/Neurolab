@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/visual_attention_info_text"
-        android:gravity="center_horizontal"
-        android:layout_width="364dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="140dp"
-        android:text="@string/title_visual_attention"
         style="@style/TextSubHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        android:text="@string/title_visual_attention"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,53 +22,48 @@
     <TextView
         android:id="@+id/visual_attention_score_text"
         style="@style/TextSubHead"
-        android:layout_width="338dp"
-        android:layout_height="133dp"
+        android:layout_width="360dp"
+        android:layout_height="106dp"
+        android:layout_marginTop="276dp"
         android:gravity="center_horizontal"
         android:text="@string/visualAttention_display_score"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visual_attention_info_text"
-        app:layout_constraintVertical_bias="0.093" />
+        app:layout_constraintTop_toBottomOf="@+id/visual_attention_attempts_text" />
 
     <TextView
         android:id="@+id/visual_attention_attempts_text"
-        style="@style/TextSubHead"
-        android:layout_width="626dp"
-        android:layout_height="131dp"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/textview_attempts_plural"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.941"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintTop_toBottomOf="@+id/visual_attention_info_text" />
 
     <Button
         android:id="@+id/visual_attention_play_btn"
         style="@style/button_yellow_background"
-        android:layout_width="293dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="278dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="228dp"
         android:gravity="center_horizontal"
         android:text="@string/start_game"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visual_attention_attempts_text" />
+        app:layout_constraintTop_toBottomOf="@+id/visual_attention_score_text" />
 
     <Button
         android:id="@+id/visual_attention_exit_btn"
         style="@style/button_yellow_background"
-        android:layout_width="294dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="279dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="28dp"
         android:gravity="center_horizontal"
         android:text="@string/exit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/visual_attention_play_btn" />
 
