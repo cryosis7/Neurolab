@@ -19,6 +19,7 @@ import com.soteria.neurolab.R;
  *  DisclaimerAlertDialog dad = new DisclaimerAlertDialog();
  *  dad.showDisclaimer(this, getResources());
  *
+ * @author Richard Dasan
  */
 public class DisclaimerAlertDialog {
     public void showDisclaimer(Context callingClass, Resources resources) {

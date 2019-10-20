@@ -13,6 +13,13 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * This is a fragment class designed to check what page the user should be viewing. This fragment
+ * applies to the settings page, and allows fluid transition between the reset password and the
+ * reset security questions pages.\
+ *
+ * @author Richard Dasan
+ */
 public class SettingsActivity extends AppCompatActivity implements SettingsResetPasswordFragment.OnFragmentInteractionListener,
                                                                    SettingsSecurityQuestionsFragment.OnFragmentInteractionListener{
 
@@ -23,6 +30,11 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
     private ActionBar toolbar;
 
 
+    /**
+     * Determines what the first page is when the fragment is loaded. In this case, the first
+     * page the user will see will always be the reset password page.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +56,13 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+        /**
+         * This section of code allows the user to navigate through the two fragments using the
+         * navigation bar at the bottom of the page.
+         *
+         * @param item The selected option in the navigation bar
+         * @return true if the user has selected a option available in the nav bar.
+         */
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -67,6 +86,12 @@ public class SettingsActivity extends AppCompatActivity implements SettingsReset
 
     }
 
+    /**
+     * Determines functionality of the top bar for backwards compatibility.
+     *
+     * @param menuItem The back button
+     * @return True if the user has selected a viable option in the top bar.
+     */
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         try {
             switch (menuItem.getItemId()) {

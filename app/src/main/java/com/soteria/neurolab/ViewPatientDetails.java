@@ -25,8 +25,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * TODO: Needs Class Description
+ * This class focuses on reporting the patients reference and the last time games were played on
+ * the account. This page also links the user to the patient account so they can play games assigned
+ * to them, to the edit patient screen so their details and games assigned can change, and to the
+ * view report page where they can see their statistics of the games they have played.
  *
+ * @author Richard Dasan
  */
 public class ViewPatientDetails extends AppCompatActivity {
     private DatabaseAccess db;
