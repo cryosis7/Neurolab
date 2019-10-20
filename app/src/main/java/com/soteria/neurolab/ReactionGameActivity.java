@@ -163,7 +163,7 @@ public class ReactionGameActivity extends AppCompatActivity {
     /**
      * Sets the back button on the home bar to the onBackPressed() function and finishes the activity.
      * @param menuItem
-     * @return
+     * @return True if back button is pressed. False should not be returned.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {

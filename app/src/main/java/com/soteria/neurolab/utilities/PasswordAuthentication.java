@@ -16,9 +16,10 @@ import javax.crypto.spec.PBEKeySpec;
 /**
  * Hash passwords for storage, and test passwords against password tokens.
  * Instances of this class can be used concurrently by multiple threads.
+ * Code sourced from Stack Overflow:
+ * <a href="http://stackoverflow.com/a/2861125/3474">http://stackoverflow.com/a/2861125/3474</a>
  *
  * @author erickson (Tailored for purpose by Scott Curtis)
- * @see <a href="http://stackoverflow.com/a/2861125/3474">StackOverflow</a>
  */
 public final class PasswordAuthentication
 {

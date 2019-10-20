@@ -150,7 +150,7 @@ public class SelectGameActivity extends AppCompatActivity {
     /**
      * Sets the back button on the top bar to process the validate function before returning.
      * @param item
-     * @return
+     * @return True on success, False on failure
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

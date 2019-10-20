@@ -186,7 +186,7 @@ public class LoginCreatePasswordActivityTest {
     /**
      * Checking for an error in a TextInputLayout
      * @param stringMatcher
-     * @return
+     * @return Matcher
      */
     public static Matcher<View> withErrorInInputLayout(final Matcher<String> stringMatcher) {
         checkNotNull(stringMatcher);

@@ -233,7 +233,7 @@ public class EditPatientDetailsTest {
      * - sourced from https://stackoverflow.com/questions/37819278/android-espresso-click-checkbox-if-not-checked
      *
      * @param checked
-     * @return
+     * @return ViewAction
      */
     public static ViewAction setChecked(final boolean checked) {
         return new ViewAction() {

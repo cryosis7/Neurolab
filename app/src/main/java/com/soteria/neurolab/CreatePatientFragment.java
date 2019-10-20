@@ -71,7 +71,7 @@ public class CreatePatientFragment extends Fragment {
      * @param inflater - The fragment to be inflated
      * @param container - Default argument from factory method
      * @param savedInstanceState - Default argument from factory method
-     * @return
+     * @return The inflated view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +112,7 @@ public class CreatePatientFragment extends Fragment {
             }
         });
 
-        /**
+        /*
          * onClickListener for the Create button.
          * Will read all the inputs and create a patient in the database and produce a
          * snackbar message for quick access to the newly created patient.

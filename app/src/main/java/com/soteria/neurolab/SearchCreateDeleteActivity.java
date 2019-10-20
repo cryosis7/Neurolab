@@ -94,7 +94,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     /**
      * Inflates the bar at the top of the screen
      * @param menu
-     * @return
+     * @return true on success, false on failure
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,7 +112,7 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     /**
      * Creates the options for the triple dots button in the bar at the top of the screen.
      * @param menuItem
-     * @return
+     * @return True on success, false on failure.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -146,7 +146,6 @@ public class SearchCreateDeleteActivity extends AppCompatActivity implements  Cr
     view patients screen after a patient has been deleted.
     */
     @Override
-
     public void onBackPressed()
     {
         if (active == searchPatientFragment) {

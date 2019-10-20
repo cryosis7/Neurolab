@@ -140,7 +140,7 @@ public class TutorialActivity extends AppCompatActivity {
     /**
      * Sets the nav bar back arrow to the onBackPressed() function.
      * @param item
-     * @return
+     * @return True on success
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

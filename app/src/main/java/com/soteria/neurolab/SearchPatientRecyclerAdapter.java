@@ -54,7 +54,7 @@ public class SearchPatientRecyclerAdapter extends RecyclerView.Adapter<SearchPat
 
     /**
      * Returns the number of items in the recycler view
-     * @return
+     * @return Number of items in the recycler view
      */
     @Override
     public int getItemCount()

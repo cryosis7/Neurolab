@@ -300,8 +300,8 @@ public class DatabaseAccess {
     /**
      * Returns a game from the database that matches a given game id
      *
-     * @param gameID
-     * @return
+     * @param gameID - the ID to search for
+     * @return Game - the game with the matching ID
      * @throws SQLiteException
      */
     public Game getGame(int gameID) throws SQLiteException {

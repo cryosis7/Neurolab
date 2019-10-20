@@ -41,7 +41,7 @@ public class CreatePasswordFragment extends Fragment {
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return The inflated view
      */
     @Nullable
     @Override

@@ -72,7 +72,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return The inflated View
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -212,7 +212,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
     /**
      * Required by interface
      * @param s
-     * @return
+     * @return false
      */
     @Override
     public boolean onQueryTextSubmit(String s) {
@@ -221,6 +221,7 @@ public class DeletePatientFragment extends Fragment implements DeletePatientRecy
 
     /**
      * Updates the current list based on the search string
+     * @return boolean - true
      */
     @Override
     public boolean onQueryTextChange(String s) {

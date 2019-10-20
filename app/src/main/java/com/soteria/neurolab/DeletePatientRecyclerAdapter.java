@@ -40,7 +40,7 @@ public class DeletePatientRecyclerAdapter extends RecyclerView.Adapter<DeletePat
      * inflates the row item in the recycler
      * @param parent
      * @param viewType
-     * @return
+     * @return An Adapter for the the delete patient recycler view
      */
     @NonNull
     @Override
