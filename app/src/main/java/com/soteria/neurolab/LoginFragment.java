@@ -40,7 +40,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginFragment extends Fragment {
 
     private static final int PASSWORD_LENGTH_MINIMUM = 6;
-    private static final int SECURITY_CODE = 3579753;
+    private static final int SECURITY_CODE = 2941566;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
